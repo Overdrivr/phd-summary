@@ -8,5 +8,9 @@
     "grunt-contrib-watch": "*",
     "grunt-contrib-connect": "*",
     "grunt-latex": "*"
+  },
+  "dependencies": {
+    "grunt-execute": "^0.2.2",
+    "grunt-shell": "^2.1.0"
   }
 }
