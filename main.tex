@@ -1,6 +1,6 @@
 %
 % phd-summary
-% 
+%
 % Licensed under none License
 %
 
@@ -11,9 +11,9 @@
 \usepackage[T1]{fontenc}
 
 % Meta-data
-\title{phd-summary}
-\author{Remi Beges}
-\date{}
+\title{}
+\author{ \\ }
+\date{Résumé en français}
 
 % Main modules
 \usepackage{url}      % URL
@@ -37,10 +37,38 @@
 % Document
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+	\centering
+	{\scshape NXP Semiconductors \par}
+	\vspace{0.5cm}
+  {\scshape ET \par}
+	\vspace{0.5cm}
+  {\scshape LAAS-CNRS (Laboratoire d'Analyse et d'Architecture des Systèmes) \par}
+  \vspace{1cm}
+	{\scshape\Large Thèse CIFRE - Résumé en Français\par}
+	\vspace{1.5cm}
+	{\huge\bfseries Développement de méthodes d'analyse et de prédiction de défauts fonctionnels liés aux décharges électrostatiques\par}
+	\vspace{2cm}
+	{\Large\itshape Rémi Bèges\par}
+	\vfill
+	supervisé par\par
+	Pr. Fabrice \textsc{Caignet} (LAAS-CNRS)\par
+  Dr. Patrice \textsc{Besse} (NXP)\par
+  Pr. Marise \textsc{Bafleur} (LAAS-CNRS)\par
+
+	\vfill
+
+% Bottom of the page
+	{\large Soutenue le XX XXXX 2017\par}
+\end{titlepage}
 
 % Chapter files listing
-\input{src/1/main.tex}
+\input{src/1/intro.tex}
+\input{src/1/chap1.tex}
+\input{src/1/chap2.tex}
+\input{src/1/chap3.tex}
+\input{src/1/chap4.tex}
+\input{src/1/conclusion.tex}
 % End of chapter files listing
 
 
