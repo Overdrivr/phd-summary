@@ -1,21 +1,19 @@
 \chapter{Introduction}
 
 % Trends of the electronic field is size reduction
-Electronic circuits become more miniaturized year after year.
-Size reduction of integrated circuits reduces manufacturing cost per chip thanks to the increased volume.
-Diminishing the size and amount of electronic devices decreases the weight of embedded systems.
-In automotive for instance, this results in lowered fuel consumption and impact on the environment.
-Miniaturization offers increased performance and capabilities.
-More functions can be packed in the same volume.
+La miniaturization des circuits électroniques se poursuit malgré des barrières technologiques de plus en plus élevées.
+La diminution de taille des circuits intégrés permet une réduction des coûts grâce à l'augmentation des volumes de production.
+La réduction de poids des modules électroniques pour l'automobile ou l'aéronautique permet des réductions de carburant, de coût, et moins d'impact sur l'environnement.
+A taille constante, des circuit intégrés plus denses peuvent embarquer plus de fonctionnalités et ont des performances plus élevées.
 
 % How is size reduced
-For integrated circuits, this trend is accomplished by decreasing integrated technology size.
-Any integrated technology is defined by the dimensions and shapes of fundamental electronic bricks it provides.
-Those bricks are most of the time different kinds of transistors, resistors and capacitors.
-The size of a technology is the smallest dimension for the smallest transistor gate, called \textlambda.
-The value of \textlambda is essential and determines the size, power consumption, switching speed, performance and many other characteristics of the complete chip.
-Until recently, Moore's law successfully predicted that technology dimensions will be reduced by a factor of two every 18 months.
-The automotive world follows this trend as well, moving recently to 16nm technology nodes (see Fig. \ref{fig:nxp-techno-increase}) \cite{evolution_technologies} that are normally employed in less demanding applications.
+La réduction de taille des circuits intégrés est possible en utilisant des technologies silicium plus fines.
+Une technologie silicium définie les dimensions et les formes d'un ensemble de briques de conception électronique, formant une librairie de composants, ainsi que tous les procédés nécessaires à la fabrication du circuit intégré.
+La plupart du temps, ces librairies de composant sont constituées de différents types de transistors, diode, résistances et capacitances.
+La taille d'une technologie est définie par la plus petite dimension possible pour une grille de transistor, aussi appellée \textlambda.
+La valeur de \textlambda est essentielle et conditionne fortement la taille du circuit final, sa consommation et ses performances.
+Jusqu'à présent, la loi de Moore a prédit avec succès que \textlambda serait réduit d'un facteur deux tous les dix-huit mois.
+Le domaine automobile se conforme à cette tendance, en utilisant récemment des noeuds technologiques à 16nm (Fig. \ref{fig:nxp-techno-increase}) \cite{evolution_technologies} normalement utilisés dans des applications moins sévères.
 
 \begin{figure}[!h]
   \centering
@@ -25,64 +23,52 @@ The automotive world follows this trend as well, moving recently to 16nm technol
 \end{figure}
 
 % Side effects of size reduction
-As a side effect, integrated circuits become more fragile and sensitive.
-Maximum tolerated voltage and current levels are smaller.
-Above those limits, devices are degraded or destroyed.
-The silicon area required for protecting the devices becomes a larger fraction of the complete chip area \cite{evolution_technologies}, and thus of the cost.
+Cette réduction de taille s'accompagne d'une augmentation de la fragilité et de la sensibilité des circuits intégrés.
+Les seuils de tolérances en tension et courant deviennent plus petits, au delà desquels les circuits sont détruits.
+La surface de silicium nécessaire à la protection des coeurs de circuits occupe une plus large part de l'aire totale d'un produit  \cite{evolution_technologies}, et donc du coût.
 
 % Another trend in automotive - more electronic functions
-Nowadays, new major features are developped in the automotive field.
-The development of assisted or fully autonomous driving is seeing tremendous progress.
-Autonomous vehicles take decisions and perform critical actions such as braking or steering the wheel.
-Thoses features are implemented for safety purposes and put very high responsabilities on electronic modules.
-Electric cars raise new challenges for safety as well, such as battery management.
-Those features require more computing power, more sensing capabilities and more data to exchange.
-As a consequence, the amount of \gls{ecu}s and electronic modules in a car is growing quickly.
-Communication buses like the \gls{can} \cite{CAN} or \gls{lin} \cite{LIN} are shared by multiple systems and new standards appear for supporting higher bandwidths.
-The CAN bus with Flexible Data rate (CAN-FD) is an example of this trend.
+De nos jours, de nouvelles fonctionnalités majeures sont aussi en dévelopement dans le domaine automobile.
+En particulier, les véhicules autonomes ou l'aide à la conduite font leur apparition sur les routes.
+Ces fonctionnalités font en permanence des décisions et prennent des actions critiques sur le véhicule, comme tourner le volant ou enclencher le freinage.
+Elles sont implémentées afin d'augmenter la sécurité des usagers d'un véhicule, ce qui résulte en des responsabilités et des contraintes accrues sur les modules électroniques.
+La sûreté de fonctionnement des ces modules est donc vitale pour ce type d'application.
 
 % Another trend is reduced power consumptions
-Electrical power consumption has largely increased in vehicles.
-Solutions are progressively set up to reduce it.
-At the integrated circuit level, the main solution so far is to lower supply voltages.
-With the most recent technology nodes, it is now common to find supply voltages near 1V.
-Noise margins become very small, resulting in circuits far more sensitive to electrical disturbances.
+L'augmentation de la quantité d'électronique dans un véhicule s'accompagne aussi d'une forte hausse de la consommation électrique.
+Au niveau circuit-intégré, les tensions d'alimentations sont réduites très bas, avec communément des seuils d'alimentions de 1V.
+Les marges de bruit des cellules digitales sont réduites d'autant, rendant les circuits bien plus sensibles aux perturbations électriques.
 
 % Harsh environment in the automotive field
-The automotive field is also an harsh environment for electronic devices.
-Equipements are exposed to a wide range of stresses.
-A running engine generates plenty of vibrations and mechanical stress.
-A lot of heat and thermal cycling is produced when the engine is on, and a vehicle is exposed to large temperature variations during its lifetime.
-Electrical contacts, solder joints and connections suffer from these stresses, and must be designed to withstand them.
-Electronic system are also exposed to a wide range of electrical stresses especially in the automotive field.
-There are many sources of electrical stresses in a vehicle.
-Transient disturbances can be generated natural phenomena, by the vehicle itself or some of its components.
-When the engine is turned on for instance, the battery voltage can drop very low because of the amount of current drawn by the ignition.
-This voltage drop can affect electronic systems and damage them.
-This kind of disturbance is generated by the vehicle itself, but there is another major source of electrical stress coming from a natural phenomenon, called \gls{esd}.
+Par ailleurs, l'environnement automobile est très sévère pour les composants électroniques.
+Un moteur en fonctionnement génère de la chaleur et des vibrations.
+Durant toute sa vie, un véhicule est exposé à de larges cycles thermiques.
+Les contacts électriques, les soudures et les connections vieillissent plus rapidement à cause de cela.
+De plus, les systèmes électroniques sont exposés à une large plage de stress électriques.
+Quand le moteur est allumé, la tension de batterie chute fortement à cause de l'appel de courant créé par le démarreur.
+Cette variation très brutale peut affecter ou endommager les modules.
+Il existe également une autre famille de perturbations électriques appellée décharges électrostatiques, et produite par l'environnement du véhicule.
 
 % What is an ESD
-An electrostatic discharge is the sudden flow of electricity between two objects of different charge.
-It is the result of a local accumulation of electrostatic potential.
-When a large enough potential difference is reached, a very rapid and violent discharge occurs.
-It is common to record amplitudes in the range of thousands of volts and tens of amperes.
-A study by Renault car manufacturer \cite{Renault-esd} estimates that electronic devices are exposed 10000 times to \gls{esd}s during their lifetime.
-It has always been considered a very serious threat for electronic systems.
+Une décharge électrostatique est un transfert de charge soudain entre deux objets de différente charge.
+C'est le résultat d'une accumulation de potentiel électrostatique.
+La décharge se produit lorsque la différence de potentiel est suffisamment large.
+L'amplitude de tels événements peut atteindre couramment plusieurs milliers de volts et des dizaines d'ampères.
+Le fabricant de véhicules Renault estimes que les composants électroniques automobiles sont exposés 10000 fois à des décharges pendant leur vie \cite{Renault-esd}.
 
 % Architecture systemes automobiles
-In terms of architecture, a vehicle is constituted by a multitude of electronic modules, interconnected with cables.
-This architecture raises some challenges for guaranting robustness against electrical disturbances.
-A car is connected to the earth's ground through the tires, which is equivalent to a thick layer of insulating material.
-Interconnected electronic systems need to share a good ground reference for them to communicate and work properly.
-This function is assumed by the car's metallic body.
-In \gls{dc} and at low frequencies, this reference is quite good because the vehicle's body is a very large chunck of metal with a very low resistance.
-Electrostatic discharges are high frequency events, with significant frequency content up to a gigahertz.
-In this frequency range, the car's body is not a low value resistor anymore and cables behave as large inductances.
-As a result, electronic modules do not share a good reference and can be disturbed and fail to function properly.
-For electrostatic discharges and \gls{emc} in general, cables are an important issue.
-Inside a car, cables are not shielded and make great antennas that can both receive and emit radiated interferences.
-Couplings between cables propagate interferences between interconnect domains.
-Overall, the architecture of a vehicle is complex and sensitive to electrical disturbances.
+L'architecture des systèmes électriques dans un véhicule est également très complexe et rude pour les modules électroniques.
+Une voiture est consistutées d'une multitude de modules électroniques interconnectés par des câbles.
+C'est un vrai challenge pour garantir la robustesse de cet ensemble contre des perturbations électriques.
+La seule connection d'une voiture à une vrai référence électrique se fait par les pneus, ce qui équivaut globalement à une très mauvaise connection à la terre.
+Néanmoins, les modules électroniques ont besoin d'une bonne référence pour communiquer entre eux et fonctionner correctement.
+Ceci est assuré par la carcasse métallique du véhicule.
+En statique et à basse fréquence, cette référence est très bonne car très peu résistive.
+Les décharges électrostatiques sont au contraire des évènements avec la majorité du spectre à très haute fréquence, jusqu'à 1 GHz environ.
+Dans cette gamme de fréquence, la carcasse métallique ne se comporte plus comme une bonne référence et les cables deviennent largement inductifs.
+Ces phénomènes peuvent donc fortement perturber les systèmes électroniques.
+De plus, les cables peuvent rayonner et les propagations peuvent se propager par couplage.
+Globalement, l'architecture d'un véhicule est complex et sensible par nature aux perturbations.
 
 \begin{figure}[!h]
   \centering
@@ -92,22 +78,16 @@ Overall, the architecture of a vehicle is complex and sensitive to electrical di
 \end{figure}
 
 % Fiabilite vis a vis des ESD
-In summary, the amount of electronic devices is increasing and in the same time they become more sensitive.
-Systems are complex to study and analyse, have more responsabilities in regards of our safety, and the surrounding environment is very harsh.
-Studying and predicting all kinds of failures is important in order to avoid them early.
-In the \gls{esd} field, there are two kinds of failures to consider.
-The hardware failure, or hard-failure, is when an electronic device is permanently damaged.
-There can be multiple signatures, such as apparition of minor defects, important variation of intrisic properties or complete destruction (see Fig. \ref{fig:esd-failures}).
-Semiconductor devices are particularly sensitive to electrostatic discharges \cite{impactESDsemiconductors} and require specific protection.
-Recently, a new class of failures is being studied, motivated by new requirements for operating safety.
-Soft-failure, or functional failure, is when an electronic device fails temporarily to perform its function, because of an electrical disturbance.
-In this scenario, different levels of severity can be identified depending on the impact of the failure on the rest of the system.
-In the best case, a module is momentarily disturbed by a discharge but recovers immediately without noticeable impact.
-In a more severe scenario, some minor functionnalities such as entertainment systems are frozen, requiring an user intervention to recover, in the form of restarting the vehicle for instance.
-The same kind of issue with airbags or assisted braking would be considered a lot more severe, because user safety can no longer be guaranteed.
-Functionnal failures raise new kind of challenges for the analysis, and in particular with the scale factor.
-A functionnal failure may happen because a few transistors inside a chip were disturbed, but the consequences can be visible much higher in the hierarchy and at the scale of an entire vehicle.
-In regard of those challenges, new analysis and predictions methods are required against soft-failures caused by electrostatic discharges.
+En résumé, la quantité de composants électroniques est en augmentation et en parallele ils deviennent de plus en plus sensibles.
+De plus, ils doivent opérer dans une environnement électrique sévère, avec de multiples sources de perturbation.
+Ces perturbations peuvent créer des défaillances.
+Dans le domaine des décharges électrostatiques, il y a deux types de défaillances à considérer.
+La casse matérielle est le résultat de la destruction permanente d'un composant.
+Les circuits intégrés sont particulièrement vulnérables \cite{impactESDsemiconductors} et nécessitent des mesures de protection.
+Récemment, un deuxième type de défaillance commence à être étudié.
+Les défaillances fonctionnelles sont une perturbation d'une fonction électrique du circuit intégré à la suite d'une décharge.
+Plusieurs niveaux de sévérité existent.
+La perturbation du système d'airbag est par exemple bien plus critique celle du système de tableau de bord.
 
 \begin{figure}[!h]
   \centering
@@ -115,8 +95,6 @@ In regard of those challenges, new analysis and predictions methods are required
   \caption{Different kinds of ESD-induced failures}
   \label{fig:esd-failures}
 \end{figure}
-
-%TODO: Explain the cost of fixing an issue early vs lately ?
 
 % Comment predire ces defaillances fonctionnelles
 First research on the topic was published by F. Caignet and N. Lacrampe in 2007 \cite{}.
@@ -126,30 +104,6 @@ The draft standard IEC 62433-6 aims to provide a base framework for soft-failure
 So far, the litterature is focused on system-level analysis.
 There is currently no real work at the component level or studies performed inside the design of an integrated circuit.
 This PhD explored the topic and tries to provide some new leads for future research.
-
-% Conception methods
-Beyond studying failures inside integrated circuits, it is important to keep in mind how chips are designed and developped.
-This is important to propose solutions that are actually implementable.
-This entire process from the specification to the manufacturing of a product is called the design flow.
-During this process, there are many teams and people involved.
-Modeling team creates electrical model of technology components.
-Design team assembles component together to create integrated functions that conform to the specification.
-Layout team translates the symbolic view of electrical netlists into the series of masks and layers required by manufacturing.
-The laboratory tests manufactured parts and runs investigations in case of failures.
-The \gls{esd} and \gls{emc} team has the particularity to interact will all teams because issues and solutions can be found in any step of the design flow.
-Overall, the integrated circuits are designed hierarchically and the flow is a bottom-up process.
-Fundamental bricks are assembled together in rising complexity to create the required functions.
-The main source of delay in this process is the long delay for the feedback due to the manufacturing.
-Designs are put on silicon but the parts are tested only after manufacturing, which can occur several months later.
-To gain time to market and be competitive, it is essential to reduce to a bare minimum the amount of design-manufacturing-testing cycles.
-This is why any simulation tool able to predict early any kind of failure (and functionnal failures among them) is very valuable for silicon design companies.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=\textwidth]{src/1/figures/overview_flow.pdf}
-  \caption{Highly simplified integrated circuit design flow - specification, symbolic view, layout, silicon}
-  \label{fig:ic-design-flow}
-\end{figure}
 
 % Presentation des chapitres
 %
