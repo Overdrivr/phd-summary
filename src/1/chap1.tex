@@ -2,81 +2,50 @@
 \label{chap:1}
 \section{Contexte}
 
-% What is an ESD, its key properties
-An electrostatic discharge (ESD) is the result of the accumulation of electrostatic potential.
-It is a very sudden current flow that propagates through metallic or non-metallic materials, electrical systems and sometimes even through the air.
-It is a very short electrical event, involving large currents and extremely high voltages.
-\gls{ESD} have durations in the range of a few hundred nanoseconds.
-Currents can reach tens of amperes and voltage levels several thousand of volts.
-The total discharge energy is small, somewhere near the milli-Joule (mJ).
-The power on the other hand is extremely high because the waveforms are changing extremely rapidly.
-
 % What generates an ESD
-Objects can accumulate electrostatic potential by tribocharging or electrostatic induction.
-In the case of tribocharging, electrons are transferred from one object the other when they are put into contact then separated.
-One object becomes positively charged and the other negatively.
-Which object gains electrons depends on the kind of material constituting each object.
+Une décharge électrostatique est le résultat d'une accumulation de potentiel électrostatique, causée par induction électrique ou de la triboélectricité.
+La charge triboélectrique se produit par transfert d'électrons lorsque deux objects sont mis en contact puis séparés.
+Un objet se charge positivement et l'autre négativement.
+Le signe de la charge dépend du matériau de l'objet.
+La charge par induction se produit lorsque l'objet baigne dans un champs électrique, puis est soudainement mis à la masse.
 
 % Electronic devices are exposed to ESD, in factories first
-As detailed in the introduction, electrostatic discharges constitute a large threat for electronic devices.
-Failures can occur during manufacturing and or normal operation.
-The manipulation of parts by manufacturing machines involves repeated contact and separation.
-Ultimately, triboelectrification and discharges happen and devices can get destroyed.
-Several standards exist to guarantee that devices can survive this manufacturing step.
-
-Parler HMM, MM, CDM
-Tests for manufacturing env
+Les décharges électrostatiques sont un problème important pour les systèmes électroniques.
+Des défaillances peuvent se produire pendant la fabrication ou pendant la vie du produit.
+Pendant la fabrication, les circuits sont manipulés par des machines, ce qui cause des contacts répétés et éventuellement une accumulation de charges.
+Il existe plusieurs standards de test pour garantir qu'un produit peut survivre aux étapes de fabrication.
+Les testers HMM (Human Machine Model) et CDM (Charged Device Model) valident respectivement la robustesse vis-à-vis de la décharge d'un objet dans le produit, et la décharge du produit dans la masse.
+Ces tests sont concus pour reproduire fidèlement les stress rencontrés dans l'environnement de fabrication.
 
 % Electronic devices are exposed to ESD in the field
-After manufacturing, failures can happen with the device in the field and exposed to its operating environment.
-Manipulation by electrically-charged humans is a major source of danger for commercial products like cellphones and cameras.
-The automotive environment is even harsher, with vehicles being a major source of electrostatic discharges.
+Des défaillances peuvent aussi apparaitre une fois le produit déployé sur le terrain.
+Dans le cas de produits grand-public, elles peuvent être causées par la manipulation des objets par des humains chargés électriquement.
+C'est le cas des téléphones portables et des caméras par exemple.
+Dans l'environnement automobile, les contraintes sont encore plus fortes à cause d'autres phénomènes de génération de tribo-électricité.
 
 % Hard-failure is one thing, soft-fail another
-Integrated circuits are studied and protected against hard-failure since a few decades.
-Despite this experience of the \gls{esd} community, it remains challenging to perfectly protect an electronic system against hard-failures.
-Nowadays, a new class of failures appears.
-Instead of studying permanent failures, devices are studied for temporary failures affecting their functionality.
-These are called soft-failures or functional failures.
-\gls{esd} can cause them to happen, with diverse consequences.
-In less severe situations, functionnality of a chip is disturbed just for the duration of the ESD and recovers immediately without noticeable consequence.
-The failure remains located inside the integrated circuit and does not impact the application above.
-Sometimes, the discharge is harmful enough to cause a circuit to restart because the \gls{esd} disturbed some critial nets or parameters.
-This is common when supply voltages go out of specification for instance.
-Startups or power-on reset functions understands overvoltage or undervoltage as the signal for a regular power-up sequence.
-The device can also perform restarts to try a recovery because proper operations cannot be guaranteed, due to unexpected values on some nets.
-Most microcontrollers for instance monitor supply voltages of digital gates.
-If the voltage is too low, the noise margins of the gates cannot be guaranteed and proper operations either.
-At this point, the microcontroller restarts to try to recover.
-Restarts are slow processes compared to the operation of a chip.
-For critical applications, this delay is highly unwanted because it impacts human safety.
-The availability of the chip that triggers airbags in a car is vital for instance.
-In a more severe scenario, the system gets completely frozen or stuck into an unwanted state because of the \gls{esd}.
-The only way to recover normal operation requires a user-intervention.
-User intervention can take the form of turning the key to shut down and restart the vehicle's engine.
-Finally, hard-failure can be seen as the next step immediately after the most severe soft-failure.
-The device is in a non-recoverable state and must be replaced.
-Hard-failures are not considered for functional robustness analysis.
+Il y a deux classes de défaillances dues aux ESD.
+La casse matérielle est le premier type de défaillance.
+Le composant est détruit après une décharge et doit être remplacé.
+La perte de fonctionnalité est le second type, et se produit alors que le produit est alimenté et en fonctionnement normal.
+La décharge perturbe une ou plusieurs fonctions, qui a besoin d'un délai pour récupérer.
+Parfois, la fonction est bloquée et un rédemarrage manuel du produit est requis pour rétablir un fonctionnement normal.
 
 \section{Méthodes de test ESD}
 
-To reproduce disturbances in lab, multiple stress generators
-
-% History of TLP
-The transmission line pulsing generator is an extremely popular tool in the \gls{esd} field.
-Over the years, it was employed in a variety of applications, from characterization of devices \cite{TLPforESDProtectionCz, TLPthroubleshooting}, investigation of failures \cite{tlp-application-1, tlp-application-2} and correlation of failure levels with other generators \cite{correlation-system-level-esd-tlp}.
-It is a versatile tool, that was often modified to adress larger testing conditions \cite{tlp-power} or non-rectangular pulse waveforms \cite{tlp-based-hmm, my-publi-tlp-hmm}.
-The technique was invented by T. Maloney and N. Nakamura \cite{TLP}.
-It is in the process of standardization as part of ANSI/ESD STM 5.5.1-2016 \cite{tlp-standard} through the effort of the ESD Association (ESDA) \cite{esda}.
-It was extensively studied during the PhD thesis of N. Monnereau \cite{phd-monnereau} and N. Lacrampe \cite{phd-lacrampe}.
+Pour reproduire les décharges électrostatiques dans un laboratoire, de multiples générateurs de test existent.
+Le TLP (Transmission Line Pulser) est un des plus largement utilisés.
+Il est employé dans une variété d'applications, pour la characterization de composants \cite{TLPforESDProtectionCz, TLPthroubleshooting}, l'investigation de défaillances \cite{tlp-application-1, tlp-application-2} et la correlation avec d'autre générateurs de test \cite{correlation-system-level-esd-tlp}.
+Cette technique a été inventée par T. Maloney et N. Nakamura \cite{TLP}.
+Elle est en cours de standardisation avec ANSI/ESD STM 5.5.1-2016 \cite{tlp-standard}.
+Ce type de générateur a été longuement étudié dans les thèses de N. Monnereau \cite{phd-monnereau} et N. Lacrampe \cite{phd-lacrampe}.
 
 % Concept
-\gls{tlp} systems produce a short rectangular pulse, through the discharge of a coaxial cable (Fig. \ref{tlp_concept}).
-The cable is initially charged with an high-voltage voltage supply through a high value resistor.
-This keeps the current small and avoids oscillations on the cable.
-When the voltage of the cable reaches the desired amplitude, a relay can be switched to trigger the discharge.
-The coaxial cable has usually a characteristic impedance of 50\textOmega{} and a length of 5 metres, corresponding to a 50ns propagation delay.
-The generated pulse is twice that delay.
+Un TLP génère une impulsion rectangulaire très courte, en utilisant la décharge d'un câble coaxial (Fig. \ref{tlp_concept}).
+Le câble est initialement chargé par une source haute-tension à travers une résistance de forte valeur.
+Une fois la tension du câble suffisamment élevée, un relai est commuté pour déclencher la décharge.
+Le coaxial utilisé a généralement une impédance charactéristique de 50\textOmega{} et une longeur de 5 mètres, correspondant à un délai de 50ns de propagation.
+La décharge produite par un tel câble est deux fois plus longue (à cause des effets de propagation) et dure 100ns.
 
 \begin{figure}[!h]
   \centering
@@ -86,12 +55,9 @@ The generated pulse is twice that delay.
 \end{figure}
 
 % Characteristics of tlp systems
-TLP systems constitute very well-controlled test generators.
-The pulse is generated inside a shielded environment.
-It is isolated from external radiated emissions and does not emit electromagnetic disturbances.
-The characteristic impedance of 50\textOmega{} can be controlled up to the load, by using appropriate 50\textOmega{} cables and hardware.
-Those properties result in clean and repeatable pulse waveforms without reflections.
-The main features of the generated pulse are given in figure \ref{tlp_pulse}.
+Un système TLP produit des impulsions très reproductibles, car l'environnement est très bien maitrisé et la décharge a lieu dans un chemin de propagation blindé et isolé des perturbations extérieures.
+L'impédance characteristique de 50\textOmega{} peut être maintenue jusqu'à la charge The characteristic impedance of  can be controlled up to the load, by using appropriate 50\textOmega{} cables and hardware.
+Les propriétés clés d'une impulsion TLP sont données dans la figure \ref{tlp_pulse}.
 
 \begin{figure}[!h]
   \centering
@@ -100,28 +66,23 @@ The main features of the generated pulse are given in figure \ref{tlp_pulse}.
   \label{tlp_pulse}
 \end{figure}
 
+% ESD guns
+Le TLP est un excellent outil de test et d'investigation, mais la forme d'onde est très différente d'une vraie décharge électrostatique.
+Pour garantir la robustesse d'un produit, les pistolets de décharge ESD sont préférables.
+Les standard IEC 61000-4-2 \cite{iec61000-4-2} et ISO 10605 \cite{iso10605} definissent une forme d'onde de test pour les systèmes électroniques.
+Elle reproduit la décharge d'un corps humain à traver un circuit électronique.
 
-Pistolets de décharge ESD
-
-% What is the goal of this test
-IEC 61000-4-2 \cite{iec61000-4-2} and ISO 10605 \cite{iso10605} standards define a system-level test waveform and test generator to reproduce the discharge of a human body through an electronic device.
-This test is used very extensively for qualification of products.
-Fig. \ref{fig:picture-esd-gun} provides a picture of an \gls{esd} gun.
-The gun is composed of a metallic discharge tip to inject the pulse.
-The ground return is a long metallic ribbon a couple of meters long.
-Depending on the test configuration, it is connected to the product ground or the earth.
-Its shape impacts a lot recorded failure levels.
-Historically, ESD gun were famous for lacking some reproducibility on test results \cite{hmm-uncertainty}.
-They have largely improved since then although radiated emissions and shape of the ground return still remain a very large factor of variation and uncertainty \cite{gun-rf-uncertainty}.
+Ces tests sont utilisés très largement pour la qualification des produits.
+Un pistolet ESD est constitué d'une pointe métallique qui sert à injecter la décharge.
+Le retour de masse est assuré par un cable métallique long de quelques mètres.
 
 % How is the pulse generated
-The generation of the ESD pulse is done with a 330\textOmega resistor and 150 pF capacitor discharge network.
-The RC network alone though does not suffice to reproduce the waveform.
-Parasitic devices play an important part in shaping the waveform.
-Fig. \ref{fig:esd-gun-model} provides a physically-based ESD Gun model that helps understand the impact of parasitic devices.
-This model was originally written by Chiu \cite{phd-chiu} and is referenced in the PhD thesis of N. Monnereau \cite{phd-monnereau}.
-It adds an R\textsubscript{g}L\textsubscript{g}C\textsubscript{g} network to model the ground return.
-A parasitic capacitance C\textsubscript{i} and series inductance L\textsubscript{i} model imperfections in the direct injection path.
+La génération de la décharge est assurée en théorie par une résistance de 330\textOmega{} et une capacité de 150.
+En pratique, ce réseau RC n'est pas suffisant et les éléments parasites jouent un rôle important.
+Le modèle de Chiu \cite{phd-chiu} définit un circuit équivalent de pistolet ESD.
+Il est fournit dans la figure \ref{fig:esd-gun-model}.
+Un réseau R\textsubscript{g}L\textsubscript{g}C\textsubscript{g} modélise le retour de masse.
+Une capacité parasite C\textsubscript{i} ainsi qu'une inductance en série L\textsubscript{i} représentent les imperfections du chemin d'injection.
 
 \begin{figure}[!h]
   \centering
@@ -131,12 +92,11 @@ A parasitic capacitance C\textsubscript{i} and series inductance L\textsubscript
 \end{figure}
 
 % Explain the waveform
-%TODO: Why 2 ohms ?
-Fig. \ref{iec_pulse} presents the main properties of the generated stress.
-The standard defines this waveform for a 2\textOmega{} load.
-The pulse starts by a fast peak with a $1ns$ risetime.
-It is followed by a slower slope of smaller amplitude but longer duration of about $200ns$.
-Voltage levels can reach 15kV peak and 30A of current.
+La forme d'onde est fournie dans la figure \ref{iec_pulse}.
+Elle est définie pour une charge de 2\textOmega{}.
+L'impulsion commence par un pic d'une largeur de $1ns$ risetime.
+Il est suivi par une partie plus lente d'amplitude plus faible, mais qui dure plus longtemps (approximativement $200ns$).
+Les niveaux de tensions peuvent atteindre 15kV et de courant 30A.
 
 \begin{figure}[!h]
   \centering
@@ -145,10 +105,17 @@ Voltage levels can reach 15kV peak and 30A of current.
   \label{iec_pulse}
 \end{figure}
 
-Other test methods exist, such as ... Test automobile ISO, Méthode DPI standardizée
+% autres méthodes
+Il existe un grand nombre d'autres méthodes de test.
+Dans l'automobile, le standard ISO 7637-2 est très largement employée pour qualifier les modules électroniques.
+La méthode DPI (Direct Power Injection) est aussi très intéressante de par son circuit de couplage d'un stress sur une tension d'alimentation, ce qui est souvent nécessaire pour faire des tests ESD sur des produits en fonctionnement.
+
+Une fois les produits testés, des cas de défaillances peuvent-être identifiés.
+La partie suivante présente des cas de défaillances fonctionnelles trouvés dans la litterature.
 
 \section{Méthodes d'analyse de faiblesses fonctionnelles}
 
+%TODO
 % Case 1 - NXP bandgap + substrate coupling
 K. Abouda details in \cite{softfailEMCIC} a case of soft-failure on an integrated automotive regulator \gls{ic}.
 The failure signature is a loss of the regulated voltage when exposed to \gls{bci} ISO11452-4 \cite{iso11452}.
