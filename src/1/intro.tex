@@ -72,7 +72,7 @@ Globalement, l'architecture d'un véhicule est complex et sensible par nature au
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.7\textwidth]{src/1/figures/systemintegration_01_uv-data.jpg}
+  \includegraphics[width=0.6\textwidth]{src/1/figures/systemintegration_01_uv-data.jpg}
   \caption{Architecture of electronic systems in a vehicle \cite{car-architecture}}
   \label{fig:car-architecture}
 \end{figure}
@@ -97,57 +97,38 @@ La perturbation du système d'airbag est par exemple bien plus critique celle du
 \end{figure}
 
 % Comment predire ces defaillances fonctionnelles
-First research on the topic was published by F. Caignet and N. Lacrampe in 2007 \cite{}.
-After a few years, the industry widely acknowledged the problem, reinforced by the current automotive trends.
-A large amount of research at the system level was published in EOS/ESD symposia 2012 \cite{} and 2013 \cite{}.
-The draft standard IEC 62433-6 aims to provide a base framework for soft-failures analysis and prediction.
-So far, the litterature is focused on system-level analysis.
-There is currently no real work at the component level or studies performed inside the design of an integrated circuit.
-This PhD explored the topic and tries to provide some new leads for future research.
+Des travaux sur ce sujet ont été publiés par F. Caignet et N. Lacrampe en 2007 \cite{}.
+Egalement, de nombreuses recherches sur les défaillances au niveau système ont été publiées pendant les symposia EOS/ESD 2012 \cite{} et 2013 \cite{}.
+De plus, le standard IEC 62433-6 encore en phase d'élaboration cherche à formaliser des méthodes de base pour l'analyse et la prédiction de faiblesses fonctionnelles.
+Globalement, les recherches dans ce domaine restent focalisées au niveau système.
+Dans ce document, la recherche et l'analyse de faiblesses fonctionnelles a lieu plus bas dans la hiérarchie, au niveau circuit-intégré.
 
 % Presentation des chapitres
 %
-Chapter \ref{chap:1} details how electrostatic discharge physically appear, how to reproduce them in laboratory conditions and summarizes recent litterature.
-This preliminary work highlights how functional failures appear and how they impact electronic devices.
-It is demonstrated that so far integrated circuits are studied as black-box electrical objects.
-Stresses are injected on external inputs while external outputs are monitored for failures.
-The amount of silicon-level studies and research remains small.
+Le chapitre \ref{chap:1} fournit en détail les notions essentielles à la compréhension de la problématique.
+Il explique comment les décharges électrostatiques apparaissent et comment elles sont reproduites en laboratoire.
+Ensuite, une revue de l'état de l'art est présentée sur l'analyse des pertes de fonctionnalités dues à des décharges.
 
 %
-Chapter \ref{chap:2} presents a modeling method for simulating \gls{esd} waveforms up to the integrated circuit inputs.
-The first challenge for understanding soft-failures at silicon-level is to determine what fraction of an incoming \gls{esd} actually reaches the integrated circuit.
-Between the injection point of a stress and the disturbed circuit, many devices are be connected such as cables, discrete devices, etc.
-Each element interacts with the discharge, absorbs a part of its current or changes the waveform.
-A model library of common electrical elements found in \gls{esd} testing environment has been constructed and is detailed.
+La chapitre \ref{chap:2} présente un méthode de modélisation pour simuler la propagation de décharges électrostatiques jusqu'au composant.
+C'est une part important du problème que d'identifier quelle fraction d'une décharge atteint réellement un circuit intégré.
+Une librairie de modèles est construite, ensuite assemblés ensemble pour reproduire le système à simuler.
+Un générateur de stress utilisé dans le laboratoire de test à NXP est modélisé pour illustrer la méthode.
+Un nouveau générateur de stress, appellé TLP-HMM est ensuite proposé, reproduisant une forme d'onde standardizée mais avec des avantages importants sur les générateurs actuels.
+Ce générateur est particulièrement intéressant pour effectuer des tests de décharge sur circuits intégrés.
 
 %
-A case of soft-failure in an integrated circuit is explained in chapter \ref{chap:3}.
-In a first phase, measurement data is obtained at the board level and the failure is explained.
-Simulations are run to understand how failures appear, and more specifically how a short electrical event can disturb an integrated circuit for a long period of time.
-In a second phase, the integrated function is placed onto a custom testchip.
-Specific on-silicon structures were designed to gather measurement data on electrical nets that are not physically accessible.
-All these measurements are performed for the purpose of estimating the accuracy of integrated circuit \gls{esd} simulations.
-There are two main potential sources of error that are checked.
-Silicon technology device models are not designed to function for extremely fast transient transient disturbances.
-Also, standard simulations do not take parasitic devices into account, such as metal track resistances and parasitic couplings.
-Measurement data is confronted to simulations in order to verify the validity of models.
-Analysis of the failure led to the development of a testchip, to put on silicon the same failing function but with a more convenient environment for measurements and investigation.
+Un cas de défaillance fonctionnelle est ensuite présenté dans le chapitre \ref{chap:3}.
+Tout d'abord, des mesures sont effectuées de manière externe sur le circuit intégré sous test.
+La signature de la défaillance est expliquée.
+Ensuite, un circuit intégré de test est développé et fabriqué sur silicium.
+Il contient des structures spéciales pour mesurer les pertubations directement depuis le silicium.
 
 %
-When issues are discovered late in the testing lab, analysis is performed manually, by trial and error, searching inside the design why the function is failing.
-It is a complex and time-consuming process.
-The core research of this work focuses proposing new analysis methods and tools for electrical simulations.
-It is detailled in chapter \ref{sec:methods-operating-esd-analysis}.
+Ces travaux ont aussi été orientés vers la recherche de nouvelles méthodes de simulation.
+L'objectif est de détecter plus facilement et rapidement des défaillances fonctionnelles, en utilisant les outils existants de simulation.
+Trois méthodes différentes sont présentées dans le chapitre \ref{chap:4}.
+Elles ont chacune des applications différentes, mais peuvent s'avérer complémentaires pour concevoir des circuits robustes.
 
 %
-Finally, a new test generator was developed to overcome some issues found when debugging silicon-level failures caused by system level \gls{esd} testers.
-The principle of operation and architecture of the generator is described in chapter \ref{sec:tlp-hmm}.
-The conclusion summarizes the work achieved during the PhD, highlights the most notable discoveries, and identifies follow-up work and research topics that could be worth pursuing.
-Some part of the research work also focused towards \gls{esd} testers.
-System-level \gls{esd} guns \cite{iec61000-4-2, iso10605} constitute a major testing and qualification tool, but bring too much complexity during silicon-level investigation.
-To overcome this issue, a new stress generator based on a \gls{tlp} is proposed in chapter \ref{sec:tlp-hmm}.
-It produces the same compliant waveform than those standards, but with some interesting advantages.
-It is not a drop-in replacement but can be interesting as an investigation tool.
-
-%
-Final conclusions and potential following work are detailed in chapter \ref{sec:final-conclusion}.
+Enfin, la conclusion résume les travaux effectués et présente des axes de recherche futurs.
