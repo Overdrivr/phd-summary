@@ -192,9 +192,9 @@ Une sonde est balayée au dessus du composant ou carte à mesurer, et en chaque 
 Cet outil est initialement prédisposé pour de l'analyse architecturale et de distribution de puissance, mais s'est montré très pratique dans le domaine ESD.
 Il permet notamment de localiser des fautes.
 Une étude complète des antennes champ-proche a été réalisée par A.D. Yaghjian dans \cite{nfsFirstStudy}.
-More recent work details the principle of operation, data processing and hardware requirements in \cite{near-field-scan, planarNFSAntenna, NFSMeasurements, NFScanner}.
-Finally, measurement of electromagnetic emissions with surface scan method is standardized in IEC TS 61967-3 \cite{iec61967}.
-The architecture of a near-field scanner is given in Fig. \ref{fig:near-field-scanner}.
+Des études plus récentes expliquent le principe de fonctionnement, l'architecture et les traitements de données nécessaires dans \cite{near-field-scan, planarNFSAntenna, NFSMeasurements, NFScanner}.
+Cette technique est standardizée dans IEC TS 61967-3 \cite{iec61967}.
+L'architecture d'un scanner champ-proche est donnée dans la Fig. \ref{fig:near-field-scanner}.
 
 \begin{figure}[!h]
   \centering
@@ -210,37 +210,34 @@ The architecture of a near-field scanner is given in Fig. \ref{fig:near-field-sc
   \label{fig:near-field-scan-map}
 \end{figure}
 
-Revue des méthodes de modélisation
+Sur le sujet de la modélisation, plusieurs méthodes ont été publiées par le passé.
+Elle contiennent une large gamme de techniques allant de simulation 3D basés sur la physique des semiconducteurs, jusqu'à des modèles boite-noire et comportementaux.
+Les méthodes décrites ci-après peuvent être utilisées pour l'analyse de faute fonctionnelle.
 
-In the litterature, various ESD modelling methods can be found.
-They comprise a wide range of techniques such as 3D electromagnetic and semiconductor physics simulations, compact, behavioral, physically-based and non-linear modelling.
-The methods described hereafter could be used for soft-failure investigation.
+M. Scholz a publié une méthode de simulation ESD mixte dans \cite{mixedModeESDSims}.
+C'est la combinaison de modèles SPICE et TCAD, simulés ensembles.
+Il est indiqué que cette combinaison permet une précision plus importante que des modèles comportementaux.
 
-M. Scholz details a mixed-mode ESD simulation approach in \cite{mixedModeESDSims}.
-It is a combination of \gls{spice} and \gls{tcad} models, simulated in \gls{spice} environment.
-The author indicates that the combination of physical device models and standard simulations provides higher accuracy and more realistic simulations than behavioral \gls{spice} models.
-Using this complex simulation tool, on-chip and off-chip device interactions are studied, in powered and unpowered conditions.
-
-In \cite{usb2ESDProtection}, TLP characterizations serves as an I(V) model for both external protections and an \gls{ic} pin.
-The \gls{pcb} S-parameters are extracted from the board layout, using Momentum software (Agilent Technology).
-It is electrically model with lumped R,L,C,G elements.
-The modelling approach proved successful for simulation interactions between external devices and on-chip structures.
-This method is interesting for soft-failure analysis because it is thorough and complete and enables accurate ESD simulation.
+Dans \cite{usb2ESDProtection}, des charactérisations TLP sont utilisées comme modèles I(V) pour des protections ESD internes et externes.
+Les paramètres S du la carte électroniques sont extraits avec Momentum (Agilent Technology).
+Le modèle extrait est composé d'éléments R,L,C,G.
+Cette approche de modélisation s'est avérée fructueuse pour simuler les interactions entre des composants discrets et des composants intégrés sur silicium.
 
 % IBIS is not enough for modelling an IC pin for ESD simulations
-The Input Output Buffer Information Specification (IBIS) \cite{ibis-spec} is a behavioral, black-box model for performing signal integrity simulation on digital circuits.
-It is widespread in the digital \gls{asic} world because it enables accurate simulations without disclosing circuit or process information.
-It was envisionned that IBIS models could also be used or extended for ESD.
-It is demonstrated in \cite{ibisImprovementFabrice} that the model lacks some parameters for EMC and ESD simulations.
-It comprises a current versus voltage characteristic of \gls{io}s, similar to what can be extracted by a TLP, however the IBIS model is not defined for fast impulses and high injection.
+Le modèle IBIS (Input Output Buffer Information Specification) \cite{ibis-spec} est un modèle comportemental boite-noire pour des simulations d'intégrité du signal sur des circuits intégrés digitaux.
+Il est très largement répandu dans le monde des circuits intégrés digitaux car il permet des simulations précises avec de multiples puces sans divulger d'informations propriétaires.
+Il fut imaginé que le modèle IBIS puisse être modifié ou étendu pour le domaine ESD, néanmoins il est démontré dans  \cite{ibisImprovementFabrice} que certains paramètres sont manquants pour les simulations ESD.
+En particulier, le modèle contient une charactéristique I(V) des entrées sorties, similaire à une charactérisation TLP.
+Néanmoins, le modèle n'est pas défini pour des impulsions rapides et des forts niveaux d'injection.
 
-N. Lacrampe proposes in \cite{LacrampeTransientImmunity} to perform 3D electromagnetic simulations at silicon level, using the integrated circuit layout, to deduce the amount of capacitive couplings between Vdd and Vss rails.
-The extraction is performed with HFSS software (Ansoft).
-The goal of this analysis is to predict the susceptibility of integrated circuits against electrostatic discharges.
-\gls{pcb} tracks are modeled by a distributed RLC network.
-The package data from the IBIS model \cite{ibis-spec} was used in the simulations.
-Finally, a TLP stress generator is modelled using a lookup table I(V) component, in series with a 50\textOmega{} resistor.
+Une méthode de simulation 3D électromagnetique au niveau circuit intégré est proposée par N. Lacrampe dans \cite{LacrampeTransientImmunity}.
+Elle utilise le layout du circuit intégré, afinto d'estimer les couplages capacitifs entre les rails d'alimentation et de masse.
+L'extraction est réalisée à l'aide du logiciel HFSS (Ansoft).
+Le but de cette analyse est de prédire la susceptibilité des circuits intégrés face à des décharges électrostatiques.
+Au niveau carte, les pistes métalliques sont modélisées avec un réseau RLC.
+Le package est modélisé avec les informations contenues dans le modèle IBIS \cite{ibis-spec}.
+Le générateur de stress, un TLP, est modélisé avec une table I(V), en série avec une résistance de 50\textOmega{}.
 
-Once again, electromagnetic fullwave simulations are conducted in powered-on ESD analysis in \cite{softFailMobile}.
-System-level components are simulated, such as PCB, metallic casing and battery back.
-3D EM simulations helps to identify the main discharge paths and locate the failure.
+Dans \cite{softFailMobile}, des simulations électromagnétiques fullwave sont réalisées pour une analyse ESD en alimenté.
+Des composants au niveau système sont simulés, tels que des coques en métal et des batteries.
+La simulation 3D EM a permis d'identifier le chemin principal de propagation et de localiser le point de défaillance.
