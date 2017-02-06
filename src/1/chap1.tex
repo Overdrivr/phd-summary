@@ -117,48 +117,39 @@ La partie suivante présente des cas de défaillances fonctionnelles trouvés da
 
 %TODO
 % Case 1 - NXP bandgap + substrate coupling
-K. Abouda details in \cite{softfailEMCIC} a case of soft-failure on an integrated automotive regulator \gls{ic}.
-The failure signature is a loss of the regulated voltage when exposed to \gls{bci} ISO11452-4 \cite{iso11452}.
-The test setup is provided in Fig. \ref{}.
-The product is investigated manually, by searching inside the design for coupling and propagation paths, and performing multiple simulations.
-Eventually, it was proven that a residue of the disturbance was coupling through the substrate on a current mirror inside the bandgap reference.
-During the disturbance, bandgap voltage was shifting from its nominal value.
-After some delay, the bandgap output was reaching an undervoltage threshold, causing the entire system to restart.
-To avoid it, a design fix was proposed by filtering at the appropriate spot inside the design to avoid the amplification of the disturbance.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=\textwidth]{src/1/figures/bci_setup.pdf}
-  \caption{Bulk Current Injection setup}
-  \label{fig:bci-setup}
-\end{figure}
+Une sac d'étude typique de défaillance fonctionnelle est présenté par K. Abouda dans \cite{softfailEMCIC}.
+L'étude concerne la perte de la régulation de tension assurée normalement dans un circuit intégré pour l'automobile.
+La perte de régulation se produit lors d'une exposition du circuit à une décharge BCI (Bulk Current Injection) ISO11452-4 \cite{iso11452}.
+Les chemins de propagation et de couplages à l'intérieur du circuit sont recherchés manuellement dans le design du produit, à l'aide de multiples simulations.
+Il est démontré qu'un résidu de la décharge modifiait la tension de commande d'un miroir de courant dans une référence bandgap.
+Ce résidu atteignait le point perturbé du miroir via un couplage parasite.
+A cause de cette perturbation, la tension bandgap chutait de sa tension nominale, au point d'atteindre un seuil bas détecté comme une faute par le système.
+En conséquence, le système effectuait un redémarrage complet.
+Pour éviter cela, le design a été corrigé afin d'appliquer un filtrage dans le miroir de courant pour éliminer ce résidu.
 
 % Case 2 - CESAME IC - paper Vrignon + Ben dhia
-N. Lacrampe presents another failure case in \cite{LacrampeTransientImmunity}.
-Very-fast \gls{tlp} is injected on an 0.18 \textmu{}m CMOS technology (1.8 V supply voltage) testchip.
-The chip contains 6 instances on the same logic core, differing only by their power-rails architecture.
-The injection on power rails is performed using a \gls{dc} block 1 nF capacitor, similarly to the \gls{dpi} standard \cite{iec62132-4}.
+N. Lacrampe présente un autre cas de défaillance dans \cite{LacrampeTransientImmunity}.
+Des impulsions Very-fast TLP sont injectées sur un circuit intégré de test en technologie CMOS 0.18 \textmu{}m (1.8 V alimentation).
+La puce contient 6 instances du même coeur logique, qui diffèrent par l'architecture de leurs rails d'alimentation.
+L'injection sur les rails d'alimentation est effectuée à travers une capacité de 1 nF permet d'isoler le générateur de test de l'alimentation DC.
+Cette approche avec une capacité d'injection est similaire au standard DPI \cite{iec62132-4}.
 % What is the failure signature
-An output signal of the logic core is monitored.
-The susceptibility criteria is the amplitude crossing a 20\% threshold from the established logic level.
-Above this threshold, the core is supposed to no longer work reliably.
-It is proven that modelling the output buffer of the core logic is enough for reproducing with less than 20\% error the waveform on the output.
-It is less accurate than a full-netlist simulation, but faster to simulate.
-VHDL-AMS and \gls{spice} modelling are performed in this analysis.
+Pour détecter des défaillances, un signal de sortie de la logique est surveillé.
+Le critère de susceptibilité est une variation d'amplitude en dessous d'un seuil situé à 80\% du niveau logique haut.
+En dessous de ce seuil, les marges de bruit ne permettent plus de garantir un fonctionnement correct du coeur de circuit.
+Il est démontré dans ce papier que modéliser le buffer de sortie de la logique est suffisant pour reproduire les formes d'ondes, avec une erreur inférieure à 20\%.
+Par conséquent, cette méthode est moins précise qu'une simulation de la schématique entière, mais présente l'avantage d'être plus rapide à simuler.
+Les outils de simulation employés dans cette étude sont principalement du VHDL-AMS et des simulations SPICE.
 
-%TODO: Pictures
 % Case 3 - failures on an SDRAM
-%TODO: Read reference articles in this article
-In \cite{SDRAMCase}, soft-failures are studied on a SDRAM memory in operation.
-The injection setup consists of a modified compact \gls{tem} cell \ref{fig:modified-tem-cell} with a reduced septum height.
-Reduced dimensions result in increased field strenghts, to reach levels normally produced by an \gls{esd} gun.
-The discharge waveform, injected inside the cell, is generated by a filtered \gls{tlp} and is similar in shape to IEC 61000-4-2 \cite{iec61000-4-2}.
-The SDRAM chip is mounted on a board.
-Data is written and read on the memory by \gls{fpga}.
-Differences between incoming and outgoing data signifies a functional failure of the memory.
-Only the memory is exposed to the disturbance, the rest of the board's devices are located outside of the \gls{tem} cell, on the other side of the board.
-The main defect of this method is to only provide a global failure level.
-It does not allow to identify which particular net or pin is the most sensitive to disturbances.
+Dans \cite{SDRAMCase}, des fautes fonctionnelles sont étudiées sur une mémoire de type SDRAM pendant son fonctionnement normal.
+Le système d'injection utilise une cellule TEM (Transverse Electro Magnetic) modifiée de dimensions réduites \ref{fig:modified-tem-cell}, afin d'obtenir des champs électromagnétiques plus forts correspondants à une décharge de pistolet ESD.
+La décharge injectée dans la cellule TEM est générée par une impulsion TLP filtrée afin de ressembler à une décharge IEC 61000-4-2 \cite{iec61000-4-2}.
+La puce contenant la SDRAM est assemblée sur une carte électronique.
+Afin de détecter des fautes, des données sont écrites puis lues en permanence par un FPGA (Field Programmable Gate Array).
+Une différence de lecture est alors interprétée comme une défaillance.
+Seulement la mémoire est exposée à la perturbation en étant placées à l'intérieur de la cellule TEM.
+Le reste des composants de la carte sont localisés de l'autre côté de la carte, à l'extérieur de la cellule.
 
 \begin{figure}[!h]
   \centering
@@ -167,28 +158,26 @@ It does not allow to identify which particular net or pin is the most sensitive 
   \label{fig:modified-tem-cell}
 \end{figure}
 
-B. Orr reports in \cite{softFailSubsystem} errors caused by electrostatic discharges on two different camera communication buses.
-Events of different severities are observed, depending on the discharge parameters.
-It is attempted to determine whether the sensor or the application processor is causing the error.
-The magnetic emission map is recorded with a near-field magnetic scanner to try to observe local variations in the emission spectrum because of the degradation of functionnality.
-It was envisionned that soft-failure can induce significant variations in the emission spectrum of a disturbed component, and thus those variations could help localize them.
-In this particular case, the root cause of failures could not be determined.
+Deux types de défaillances de bus de communication vidéo sont présentés dans \cite{softFailSubsystem}.
+En fonction des paramètres de décharge, différents évènements sont observés.
+L'objectif de cette étude est de déterminer qui du capteur ou du processeur d'application est responsable de la défaillance.
+Une carte d'émission magnétique est enregistrée avec un scanner de champ proche afin d'essayer de détecter des variations locales.
+L'hypothèse était qu'une perte de fonctionnalité peut induire des variations significantes sur la carte d'émission, ce qui permettrait de les détecter.
+Néanmoins, l'origine des défaillances n'a pas pu être localisé avec cette méthode dans cette étude.
 
-An LCD display is studied in \cite{softFailLCD}.
-The device is tested with an IEC 61000-4-2 \cite{iec61000-4-2} generator, and non-destrutive problems are observed due to the discharge.
-Electromagnetic disturbances cause stripes to appear on the display, optical parameters changes and blacklighting malfunctions.
-System-level testing waveforms were found too complex for identifying the root cause.
-A near-field injection is performed to identify which trace of the LCD's flex connector claims the lowest immunity.
-The lack of resolution of the near-field probe caused multiple traces to be disturbed at once, preventing this second approach to work.
-Finally, the individual track stressing was repeated with a capacitively-coupled \gls{tlp} on each individual metal track.
-However, results were once more unconclusive and no metal trace could categorically be identified as more sensitive than the others.
-The conclusion for this paper is that silicon level soft-error models are required for standard investigation.
+Un affichage LCD (Liquid Crystal Display) est étudié dans \cite{softFailLCD}.
+Il est testé à l'aide d'une décharge IEC 61000-4-2 \cite{iec61000-4-2} et des fautes fonctionnelles sont observées.
+Des bandes noires apparaissent à la suite de la décharge, ainsi que des variations de paramètres optiques et de rétro-éclairage.
+La forme d'onde trop complexe empêchait d'identifier la cause de défaillance, et une solution alternative a du être utilisée.
+Une injection par champ proche fut employée afin d'identifier quelle piste du connecteur LCD flex présentait la plus forte susceptibilité.
+Néanmoins, les dimensions trop petites du connecteur et des pistes rendaient impossible d'agresser individuellement chaque piste.
+Comme alternative, l'utilisation d'un TLP couplé capacitivement sur chaque piste permit une agression individuelle.
+Néanmoins, les résultats furent infructueux et aucune piste ne put être identifiée comme point d'entrée de la décharge.
 
-An investigation method is presented in \cite{softFailMobile} to search for discharge propagation paths responsible for soft-failures on a mobile phone.
-The IEC 61000-4-2 standard is chosen as testing waveform.
-Metallic parts are assumed to be the main propagation paths.
-To confirm this hypothesis, time-domain electromagnetic field 3D simulations of almost the entire phone are ran (see Fig. \ref{fig:mobile-phone-3d-em})
-After the failure location was determined, RC-networks are used as countermeasures to protect physical inputs and outputs, like buttons, LCD inputs and connectors.
+Une méthode d'investigation basée sur des simulations électromagnetiques est présentée dans \cite{softFailMobile} afin de déterminer les chemins de propagation de décharges, causant des fautes sur un appareil mobile.
+La décharge de test est celle définie dans IEC 61000-4-2.
+Des simulations électromagnetiques temporelles en 3D du téléphone complet furent effectuées (Fig. \ref{fig:mobile-phone-3d-em})
+Une fois la cause défaillance déterminée, des réseaux de filtrage RC furent utilisés pour protéger les entrées et sorties physiques telles que les boutons et connecteurs.
 
 \begin{figure}[!h]
   \centering
