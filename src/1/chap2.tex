@@ -2,53 +2,24 @@
 \label{chap:2}
 \section{Méthode de modélisation au niveau système}
 
-Pésentation des différents composants modélisés
-
 % Need to simulate from source to input for soft-failure analysis
-In this chapter, a methodology for building electrical ESD models is proposed.
-It enables simulation of waveforms from the ESD source to an integrated circuit pin.
-This is a preliminary step for enabling simulation of soft-failures inside the chip.
-The proposed methodology is modular and offers to reuse models between common devices found in ESD laboratories.
-A typical ESD test setup comprises equipments such as DC sources, oscilloscopes, and stress generators.
-Equipments are connected together with wires, coaxial cables, twisted wire pairs, etc.
-The integrated circuit under test is often soldered onto a printed circuit board.
-\gls{PCB}s usually host multiple kind of discrete devices, such as passive devices, ESD protections, common-mode chokes, relays, etc.
-Components are connected together by metal tracks.
-The goal of the proposed methodology is to build a library of all those elements, from lab equipments down to tiny discrete components.
-Each model of the library will be qualified independently with individual characterization and comparison with its model.
-
-% Assemble models together to build the complete thing
-%TODO: Etoffer
-After the library is constructed, models can be connected together to simulate the entire system.
-The topology of the system serves as a blueprint for connecting models.
-
-Présentation de la modélisation d'une TLINE ?
+Une méthodologie de construction de modèles ESD au niveau système est proposée.
+Elle permet une simulation précise jusqu'à l'entrée d'un circuit intégré en fonctionnement.
+Un environement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes, et des générators stress, interconnectés par des cables et des fils.
+Les cartes électroniques embarquent différents types de composants, tels que des passifs, des protections ESD, des chokes.
+L'objectif de la méthode proposée est de construire une librairie des éléments les plus courants, puis d'assembler le modèle complet du système avec.
 
 % Cables and delays identified as important for esd sims - because of similar order of magnitude
-Cables are critial elements in any \gls{esd} test setup.
-They introduce significant propagation delays in regard of the duration of an electrostatic discharge.
-A 50\textOmega{} coaxial cable has a propagation ratio of approximately 5 ns/m.
-In a laboratory, it is common to find cables of tens of centimers to a couple of meters long, resulting in delays between 1 ns and 10 ns.
-As a comparison, the scale of an electrostatic discharge is a few hundred nanoseconds.
-Both values are near the same order of magnitude and a large impact from cables on the simulation can logically be expected.
-Cables, microstrip lines, wires and electrical propagation media behave as transmission lines.
-Transmission lines were originally analysed by J. Maxwell, L. Kelvin and O. Heavyside and a huge amount of studies on the topic are available in the litterature \cite{branin-tl-ref, hf-coax,lossy-tl,emc-analysis-tl}.
-
-% model delays with lossless TL
-Transmission lines are characterized by their characteristic impedance, supposedly constant on the entire line.
-It is determined by its cross-sectional dimensions and constituting materials.
-For coaxial cables, common characteristic impedances are 50\textOmega{} or 75\textOmega{}.
-This value is equivalent to the resistance that could be measured statically between outer and inner conductors for an \textbf{infinitely long} transmission line.
-All transmission lines are lossy, meaning that some a part of the incoming power traversing it is dissipated.
-In most cases though, losses are very small and negligible, and the line is considered lossless.
-The behavior of the line is also frequency-dependant.
-Losses, characteristic impedance and other properties can change above certain frequencies.
-For frequencies below a GHz, most cables and metal strips can be correctly approximated by a lossless and non frequency-dependant line.
+Les cables sont des éléments importants mais parfois négligés dans les simulations ESD.
+Ils introduisent des délais de propagation non négligeables par rapport à la durée d'un ESD.
+Pour ordre de grandeur, un cable coaxial 50\textOmega{} possède une constante de propagation d'environ 5 ns/m.
+En comparaison, un ESD dure entre une dizaine et plusieurs centaines de nanosecondes, ce qui est globablement proche du même ordre de grandeur.
+Les câbles sont avant tout des lignes de transmission, dont l'analyse théorique fut faite par J. Maxwell, L. Kelvin et O. Heavyside et énormément étudiées par la suite dans la littérature \cite{branin-tl-ref, hf-coax,lossy-tl,emc-analysis-tl}.
 
 % Distributed model
-The most popular line model in the ESD field is based on lumped capacitance and inductance.
-The model is a series of lumped L-C networks as illustrated in Fig. \ref{fig:dis-line-model}.
-Values for the element can be computed from the characteristic impedance \gls{Zc} with Eq. \ref{eq:characteristic-impedance}.
+Dans le domaine de ESD, le modèle le plus populaire de ligne est basé sur des éléments distribués.
+Concrètement, c'est une suite réseaux L-C tels que la Fig. \ref{fig:dis-line-model}.
+Les valeurs de chaque élément sont calculées à partir des propriétés du cable et de la précision requise pour la simulation.
 
 \begin{figure}[!h]
   \centering
@@ -58,18 +29,17 @@ Values for the element can be computed from the characteristic impedance \gls{Zc
 \end{figure}
 
 % Perks and disavantages
-The distributed model supports easily lossy transmission lines by adding a unit resistance or conductance between signal and ground, or in series with the signal.
-On the other hand, this model does not scale well as cables get longer.
-To keep the same bandwidth with a longer cable, the only solution is to increase the element count, resulting in longer simulation time.
-Also, this model will always be bandwidth limited, otherwise it would require an infinite amount of infinitely small elements.
-
+Malgré sa très large adoption, ce modèle présente de sérieux inconvénients.
+En particulier, ce modèle nécessite un très grand nombre d'éléments pour avoir une précision décente.
+Pour une même précision, le nombre d'éléments est proportionnel à la longueur du cable, ce qui augmente considérablement les temps de simulation.
+Pour augmenter la bande passante du modèle, le nombre d'éléments doit également être augmenté.
+La combinaison des deux résulte en des temps de simulation très longs.
 
 % Behavioral model
-The two-port network model described by H. Branin \cite{branin-tl-ref} is a much better alternative to the distributed model.
-It can describe efficiently and with great accuracy the behavior of uniform lossless transmission lines.
-The model is constituted of two voltage-controlled voltage sources and two resistors (Fig. \ref{fig:beh-line-model}).
-Compared to the distributed model, the behavioral model has by design an infinite bandwith, and is extremely fast to simulate.
-It also is constant in complexity, because the simulation time is independant of the cable's delay or required bandwidth
+Le modèle à deux ports décrit par H. Branin \cite{branin-tl-ref} est une alternative bien plus sérieuse au modèle distribué.
+Il décrit très efficacement et avec une très grande précision le comportement d'une ligne de transmission.
+La bande passante n'est pas limité, et le temps de simulation est indépendant de la longueur du câble.
+Le modèle est constitué de deux sources de tension controllées en tension et deux résistances (Fig. \ref{fig:beh-line-model}).
 
 \begin{figure}[!h]
   \centering
@@ -78,7 +48,7 @@ It also is constant in complexity, because the simulation time is independant of
   \label{fig:beh-line-model}
 \end{figure}
 
-Equations \ref{eq:beh-line-1} and \ref{eq:beh-line-2} describe the behavior of the voltage-controlled voltage sources.
+Le comportement des sources est décrit par les équations \ref{eq:beh-line-1} et \ref{eq:beh-line-2}.
 
 \begin{equation}
 V_{C1}(t) = V_{2}(t - \Delta t) + Z_{C}.I_{2}(t - \Delta t)
@@ -91,16 +61,14 @@ V_{C2}(t) = V_{1}(t - \Delta t) + Z_{C}.I_{1}(t - \Delta t)
 \end{equation}
 
 % Explain the equations
-Z\textsubscript{C} is the characteristic impedance of the line and \textDelta{}t the propagation delay between both ports.
-Overall, the equations describes a system where voltage and current at both ports are defined by the combination of a forward travelling wave and a backward travelling wave.
+Z\textsubscript{C} est l'impédance charactéristique de la ligne et \textDelta{}t le délai de propagation.
+Les équations décrivent un système où tension et courant à chaque port sont la superposition d'une onde se propageant dans un sens et d'une seconde dans l'autre sens.
 
 % Compare both models to know which one is preferrable
-Simulations are ran to compare both models.
-The setup is given in Fig. \ref{fig:lines-testbench} and consists in injecting a rectangular pulse with a risetime of 1 ps into a load through the modelled transmission line.
-Different load values are employed to observe the performance and accuracy of each model.
-The transmission line to model has been chosen to a delay of 100ns and a characteristic impedance of 50 \textOmega.
-Both values correspond to the cable usually employed in a transmission line pulsing generator and are thus very realistic.
-
+Des simulations permettent de comparer les deux modèles.
+Une impulsion rectangulaire est injectée sur chaque modèle avec un temps de montée de 1ps.
+Différentes charges permettent d'évaluer les performances et la précision.
+Les lignes de transmission ont un délai de 100ns et une impédance charactéristique de 50\textOmega{}.
 
 \begin{figure}[!h]
   \centering
@@ -109,38 +77,16 @@ Both values correspond to the cable usually employed in a transmission line puls
   \label{fig:lines-simulations}
 \end{figure}
 
+Le modèle comportemental surpasse le modèle distribué, autant en précision que temps de simulation.
+Il reproduit parfaitement le temps de montée avec toutes les charges (Fig. \ref{fig:lines-simulations}).
+Il est plus rapide à simuler de plusieurs ordres de grandeurs par rapport au modèle distribué.
 
-Overall, the behavioral model outperforms the distributed model for representing a perfect transmission line.
-It reproduces exactly the 1ps risetime on the load in all configurations (Fig. \ref{fig:lines-simulations}).
-The distributed model is either not as accurate or much slower to simulate.
-
-\begin{table}[!h]
-\centering
-\begin{tabular}{@{}lllll@{}}
-\toprule
-amount N         &  10           & 100        &  1000      &   10000    \\ \midrule
-simulation time  &  15 ms        & 170 ms     &  7.5 s     &   135 s    \\
-increase ratio   &  -            & x10        &  x44       &   x18      \\
-\bottomrule
-\end{tabular}
-\caption{Impact of the amount of unit elements on the simulation times}
-\label{tab:tline-impact-simulation-time}
-\end{table}
-
-Autres elements, tels que elements passifs, protections esd, etc.
-
-Application de la méthode sur un générateur TLP réel
+La modélisation d'autres éléments importants tels que les composants passifs et les protections ESD est détaillé dans le document complet.
 
 % Illustrate the method with a practical case
-The methodology described previous (section \ref{sec:esd-modeling}) is applied to the \gls{tlp} bench at NXP laboratory in Toulouse.
-It is a good illustration on how to use the library of models for simulating a complete system.
-Also, this particular testbench is widely used in NXP for characterizing and testing products.
-The model described hereafter is used for instance to validate non-linear frequency model of passive devices.
-
-% Describe the approach
-To demonstrate its accuracy, the bench model is verified with an extensive simulation versus measurement comparison flow.
-First, its behavior is measured under different loads and at different charging amplitudes.
-
+Pour illustrer l'application de la méthode de modélisation, elle est appliquée sur un banc TLP du laboratoire de NXP Toulouse.
+C'est un bon cas d'étude afin d'utiliser la méthode, car ce banc est très largement utilisé pour l'investigation.
+Pour démontrer sa précision, le modèle est vérifié par comparaison avec de multiples mesures, sous différentes charges et amplitudes.
 
 \begin{figure}[!h]
   \centering
@@ -150,30 +96,15 @@ First, its behavior is measured under different loads and at different charging 
 \end{figure}
 
 % Explain how the model, how it was constructed
-The complete model is detailed in Fig. \ref{fig:complete-tlp-model}.
-Similarly to all TLPs, the principle of operation is rather straightforward.
-Initially, the relay is left open while the 50ns coaxial cable on the left is being charged by the high voltage \gls{dc} supply.
-The 10 M\textOmega{} resistor ensures that the cable charges slowly to avoid oscillations, and isolates the high voltage supply from the pulse.
-The two $1 fF$ capacitors placed at each end of the discharge cable help the simulator respect the initial condition for the charging voltage.
-The cable is pre-charged to accelerate the simulation.
-After the relay, a 50 \textOmega{} resistor can be found, intended as an attenuator.
-Despite having a value of 50\textOmega{} like the coaxial cables, this resistor creates an impedance mismatch.
-It is the perfect illustration of a small element that is easily missed out but impacts waveforms a lot.
-A current probe is connected immediately after the attenuator, and a voltage probe is connected at the output of the generator.
-Position of the probes are important as well, to reproduce the timeshift between them.
-The short transmission line represented by 150 ps coaxial cables is a piece of barenaked wires.
-It creates impedance mismatches because it has an estimated characteristic impedance of 280 \textOmega{}.
-Finally, two discharge paths are possible inside the generator depending on the configuration of the switch on the output.
-The direct path is at the bottom, where the pulse goes straight out from the generator.
-The top path provides a series resistance that limits the discharge current.
-
+Le modèle complet de TLP est donné en Fig. \ref{fig:complete-tlp-model}.
+Il reproduit l'architecture du TLP du laboratoire en utilisant des modèles de la librairie pour chaque élément.
 % Detail a first comparison with 25 ohms
-A first comparison between measurement and simulation is given in Fig. \ref{fig:comparison-tlp-load}.
-With a 25\textOmega{} resistor and a charging voltage of 500V, 4.5A (I\textsubscript{TLP}) of current and 125mV (V\textsubscript{TLP}) are recorded.
-The ratio of V\textsubscript{TLP}/I\textsubscript{TLP} between 40 ns to 100 ns is equal to 25\textOmega{} as expected.
-Until 220 ns, both curves match closely.
-After this time, some differences appear due to the bouncing back and forth of the pulse inside the system, and the accumulation of model errors.
-However, most ESD investigations focus on the main part of the discharge under 120 ns.
+Une première validation avec une mesure est donnée en Fig. \ref{fig:comparison-tlp-load}.
+Avec une charge de 25\textOmega{} et une tension de charge de 500V, 4.5A et 125mV sont relevés sur le second plateau.
+Le rapport de ces deux valeurs corresponds bien à 25\textOmega{} comme attendu.
+Jusqu'à 220 ns, les deux courbes se ressemblent fortement.
+Après, des différences apparaissent à cause des ondes réfléchies, qui entrainent une accumulation d'erreurs.
+La plupart des simulations ESD restent intéressantes pendant la partie principale de la décharge jusqu'à 120ns et ces erreurs sont donc négligeables.
 
 \begin{figure}[!h]
   \centering
@@ -183,36 +114,27 @@ However, most ESD investigations focus on the main part of the discharge under 1
 \end{figure}
 
 % More validations in Annex
-More simulation and validation curves are provided in Annex \ref{apx:tlp-validation-curves}, for different loads and amplitudes.
-The goal of all those validation is to verify the model at both nominal and boundary conditions.
-Overall, the model is good and fits very well the measurements, demonstrating the validity of the modelling method.
+Les autres validations sont données dans le document complet, et présentent des niveaux de corrélations aussi proches.
+Le modèle fonctionne correctement et reproduit les mesures, prouvant sa validité.
 
 \section{Dévelopement d'un générateur TLP modifié}
 
-Pour la génération de pulse HMM
-
 %TODO: Simplifier
 % TLP is a great tool for esd analysis
-Throughout this document and in the \gls{esd} field in general, the \gls{tlp} generator is used extensively as a characterization and testing tool.
-Amoung its many advantages, it generates very clean and controllable pulses in a shielded environment.
-It has also proven to be a great tool for studying, among other things, the behavior of silicon-level devices.
-% But ESD gun is required.
-Nevertheless, \gls{esd-gun} testing remains the mandatory requirement defined by customers for product qualification.
-\gls{tlp} testing alone is not a sufficient proof for customers that the integrated circuit can survive the harsh real environment, especially for automotive applications.
-Several \gls{esd-gun} standards exist, targeting qualification of devices against electro-static discharges.
-The HMM specification \cite{hmm}, the IEC 61000-4-2 standard \cite{iec61000-4-2} and the ISO 10605 standard \cite{iso10605} define the same \gls{esd} testing waveform, using the same discharge device, but with different application conditions.
-Together, they cover a very large amount of tested devices from equipment, boards, and integrated circuit, in automotive and consumer fields.
-The waveform common to those three standards (Fig. \ref{fig:hmm-waveform}) is virtually the most widely used pulse for ESD qualification.
+A travers cette étude et de manière générale, le TLP est utilisé très largement comme outil de characterization et de test.
+Il est capable de générer des impulsions très bien controllées et reproductibles.
+Néanmoins, il ne reproduit pas les formes d'ondes ESD rencontrés dans la réalité.
+C'est pourquoi l'utilisation des pistolets ESD reste obligatoire pour la qualification de produits.
+La forme d'onde la plus répandue est celle définie dans la spécification HMM \cite{hmm} et les standards IEC 61000-4-2 \cite{iec61000-4-2} et ISO 10605 standard \cite{iso10605}.
+Ensemble, ils couvrent une très large plage d'applications, dans les domaines grand-public, automobile et industriel.
+Pour combiner les avantages d'un TLP avec ceux d'une décharge HMM, un générateur TLP peut être modifié pour produire cette impulsion HMM.
+Cette approche a été explorée par le passé par E. Grund \cite{iec61000-tlp} et Y. Cao \cite{tlp-based-hmm}.
+Néanmoins, leurs techniques présentent quelques inconvénients tels que une tendance large à créer des oscillations, comme démontré dans le document complet.
 
-\gls{tlp} cannot be used as a drop-in replacement to \gls{esd} gun for qualification.
-A compromise can be found by modifying a \gls{tlp} generator to produce the gun waveform, but in a shielded, well-controlled, and reproducible environment.
-This approach has been explored in the past by E. Grund \cite{iec61000-tlp} and Y. Cao \cite{tlp-based-hmm}.
-
-The TLP-HMM requires two additional modules to be connected at each extremity of a classic 100ns \gls{tlp}.
-These modules are simply referred hereafter as the \textit{absorber} and the \textit{shaping filter} (Fig. \ref{fig:tlp_hmm_architecture}).
-The principle of the TLP-HMM is to re-route parts of an incoming rectangular pulse into the ground.
-The remaining current is injected on a 2\textOmega{} calibration resistor, resulting in the same waveform than expected by the standards.
-The role of each module is detailed in the following sections.
+Le générateur proposé ici est dénommé TLP-HMM.
+Le TLP-HMM requiert deux modules additionnels à connecter à chaque extrémité d'un TLP standard 100ns.
+Ils sont nommés \textit{absorber} et \textit{shaping filter} (Fig. \ref{fig:tlp_hmm_architecture}).
+Le principe du TLP-HMM est de rerouter une portion du courant incident dans la masse, de manière à ce que le courant restant prenne la forme de l'onde HMM.
 
 \begin{figure}[!h]
   \centering
@@ -221,12 +143,9 @@ The role of each module is detailed in the following sections.
   \label{fig:tlp_hmm_architecture}
 \end{figure}
 
-
 % Role of the shaping filter
-The shaping filter (see Fig. \ref{fig:shaping_filter_example}) deviates a part of the incoming rectangular pulse into the grounded coaxial shielding.
-It is constituted of five different elements, an RLC network, a delay cable and an injection resistor.
-The capacitor C is separated from the main propagation path by a small transmission line of delay \textDelta{}t.
-
+Le shaping filter (Fig. \ref{fig:shaping_filter_example}) dévie le courant nécessaire pour former l'onde.
+Il est composé de cinq éléments, un réseau RLC, un petit câble coaxial de délai \textDelta{}t, et une résistance d'injection.
 
 \begin{figure}[!h]
   \centering
@@ -236,47 +155,23 @@ The capacitor C is separated from the main propagation path by a small transmiss
 \end{figure}
 
 % Behavior of the filter - C
-An example case is given to detail the behavior of the generator, with a focus on the shaping filter.
-In phase 1 (graph on the right in Fig. \ref{fig:shaping_filter_example}), a \gls{tlp} is injected on the main line.
-It reaches point A at $t=0$ and the voltage at A rises from 0 V.
-The capacitor is still not visible from A and does not see the TLP rising edge yet.
-At $t=\Delta t$, the pulse reaches the capacitor, which begins to charge.
-This change in voltage and current in the capacitor branch is not visible immediately from point A until it propagates back.
-Point A keeps rising with the TLP impulse until $t=2\Delta t$.
-At this moment, potential at point A falls almost immediately to 0V, because the capacitor is drawing all the current, and its potential is low.
-This results in the generation of the first peak.
-The peak width is approximately $2\Delta t$.
+Une impulsion TLP rectangulaire est injectée sur la ligne principale (Fig. \ref{fig:shaping_filter_example}).
+Elle atteint le point A à $t=0$ et la tension monte.
+La capacité ne voit l'impulsion a $t=\Delta t$, et ne se charge que à partir de ce moment.
+En retour, la charge est visible sur la ligne principale seulement à $t=2\Delta t$.
+A cet instant, le potentiel chute sur la ligne principale, car la capacité devient visible et tire tout le courant.
+Le premier pic de l'impulsion est ainsi créé, avec une durée d'environ $2\Delta t$.
 
 % Behavior of L
-In phase 2, the capacitor keeps charging, the potential at point A rises and the current drawn by the capacitor decreases.
-Slowly, the inductor L connected in parallel starts drawing some current.
-At some point between phase 2 and 3, the inductor current becomes equal to the capacitor current, and the capacitor ceases to charge.
-The capacitor starts discharging through the inductor.
-During phase 3, the inductor draws all the current and brings the voltage at A down to 0V.
-The result of this combined action generates the characteristic slow slope of the HMM waveform.
-
-% Behavior of R
-The resistor R creates an voltage offset at $t=2\Delta t$.
-It is used to match better the standardized waveform, which also has a superior to zero value after the first peak.
-
-% Tuning the peak width
-The peak width can be tuned by increasing or decreasing the length of the delay cable $t=\Delta t$.
-The peak width is approximately equal to $t=2\Delta t$.
-
-% Tuning the peak risetime
-The peak risetime is enforced by the \gls{tlp} risetime filter.
-A 1ns risetime filter provides the correct risetime to be compliant with the standards.
-Several risetime filters implementations suitable for TLP generators have been described in \cite{gaussian-lpf,cao-risetime-filter}.
-Matched risetime filters have the particularity to work by absorption, rather than rejection.
-Most filters prevent high-frequency signals to propagate further into a system by reflecting them back.
-Risetime filters on the other hand route high-frequencies into the ground of the system, which leaves the main signal line free of noise.
+Pendant que la capacité continue de se charger, l'inductance connectée en parallèle commence à absorber du courant à son tour.
+A un moment donné, elle absorbe suffisamment de courant pour contrecarrer la charge de la capacité, et la tension commence à redescendre.
+La décharge se poursuit lentement jusqu'à retourner à une tension nulle.
+Le résultat de toutes ces actions est la création de la forme d'onde complète du HMM.
 
 % Introduce the design
-The exact schematic of the shaping filter is given in Fig. \ref{fig:shaping_filter_schematic}.
-Capacitances are distributed to reduce parasitic inductances.
-The inductances have also been distributed to increase the maximum total current that can be absorbed.
-The PCB (Fig. \ref{pic:shaping_filter_assembled}) has a ground plane, and the central line is 50\textOmega{} matched.
-Overall, its dimensions must be kept as small as possible to reduce the impact of delays.
+Le schéma exact du shaping filter est donné Fig. \ref{fig:shaping_filter_schematic}.
+Le capacitance totale est distribuée pour réduire l'inductance parasite.
+Les inductances sont également distribuées pour augmenter la capacité en courant.
 
 \begin{figure}[!h]
   \centering
@@ -285,15 +180,11 @@ Overall, its dimensions must be kept as small as possible to reduce the impact o
   \label{fig:shaping_filter_schematic}
 \end{figure}
 
-Near the end of the HMM waveform, the inductor is drawing almost all the incoming \gls{TLP} current.
-After 100ns, the current injected by the TLP into the shaping filter and the \gls{dut} becomes null because the cable is completely discharged.
-However, the current inside the inductor cannot be stopped instantly.
-Without the absorber, the inductor would keep absorbing a non-zero current after the TLP pulse, drawing a negative potential at point A.
-To avoid this phenomenom, the absorber completely filters the TLP falling edge at the end of the pulse.
-This way, the current through the inductor is softly brought back to 0 by the absorber, effectively eliminating the negative voltage issue.
-It also acts as a matched termination for transient events, which is great to eliminate reflections and prevent ringing oscillations.
-
-The schematic of the absorber is given Fig. \ref{fig:absorber_schematic}
+A la fin de la décharge, l'inductance continue d'absorber un courant important.
+Si rien n'est fait, le potentiel au point pourrait être tiré négativement.
+Pour empêcher cela, l'absorbeur lisse le front descendant de l'impulsion TLP sur une centaine de nanosecondes.
+En ramenant doucement le courant à zéro, l'inductance s'arrête lentement d'absorber du courant et la tension reste nulle sans devenir négative.
+La schématique de l'absorbeur est donnée Fig. \ref{fig:absorber_schematic}
 
 \begin{figure}[!h]
   \centering
@@ -302,10 +193,8 @@ The schematic of the absorber is given Fig. \ref{fig:absorber_schematic}
   \label{fig:absorber_schematic}
 \end{figure}
 
-The measured and simulated waveforms are given in Fig. \ref{fig:tlp_hmm_waveforms}.
-Measured currents at 30ns and 60ns are within the 30\% tolerance of the standard (see Table \ref{tab:mes-sim-std-currents}).
-The measured peak current is a bit lower (110 mA short of minimum margin) than standard value.
-This is easily corrected on the TLP by adding a small positive offset to the charging voltage.
+Les courbes simulées et mesurées sur un prototype sont données Fig. \ref{fig:tlp_hmm_waveforms}.
+Les courants mesurés à 30ns et 60ns sont dans la marge de tolérance de 30\% des standards, et elle est donc valide.
 
 \begin{figure}[!h]
   \centering
@@ -315,27 +204,17 @@ This is easily corrected on the TLP by adding a small positive offset to the cha
 \end{figure}
 
 % Analyse the curve
-Overall, simulation and measurement correlate quite well.
-There is a small difference for the slopes between 40ns and 150ns.
-Investigation showed this difference comes from the shaping filter, and its inductances in particular.
-Their frequency behavior is not as good as expected, and having four inductances in parallel increases further this issue.
-Indeed, in this configuration parasitic capacitance of inductors are connected in parallel.
-They add up together, leading to a large total parasitic value and degraded frequency behavior.
-For the next iteration of the shaping filter, a single RF inductor should be used instead.
-
+Globalement, la simulation et la measure corrèlent bien.
+Il y a des différences mineures, notamment entre 40ns and 150ns.
+Elles sont dues à des éléments parasites non pris en compte durant les simulations, et des corrections sont à apporter au prototype.
+L'analyse de ces éléments est fournie dans le document complet.
 
 % Conclusion regarding TLP-HMM
-In this section, a new alternative for generating HMM compliant waveforms using a TLP was presented.
-The generator works correctly and has proven quite robust against ringing oscillations and parasitic disturbances.
-The generated waveform passes HMM, IEC 61000-4-2 and ISO-10605 requirements.
-
-% Limitations of the TLP-HMM
-A prototype has been constructed to enable initial testing and evaluation of the system.
-The design must be improved to reduce the impact of parasitic devices.
-Also, higher charging voltages must be supported for the generator to inject larger amount of currents.
-It is currently not enough to break ESD protections that withstand above 4A of transient current.
-There are many challenges to be solved in order to build a TLP able to charge at 8kV and beyond.
-For instance, the risetime filters are not able to sustain such elevated voltages and customs filters are probably required.
+Une nouvelle méthode pour générer des impulsions HMM avec un générateur TLP a été présentée.
+Ce TLP-HMM fonctionne correctement, passe les conditions des standards avec succès et s'avère robuste contre les oscillations et perturbations externes.
+Le prototype permet de valider le concept.
+Le design doit être amélioré pour éliminer des éléments parasites.
+Une tension de charge plus élévée doit aussi être disponible pour augmenter la capacité en courant du générateur actuellement limitée à 4A.
 
 \section{Méthode de traitement de capteurs de courant on-chip}
 
