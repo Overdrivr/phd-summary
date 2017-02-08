@@ -2,14 +2,11 @@
 \label{chap:3}
 \section{Présentation du produit et de la défaillance}
 
-Description du produit
-
-%TODO short intro
-
-% What kind of product
-An automotive \gls{asic} is tested to highlight a practical case of functional failure.
-The studied chip performs several high-level and critical functions for the car vehicle.
-The input used during the tests to inject the \gls{esd} inside the system is the battery supply connection (Fig. \ref{fig:system_architecture}).
+Ce travail de recherche a pour but d'étudier et de prédire les pertes de fonctionnalités causées par des décharges électrostatiques.
+Dans ce chapitre, un cas réel de défaillance fonctionnelle est présenté.
+Il a été identifié sur un circuit intégré automobile spécifique, qui a pour responsabilité des têches critiques et de haut-niveau dans le véhicule.
+Cette défaillance a été détectée en réduisant la quantité de composants externes au niveau de la carte, dans le but de diminuer la BOM (Bill Of Materials) et donc le coût de l'application complète.
+Dans la campagne de tests, les décharges sont injectées à travers la connection batterie (Fig. \ref{fig:system_architecture}).
 
 \begin{figure}[!h]
   \centering
@@ -19,9 +16,9 @@ The input used during the tests to inject the \gls{esd} inside the system is the
 \end{figure}
 
 % Main task
-The main function of the regulation function is to down-convert a battery voltage to a 2.5V regulated supply.
-Several blocks are involved for processing the battery supply.
-The overall architecture is given in fig. \ref{fig:monitored_function}).
+La tâche en défaillance est une fonction de régulation, chargée principalement de convertir la tension batterie en une alimentation régulée 2.5V.
+Plusieurs sous-fonctions (aussi appellées blocs) traitent la tension batterie dans ce but.
+L'architecture de la fonction intégrée est donnée Fig. \ref{fig:monitored_function}).
 
 \begin{figure}[!h]
   \centering
@@ -30,33 +27,20 @@ The overall architecture is given in fig. \ref{fig:monitored_function}).
   \label{fig:monitored_function}
 \end{figure}
 
-%TODO simplifier
 % First block
-First, a pre-regulator clamps the battery input (V\textsubscript{batt}) that can reach up to 40V and down to 9V.
-This is done to protect more sensitive circuitry connected downstream.
-This clamped voltage is accessible on output V\textsubscript{clamp9}.
-V\textsubscript{clamp9} has low current capability and is used for low-power functions.
-A second output V\textsubscript{pwr} provides a 12V clamped output with a large current capability.
+Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40V, et fournit le signal V\textsubscript{clamp9}.
+V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12V.
 % Second block
-A bandgap reference is connected downstream.
-It is powered with V\textsubscript{clamp9}.
-Once properly started after a certain delay, the bandgap generates a 1.0 V voltage reference on V\textsubscript{ref1p0}.
-This reference is stable accross a wide range of temperature, process variation and process mismatchs.
-The bandgap also outputs a 10uA current reference on I\textsubscript{ref10u}, and a flag V\textsubscript{bgok} to signal it is ready for operation.
+Ensuite, une référence bandgap génère, après un délai de démmarage, notamment une référence à 1.0 V appellée V\textsubscript{ref1p0}.
+Le bandgapt fournit aussi une référence de courant à 10\textMu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non .
 % Third major block
-Finally, the \gls{ldo} regulator generates a stable 2.5V supply voltage on V\textsubscript{2p5}.
-This output can deliver up to 20mA.
-V\textsubscript{2p5} is used further in the system to power digital gates.
+Enfin, le régulateur faible-pertes génère une alimentation stabilisée 2.5V sur V\textsubscript{2p5}, avec une capacité en courant jusqu'à 20mA.
+V\textsubscript{2p5} sert ensuite à alimenter des cellules digitales à l'intérieur du circuit intégré.
 
-Présentation de la défaillance
-
-The failure is observed on the V\textsubscript{2p5} output pin (Fig. \ref{fig:meas-reset-v2p5}).
-It affects the behavior of the entire system, because this net powers many other functions in the system.
-The failure is induced by injecting a large negative-voltage stress on the input V\textsubscript{batt}, when the product is in operation.
-The discharge is superimposed on a DC voltage value.
-This input is a realistic entry point for \gls{esd} in the integrated circuit, because it is exposed at the system level and connected to the battery by a cable.
-The disturbance on the output V\textsubscript{2p5} is much longer (30 \textmu{}s) than on the input V\textsubscript{batt} (100 ns).
-It seems the negative stress is triggering a reset of the regulator.
+% Principe défaillance
+La défaillance de ce système est observée sur V\textsubscript{2p5} (Fig. \ref{fig:meas-reset-v2p5}).
+Elle est induite en injectant une forte impulsion transitoire d'amplitude négative sur V\textsubscript{batt}, lorsque le produit est alimenté et en fonctionnement normal.
+La durée de la défaillance sur V\textsubscript{2p5} (30 \textmu{}s) est bien plus longue que la perturbation d'entrée sur V\textsubscript{batt} (100 ns), ce qui semble indiquer une large faute fonctionnelle dans le circuit.
 
 \begin{figure}[!h]
   \centering
@@ -66,46 +50,36 @@ It seems the negative stress is triggering a reset of the regulator.
 \end{figure}
 
 % What is the root cause -> reset of regulator, soft-start
-It seems that the negative stress is causing an unwanted \gls{soft-start} sequence in the regulator.
-A soft-start normally happens only during system power-up, when the main external supply is switched on.
-During a soft-start, the supply voltage slowly rises from 0V to its nominal value.
-It avoids overshoots that could damage sensitive blocks.
-By design, soft-starts require a large amount of time to complete, in the range of tens to hundreds microseconds.
-As a consequence, the function is not available, or at least not considered valid, until the soft-start is finished.
+Plus précisement, le stress négatif semble déclencher une séquence de démarrage, alors que le régulateur est normalement déjà démarré.
+Pendant cette séquence, la tension d'alimentation monte doucement depuis 0V jusqu'à 2.5V, afin d'éviter des surtensions.
+Ces séquences de démarrage sont logiquement longues et demandent un certain temps pour se terminer.
+Si un ESD déclenche une telle séquence, le système se retrouve indisponible pendant un délai important.
 
-The next part of this research work is focused on developping measurement methods to acquire data on silicon, to confirm the simulations.
-A testchip is designed to test new measurement and observation methods in section \ref{sec:test-vehicle-desc}.
-Modeling methods are explored in section \ref{sec:bottom-up-modeling} as a way to understand and predict these functional issues.
+La prochaine partie du travail de recherche est focalisé sur le développement de méthodes de mesures directement sur silicium.
+L'objectif est d'acquérir des données fiables directement au niveau circuit, ce qui est difficile à faire de manière externe, et afin de valider les simulations pour l'investigation.
+Notamment, un véhicule de test a été développé.
+Il contient différentes méthodes de mesure et d'observation.
 
 \section{Présentation du véhicule de test}
 
-Architecture et vue top du véhicule de test
-
-% Global architecture
-The global architecture of the testchip (Fig. \ref{architecture_testchip}) is comprised of a duplicated supply function.
-The same supply block is instanciated twice on silicon.
-One of them is the function under test, which is exposed to \gls{ESD} stresses and is monitored for failures.
-The second one is responsible for powering the monitoring functions.
+% Architecture
+L'architecture du véhicule de test est donnée Fig. \ref{architecture_testchip}.
+Il contient deux instances de la même fonction de régulation.
+La première instance est la fonction sous-test, exposée à des décharges électrostatiques pendant la campagne de tests et dont le comportement est surveillé afin de détecter les fautes.
+La seconde instance alimente justement les systèmes de surveillance qui sont directement intégrés sur puce.
 
 \begin{figure}[h]
   \centering
-  \includegraphics{src/3/figures/architecture_testchip.pdf}
+  \includegraphics{src/1/figures/architecture_testchip.pdf}
   \caption{Global architecture of the test vehicle}
   \label{architecture_testchip}
 \end{figure}
 
-% What is in the monitoring system
-The \textit{monitoring system} is comprised of several functions.
-The overvoltage and undervoltage detectors monitor multiple net voltages inside the supply under test.
-There are in total 35 detectors in the testchip.
-The communication function performs a parallel to serial conversion, in order to read and write a large amount of bits using just a few pins.
-Special structures for specific monitoring functions is also implemented.
-Details about the monitoring functions are given in the next sub-sections.
-
-% intro
-Except for the two supply blocks, all the functionnalities described previously were designed, simulated and layouted.
-All layouts were assembled together to form the topcell (Fig. \ref{fig:top-cell-layout}).
-The complete pinout is given in appendix \ref{apx:testchip-pinout}.
+Le layout top de la puce est donné Fig. \ref{fig:top-cell-layout}.
+Il est possible d'identifier à droite et à gauche chaque instance de la fonction de régulation.
+Les systèmes de surveillance sont localisés globablement de dessous de ces deux blocs.
+Des capteurs de courant sur puce sont localisés à plusieurs endroit contre l'anneau de métal gndsub entourant toute la puce.
+Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de fabrication.
 
 \begin{figure}[!h]
   \centering
@@ -114,31 +88,13 @@ The complete pinout is given in appendix \ref{apx:testchip-pinout}.
   \label{fig:top-cell-layout}
 \end{figure}
 
-% Talk about the near-field current sensors placement
-In total, there are 6 near-field current sensors located on the device.
-The 6\textsuperscript{th} sensor is dedicated to calibration.
-The others are placed strategically on main \gls{io} susceptible to be disturbed directly or indirectly by \gls{esd}s.
-Sensor \textit{1} measures the current on the supply under test power input.
-During testing, this pin is be exposed to \gls{esd}s coupled on top of a DC supply voltage.
-Internally, this input is protected by a large \gls{esd-protection}, able to sustain IEC 61000-4-2 \gls{esd-gun} discharges.
-Sensor \textit{2} measures the current absorbed and deviated by the \gls{esd-protection} into the \textit{gndsub} metal ring (local ground reference).
-Sensors \textit{3} measures the current flowing to the external stabilisation capacitor of the regulator under test.
-Finally, sensors \textit{4} and \textit{5} measure the currents flowing from the \textit{gndsub} metal ring into the external ground pins, connected externally to the board ground.
-
-% Explain why so much empty space
-On the layout, a lot of silicon space was left empty.
-This is due to manufacturing constraints that enforced the silicon dimensions.
-After manufacturing and packaging, the chip is tested.
-The entire testing process and results are documented in section \ref{sec:test-vehicle-testing}.
-
-Description rapide des blocks désignés
-
-% What are the OV/UV detectors made of
-Overvoltage and undervoltage detectors are implemented as latched comparators.
-A flag is raised if a monitored net crosses a threshold, and stored using a latch, until it can be read.
-The architecture of a single detector is given Fig. \ref{fig:architecture-ov}.
-The same architecture is used for the overvoltage and the undervoltage.
-Monitored and reference inputs are just inversed on the undervoltage detector.
+% What is in the monitoring system
+Les systèmes de surveillance contiennent notamment des détecteurs de surtension et sous-tension.
+Il y a au total 35 détecteurs de ce type dans la puce.
+Ils sont implémentés avec des comparateurs verouillés.
+Un drapeau est levé si un noeud surveillé dépasse un niveau de référence.
+Une fois le drapeau levé, il est maintenu jusqu'à ce que la cellule puisse être lue et resettée.
+L'architecture est donnée Fig. \ref{fig:architecture-ov}.
 
 \begin{figure}[!h]
   \centering
@@ -148,47 +104,30 @@ Monitored and reference inputs are just inversed on the undervoltage detector.
 \end{figure}
 
 % Detail architecture
-The first block in this detector is the comparator.
-It is designed with a two-stage operational amplifier with an output buffer (see Fig. \ref{fig:comparator-design}).
-This topology is well suited for high-gain, open-loop comparators.
-This comparator provides a very high input impedance, to ensure the monitored net is not disturbed.
-A high-gain is useful for limiting the comparator's offset.
-
-
-% What is the purpose of filter
-On the output of the comparator, an optional RC filter can be connected.
-This filter can deglitch very short overvoltages, to only let large overvoltages pass through the detector.
-The stratety behind this filter is to use multiple detectors monitoring the same net, each one with a different filter.
-In function of which detectors triggered, an estimation of the overvoltage length can be made.
-
-% Hysteresis buffer
-After the filter, an hysteresis buffer increases the deglitching action of the filter.
-If the comparator's output remains high for a short period of time, the output of the filter will rise slowly.
-If a standard buffer was used in place of the hysteresis buffer, it would latch at about half the supply voltage.
-With the hysteresis, the buffer switches at a voltage much closer from the supply.
-With the same RC filter, this results in a much longer deglitching time.
-This was done because RC-filters require large resistors and large capacitors for integration on silicon, and occupy a considerable area on the chip.
-By increasing the deglitching time, smaller RC-filters could be used.
-
-% Latch
-Finally, the latch stores the overvoltage flag.
-By default, the latch is reset at $t=0$.
-Its copy input $D$ is connected to the supply.
-If the hysteresis buffer triggers high, the enable pin triggers a copy in the latch.
-The output $Q$ copies the value from the $D$, storing a logical high in the latch.
+Dans cette architecture, la comparaison est réalisée par le comparateur, implémenté avec un amplificateur opérationnel à deux étages avec un buffer de sortie.
+Cette topologie convient bien pour des comparateurs à fort gain, travaillant en boucle ouverte avec une très forte impédance d'entrée, afin de ne pas perturber le circuit.
+A la sortie du comparateur, un filtre RC optionnel peut être connecté.
+Il permet d'éliminer les surtensions les plus courtes afin de détecter seulement de larges perturbations.
+Ensuite, un buffer à hystéresis permet de maximiser l'efficacité du filtre et d'obtenir une valeur numérique robuste de la sortie du comparateur.
+Finalement, une bascule D garde le drapeau en mémoire une fois levé.
+Si le buffer à hystéresis devient haut, la bascule recopie un état haut sur sa sortie.
 
 % Origin of reference voltages
-The reference voltages for these comparators come from either fixed-values set by the protected supply, or \gls{dac} that can be reconfigured through the communication system.
-
-%TODO introduce near field sensor
+Les tensions de références de ces détecteurs sont soit fixes, soit controllables via un bus de communication.
+Par ailleurs, tout ces détecteurs peuvent être lus par un second bus de communication.
+Ce bus fonctionne sur le principe d'une chaine JTAG.
+Des cellules individuelles peuvent être connectées en chaine afin de former un bus de la longeur désiré.
+Cette approche est très pratique pour monter rapidement un véhicule de test.
+Néanmoins, des problèmes important furent rencontrés avec ces bus de communication.
+Ils sont exposés en détail dans le document complet.
 
 % What is a current sensors
-In this testchip, the current sensor is a near-field current loop.
-The sensor is placed close to a metal track in which current must be measured.
-By coupling, the sensor generates a voltage proportional to the derivative of the current in the track.
+Dans le testchip, on trouve également des capteurs de courant directement intégrés sur silicium.
+Chaque capteur est placé à proximité de la piste de métal à mesurer.
+Par couplage, il génère une tension proportionnelle à la dérivée du courant dans la piste.
 
-Figure. \ref{fig:near-field-current-sensor} and \ref{fig:near-field-current-sensor-layout} gives respectively a visual representation of the sensor and the final layout.
-This kind of integrated loop was originally designed and studied in \cite{AlainSallesInductors}.
+Les figures \ref{fig:near-field-current-sensor} et \ref{fig:near-field-current-sensor-layout} fournissent respectivement une représentation 3D du capteur ainsi que son layout.
+Ce type de boucle de courant intégré sur silicium a été originellement désigné et étudié par A. Salles dans \cite{AlainSallesInductors}.
 
 \begin{figure}[!h]
   \centering
@@ -197,6 +136,15 @@ This kind of integrated loop was originally designed and studied in \cite{AlainS
   \label{fig:near-field-current-sensor}
 \end{figure}
 
+% How is it designed and how is it used
+Sur silicium, trois niveaux de métaux sont requis pour construire ce capteur.
+Le premier niveau en rouge (Fig \ref{fig:near-field-current-sensor}) et le troisième niveau en violet forment une boucle métallique.
+Des vias connectent les différents niveaux ensembles.
+La piste mesurée est elle localisée au deuxième niveau.
+Le courant mesuré circule entre les noeuds \textit{S1} et \textit{S2}.
+Un oscilloscope avec une impédance d'entrée \textOmega{} est utilisé pour mesurer en différentiel la tension entre \textit{C1} et \textit{C2}.
+Le traitement de la courbe obtenue a été détaillé précedemment dans le chapitre 2.
+
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.5\textwidth]{src/3/figures/sensor_layout.png}
@@ -204,12 +152,10 @@ This kind of integrated loop was originally designed and studied in \cite{AlainS
   \label{fig:near-field-current-sensor-layout}
 \end{figure}
 
-% How is it designed and how is it used
-On silicon, three levels of metal are used to build the sensor.
-The first level (in red) and the third level (in purple) form a metal loop.
-Metallic vias connect both levels to close the loop vertically.
-Finally, the sensed current is at the second level (pale blue), and circulates between nets \textit{S1} and \textit{S2}.
-An oscilloscope with 50\textOmega\ input impedance performs a differential voltage measurement between pins \textit{C1} and \textit{C2}.
-An example waveform obtained by injecting a rectangular pulse is given in Fig. \ref{fig:nfs-wvf}.
-The obtained waveform requires specific post-processing to reconstitute the original current waveform.
-The post-processing is detailed later in section \ref{sec:on-chip-near-field-process}.
+% Talk about the near-field current sensors placement
+Au total, il y a 6 capteurs de courant sur la puce.
+Un des capteurs est dédié à la calibration, tandis que les autres mesurent des points d'entrée ou de sortie potentiels pour des ESD.
+Le capteur \textit{1} mesures le courant sur l'entrée batterie.
+Le capteur \textit{2} mesures le courant aborbé par la protection ESD protégeant l'entrée batterie.
+Le capteur \textit{3} mesures le courant à travers la capacité externe de stabilisation du régulateur.
+Enfin, les capteurs \textit{4} et \textit{5} mesurent les courants évacués via l'anneau métallique \textit{gndsub}, connecté extérieurement à la masse.
