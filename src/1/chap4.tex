@@ -122,39 +122,25 @@ Elle montre néanmoins des résultats prometteurs.
 \section{Méthode boite noire}
 
 % Difference with bottom-up, not the same application, not the same goal
-The black-box modeling method relies on the same core principles than the bottom-up modeling approach.
-It studies the relationship and transfert function between the input and the output of a silicon function.
-Unlike the bottom-up method though, the model is only built for external input and output pins.
-It is not meant to be chained with other models, using a special chaining method.
-Instead, it targets electrical, board-level circuit simulations.
-Basically, the black box model is intented to act as a drop-in replacement for the complete \gls{ic} circuit, for board-level simulations.
+La méthode boite noire exposée ci-après a pour but de modéliser une fonction d'un circuit intégré, entre une entrée et une sortie.
+L'objectif est d'effectuer une simulation ESD au niveau carte électronique, pendant le fonctionnement normal, en prenant en compte les circuits intégré.
+Cette méthode nécessite de charactériser la fonction de transfert d'une fonction intégrée sur silicium, entre une broche d'entrée et une broche de sortie toutes deux externes.
 
 % introduction, failure relation between input and output
-The main benefit of this model is to abstract the internal silicon complexity.
-The model focuses on describing the failure of an output when an input is stressed.
-At board-level, failure criteria can be more easily set from the chip specification.
-After setting the failure criteria, the approach is to inject rectangular pulses on an input pin, and record when an output is in fault.
-
-
-% How is the characterization conducted
-Once again, a variable width/variable amplitude rectangular pulses are applied on an input pin.
-The output pin is then observed to detect for which input parameters it is going out of specification.
+Le principal avantage de cette méthode est de s'abstraire au niveau système de la complexité au niveau circuit intégré.
+La charactérisation est effectuée en appliquant une fois de plus une impulsion rectangulaire d'amplitude et de durée variables.
+La broche d'entrée reçoit ce stress, pendant que la broche de sortie est surveillée et mesurée.
 
 % What is characterized
-This characterization is performed on the testchip, on the complete regulation function.
-The characterization pulses are injected on the $V_{batt}$ input.
-The output pin is $V_{2p5}$, the regulated supply.
-It is supposed to deliver a 2.5V regulated supply.
-The failure criteria is set at a voltage below 2.1V.
-It corresponds to a level below which digital cells powered by this supply will have noise margins too small for proper operation.
-
-% Fig X shows the waveform of the VBAT injected current when stressed with a TLP (square) impulse.
-% The TLP waveform before the capacitor is shown for reference.
-%TODO: WAVEFORM CURRENT VBAT AND TLP BEFORE INJECTION CAPACITOR ?
-
-% Detail the characterization
-The characterization table is plotted in Fig. \ref{fig:cz-black-box}.
-X-axis is the pulse width, and y-axis is the minimal stress amplitude that caused a failure on the output.
+Pour tester cette méthode, elle est appliquée en simulation sur la schématique du véhicule de test détaillé dans le chapitre 3.
+Les impulsions de charactérisation sont injectées sur l'entrée $V_{batt}$.
+La broche de sortie à surveiller est la pin $V_{2p5}$, correspondant à l'alimentation 2.5V régulée.
+Un seuil à 2.1V est fixé en dessous duquel une défaillance est considérée.
+En dessous de ce seuil, les portes logiques ne sont plus garanties de fonctionner correctement.
+La figure \ref{fig:cz-black-box} affiche la présence d'une faute en fonction des paramètres du stress d'entrée.
+L'axe des abscisses correspond à la largeur d'impulsion, et celui des ordonnées à l'amplitude du stress.
+En soi, cette courbe peut être utilisée dans une simulation comme modèle de faute du bloc.
+Avec une largeur d'impulsion et une amplitude appliquée sur $V_{batt}$, la courbe permet d'estimer ou non la présence d'une faute sur la sortie.
 
 \begin{figure}[!h]
   \centering
@@ -164,18 +150,13 @@ X-axis is the pulse width, and y-axis is the minimal stress amplitude that cause
 \end{figure}
 
 % What to do with that
-%TODO: We that below this value the function is in fail, etc
-However, the motivation for this model is to replace the transistor-level schematic inside a SPICE simulation at board-level.
-Given a pulse width and an amplitude on $V_{batt}$, the model can estimate the disturbance amplitude and width on $V_{2p5}$.
-However, the model itself is not an electrical model, only a failure model.
-It cannot determinate, given for instance an input voltage, how much current is flowing into it.
-This is also true for the output.
-Thus, this method calls for an electrical model of \gls{io}.
-
-\gls{tlp} characterizations are performed on the testchip's regulation function, in powered and unpowered conditions.
-For powered conditions, it is considered that full functionality and performance does not matter, just the equivalent impedance of the input or output.
-As a consequence, the function is biased but external devices are not connected.
-Unpowered and powered characterizations are compared respectively in Fig. \ref{fig:tlp-input-cz} and \ref{fig:tlp-output-cz}.
+Néanmoins, l'objectif final de la méthode boite noire est aussi de fournir un modèle électrique équivalent du circuit intégré.
+Le modèle de faute n'est pas un modèle électrique, et ne permet pas de déterminer par exemple pour une tension donnée quel couran est absorbé par une broche.
+Par conséquent, il est aussi nécessaire de développer un modèle électrique équivalent de la broche.
+Afin d'extraire un modèle I(V), des charactérisations sont effectuées avec la méthode TLP en simulation.
+La charactérisation est effectuée à la fois sur un circuit alimenté et non alimenté.
+L'objectif est de déterminer l'impact de l'alimentation sur la courbe TLP.
+Les charactérisations de l'entrée et de la sortie dans les deux conditions d'alimentation sont fournies dans les figures \ref{fig:tlp-input-cz} et \ref{fig:tlp-output-cz}.
 
 \begin{figure}[!h]
   \centering
@@ -191,21 +172,19 @@ Unpowered and powered characterizations are compared respectively in Fig. \ref{f
   \label{fig:tlp-output-cz}
 \end{figure}
 
-
-For both input and output ports, large differences are observed between powered and unpowered modes.
-Different amount of current are absorbed by the device in each conditions.
-Since the model is intended for powered-on simulations, the characterization in powered conditions is chosen.
+Pour l'entrée et la sortie, de grandes différences sont observées entre un circuit alimenté et non alimenté.
+Des quantités différentes de courant sont absorbées par le circuit dans chaque condition.
+Puisque le modèle est destiné à des simulations du composant en fonctionnement, la charactérisation en alimenté est selectionnée par la suite.
 
 % Explain the PWL model
-The second step of the modelling method is to build an electrically simulatable model of the function.
-A piecewise linear model seems well suited for this situation.
-
-
+Maintenant que le circuit est charactérisé, il est possible d'en construire un modèle électrique.
+La stratégie utilisée est de reproduire la courbe I(V) avec une courbe linéaire par morceaux, en utilisant le language de description matérielle Verilog-A.
+Le code source du modèle est fourni dans le document complet.
 % Validate the model with TLP
-The verilog-a model is first tested against the complete schematic for the function's input.
-After issues described previously were solved, good agreement is achieved between model and complete circuit.
-This was verified at -10V, 20V and 40V TLP amplitude (Fig. \ref{fig:compare-model-simu-m10}, Fig. \ref{fig:compare-model-simu-20}, Fig. \ref{fig:compare-model-simu-40}).
-The model is considered mostly valid for the input.
+Le modèle est construit pour la broche d'entrée puis simulé et comparé à la schématique complète.
+Il a été vérifié pour un amplitude de stress de -10V (Fig. \ref{fig:compare-model-simu-m10}, Fig. \ref{fig:compare-model-simu-20}, Fig. \ref{fig:compare-model-simu-40}).
+D'autres validations à 20V et 40V sont fournies dans le document complet.
+Globablement, une bonne corrélation entre le modèle et le circuit complet est observée pour l'entrée.
 
 \begin{figure}[!h]
   \centering
@@ -214,15 +193,10 @@ The model is considered mostly valid for the input.
   \label{fig:compare-model-simu-m10}
 \end{figure}
 
-
 % Check the output
-The same test is performed for the function's output model.
-The situation is more complex in this case.
-The output model must perform three tasks.
-First, offer an output impedance close the the one of the real function.
-Second, provide a DC value, here corresponding to the regulated 2.5V.
-Lastly, reproduce the function reset where the output voltage falls down then restarts.
-A first output model is envisionned (Fig. \ref{fig:first-output-model}).
+La même vérification est effectuée pour la sortie.
+Le cas de la broche de sortie est plus complexe, car contrairement à l'entrée celle-ci doit délivrer un courant statique et ne s'apparente pas à une impédance passive.
+Pour reproduire ce comportement, un premier modèle est proposé Fig. \ref{fig:first-output-model}.
 
 \begin{figure}[!h]
   \centering
@@ -232,29 +206,26 @@ A first output model is envisionned (Fig. \ref{fig:first-output-model}).
 \end{figure}
 
 % Is this first model working
-Preliminary and extended tests show that this configuration is not working.
-
-%TODO: Du coup on fait quoi ?
-
+Les premiers tests montrent que cette approche ne fonctionne pas.
+Le modèle de la sortie échoue à reproduire le courant en statique uniquement avec la courbe I(V) du TLP, et n'est pas suffisamment précise pour reproduire l'amplitude de la perturbation sur la sortie.
+Par ailleurs, ce modèle requiert en plus de prendre en compte le niveau sur l'entrée et de changer de comportement en cas de faute.
+Cela apelle probablement à un modèle de sortie controllé par l'entrée, en plus des contraintes existantes pour le faire fonctionner en nominal.
+Tous ces problèmes seront étudiés dans des travaux futurs afin d'être capable de proposer un modèle fonctionnel, pouvant servir pendant les phases de conception des cartes électroniques.
 
 % Conclusion
-Black box models of analog integrated functions are very interesting for distributing SPICE models to external parties.
-They do not disclose the internal design of the chip, yet they can help achieve system-level ESD simulations.
-Ultimately, the goal is to follow the SEED (TODO: Ref) methodology, that indicates that ESD robustness should not be handled at a single level of a system, but at every level (equipment, board, integrated circuit), and that all levels should work efficiently together toward that goal.
-Black box models fit very nicely in this methodology.
-In this section, a first technique for extracting and creating black-box models was presented.
-There is a lot of room for improvements, but it is already working for some intermediate complex cases.
-The core principle is that TLP characterization of inputs and ouputs on a biased function is sufficient to extract an equivalent impedance.
-This impedance can replace the function in the schematic, during an ESD simulation, in order to reduce complexity and simulation time.
-The second core principle is to simplify waveforms into rectangular ones in order to reduce the complexity of the problem.
+En conclusion, les modèles boite-noire sont une solution intéressante pour représenter le comportement d'une fonction intégré et pouvoir la distribuer sans révéler d'informations sensibles.
+L'objectif s'intègre bien avec la méthodologie SEED (System-level ESD Efficient Design) qui préconise de distribuer la responsabilité de la protection face aux ESD entre les circuits intégrés et les cartes électroniques.
+Concrètement, cela se traduit par protéger le circuit à tous les niveaux, avec des composants externes, internes, et en s'assurant que ces composants travaillent efficacement ensemble.
+Dans la première partie de ce chapitre, une méthode d'extraction de modèle de faute a été présentée.
+Elle permet de créer des modèles boite-noire de la faute d'une fonction entre une entrée et une sortie.
+Il y a énormément de possibilités d'expérimentation, et la méthode n'en est qu'à ses balbutiements, mais le concept de base semble efficace.
+La seconde partie de la méthode consiste à modéliser et simplifier les entrées et sortie électriquement par d'une charactérisation TLP.
+L'objectif est de réduire la complexité et les temps de simulation.
+Cette méthode s'est avérée fonctionnelle pour la modélisation d'une entrée, mais ne fonctionne pas pour une sortie qui doit fournir du courant.
+Des travaux et des investigations supplémentaires sont requises pour corriger ces problèmes.
 
 % Opening work
-There are many new leads to explore on these black box models.
-First, behavior of the models against more time-varying disturbances such as ESD gun waveforms should be investigated.
-Also, the piecewise-linear models should be improved to be more stable, and to fit more closely the extracted I(V) curve.
-This technique should be applied to a wider number of analog functions, to observe if it can be used in a general manner.
-For now, input and outputs must be simulated separately.
-First, the input is simulated, then analyzed to extract the width and amplitude of the disturbance.
-This data is then used to configure the output failure source pulse.
-The model must be improved in order for the output to react in real-time to the disturbance of the input.
-Ultimately, this calls for a Verilog-A model of the failure for instance, plus most likely an improved characterization method able to extract and describe this real-time behavior.
+Il y a énormément de pistes de recherche sur la modélisation boite-noire pour l'ESD.
+Le comportement de ces modèles face à des impulsions plus variables tels que des décharges de pistolet ESD doit être étudié.
+Ensuite, la modélisation par droite linéaire par morceaux a besoin d'être améliorée afin d'être plus précise vis-à-vis de la courbe I(V) originale.
+La méthode présentée doit être testée sur un plus grand nombre de fonctions analogiques, afin de voir si elle peut être appliquée généralement.
