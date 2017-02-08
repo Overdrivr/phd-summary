@@ -1,23 +1,24 @@
 \chapter{Outils d'analyse de défauts fonctionnels ESD}
 \label{chap:4}
+
+Jusqu'à présent, l'étude s'est focalisée sur le développement de méthodes pour l'acquisition de données de mesures.
+Ces mesures nécessitent la réalisation du circuit intégré afin de pouvoir le tester.
+Ce procédé est couteux et intervient tard dans le flot de conception.
+Les outils de simulation en revanche sont utilisables dés le début du flot de conception.
+Ils peuvent donc largement compléter les systèmes de mesures présentés dans le chapitre précédent.
+Dans ce chapitre-ci, deux méthodes différentes sont présentes.
+La première est destinée aux concepteurs de circuits intégrés, tandis que la seconde vise plutôt les équipementiers.
+
 \section{Méthode bottom-up}
 
 % What is bottom up
-In any bottom-up approach, the study focuses first on the small-scale components of a system.
-They are characterized individually, and a model is derived for each component.
-Afterwards, these models are assembled together to match the full system architecture.
-The main idea of a bottom-up approach is that a system is the sum of its parts.
-Ultimately, we study if the robustness of a system can be assimilated as the sum of the robustness of its parts.
+L'approche présentée ici est apellée bottom-up, c'est à dire du bas vers le haut.
+Elle consiste à caractériser de petites fonctions assez bas dans la hiérarchie du circuit intégré, de manière individuelle, puis d'assembler ensemble leurs modèles afin de déduire le comportement global.
+Cett approche présente l'intérêt que des fonctions individuelles sont susceptibles d'être réutilisées, et donc que l'effort de charactérisation et de modélisation n'a besoin d'être fourni qu'une seule fois.
+Un schéma de charactérisation assez simple est utilisé en simulation pour charactériser chaque bloc (Fig. \ref{block_function_cz}).
+Il fournit l'alimentation nécessaire à la fonction qui doit être en fonctionnement.
+Il permet également d'injecter sur une entrée un stress électrique et d'observer la réponse sur une sortie.
 
-
-% How is it done, core concept
-The method described in this section starts by characterizing each block in a particular setup.
-This setup provides appropriate biasing to the block, in order to set it in normal operating conditions.
-This setup is also in charge of injecting the characterization signal on the tested input, and monitoring of the output under test.
-Fig. \ref{block_function_cz} gives an example of such a characterization setup for a supply input.
-
-%TODO: Improve figure (text sizes)
-%TODO: Remove range comparator
 \begin{figure}[!h]
   \centering
   \includegraphics{src/1/figures/characterization_setup.pdf}
@@ -26,12 +27,12 @@ Fig. \ref{block_function_cz} gives an example of such a characterization setup f
 \end{figure}
 
 % What are the characterization signal
-The characterization signal is a square waveform, applied on the tested input.
-A set of simulations is ran with this setup.
-Each simulation runs with a different pair of values for the \textbf{amplitude} and \textbf{duration} of the square signal.
-Table \ref{parameterized-simulations} illustrates this simulation process.
-In the time domain, this set of simulations is illustrated in Fig. \ref{set_input_signals}.
-This testing method was invented by Wunsch and Bell.
+%TODO ref
+Le signal de charactérisation est une impulsion rectangulaire, appliquée sur l'entrée sous test.
+Un ensemble de simulations est effectué en faisant varier les paramètres de cette forme d'onde, injectée sur l'entrée.
+Plus précisément, une analyse paramétrique est réalisée sur l'amplitude et la durée de l'impulsion.
+Cet ensemble de simulations est résumé dans la Fig. \ref{set_input_signals}.
+Cette méthode de charactérisation est fortement inspirée de la méthode Wunsch & Bell \cite{}.
 
 %TODO: Fix sim 12 sim12
 \begin{figure}[!h]
@@ -41,14 +42,20 @@ This testing method was invented by Wunsch and Bell.
   \label{set_input_signals}
 \end{figure}
 
-The block model contains two 2D tables
-The first table still associates an \textbf{output duration} to an input width/amplitude.
-The second and new table associates an \textbf{output amplitude} to an input width/amplitude.
-Fig. \ref{fig:principle-transfert-func-v2}
+Une fois chaque signal injecté, la sortie est observée.
+Deux paramètres sont extraits de la forme d'onde de sortie.
+L'amplitude maximale est extraite, correspondant à la plus large variation de tension par rapport à un niveau nominal.
+La durée de cette variation, à 90\% de l'amplitude maximale est aussi relevée.
+Ces deux paramètres permettent de décrire une boite englobante de la forme d'onde de sortie, constituant une sorte de forme d'onde simplifiée.
+Cette analyse est effectuée pour chaque simulation.
 
-Function $F_{W}$ uses the first table mentioned previously, as a \gls{lookup-table}.
-It returns for an arbitrary input amplitude and width the closest output width found in the table.
-Function $F_{V}$ is identical, except it is using the second table, and returns the closest output amplitude.
+Il en résulte deux tables, la première associant constituant le modèle du bloc.
+La première table associes aux deux paramètres d'entrée (amplitude et durée) une amplitude maximale de sortie.
+La seconde table associe aux deux paramètres d'entrée une durée de sortie.
+Ces deux tables peuvent ensuite être intégrées dans un modèle, décrit Fig. \ref{fig:principle-transfert-func-v2}.
+La fonction $F_{W}$ utilises la première table, pour retourner une amplitude de sortie en fonction des paramètres d'entrée.
+La fonction $F_{V}$ utilises la seconde table et retourne une durée.
+Sachant que ce modèle accepte les mêmes types de paramètres en entrée et en sortie, plusieurs modèles peuvent être chaînés les uns à la suite des autres, afin de reconstituer le comportement d'une fonction haut-niveau.
 
 \begin{figure}[!h]
   \centering
@@ -57,15 +64,9 @@ Function $F_{V}$ is identical, except it is using the second table, and returns 
   \label{fig:principle-transfert-func-v2}
 \end{figure}
 
-To obtain the response of multiple blocks, models are chained together.
-
 % First run the reference sim
-To test this hypothesis, a few simulations are run.
-The testbenches are given in Fig. \ref{fig:hypothesis-setup}.
-A reference simulation is performed first.
-It contains the complete schematic, composed of the three blocks of our study case.
-An electrical disturbance is injected on the first input $V_{batt}$.
-The final output $V_{2p5}$, and intermediate nets $V_{clamp9}$ and $V_{1p0}$ are observed and disturbance properties on those nets recorded.
+Pour tester cette approche, des simulations sont effectuées en utilisant les schémas Fig. \ref{fig:hypothesis-setup}.
+L'objectif est de comparer une simulation transistor de la fonction globale, à une chaine de simulation individuelle de blocs, pour vérifier si des réponses similaires peuvent être obtenues sur la broche de sortie lorsque la broche d'entrée est exposée au même stimuli.
 
 \begin{figure}[!h]
   \centering
@@ -75,12 +76,10 @@ The final output $V_{2p5}$, and intermediate nets $V_{clamp9}$ and $V_{1p0}$ are
 \end{figure}
 
 % Then do the same thing but with the individual models
-Afterwards, each block is simulated separately in its own individual testbench.
-The pre-regulator is stressed with the same pulse than the reference simulation.
-Its output waveform is compared with the reference in Fig. \ref{fig:sim-compare-block1}.
-Both curves (blue and green) look rather similar, in terms of maximum amplitude, duration and overall shape.
-The maximum amplitude is estimated at -1.5 V and the duration at 880 ns.
-The red curve represents the waveform injected on the second block and configured from these two values.
+La courbe du pré-régulateur seul est donnée Fig. \ref{fig:sim-compare-block1} et comparée avec la simulation totale.
+Les deux courbes sont plutôt similaires.
+La sortie est estimée avoir une amplitude maximale de -1.5 V (les stress sont d'amplitude négative) et une durée de 880 ns.
+Ces deux valeurs sont utilisées comme paramètres d'entrée sur le second modèle, celui du bandgap.
 
 \begin{figure}[!h]
   \centering
@@ -90,13 +89,11 @@ The red curve represents the waveform injected on the second block and configure
 \end{figure}
 
 % Second block output
-On the second block output, the blue and green waveforms exhibit more differences (Fig. \ref{fig:sim-compare-block2}).
-The green waveform has a longer slope than the reference.
-However, both waveforms are still quite close in terms of maximum amplitude and duration.
-This is an interesting result, because it shows that \textbf{blocks can be simulated individually} for \gls{esd} simulations, without loosing too much accuracy.
-This is great for simulation speed and modularity.
-Once again, the red curve represents the waveform injected on the third block.
-It is a simplified waveform derived from the blue and green curves, with a width of 2 \textmugreek{}s and an amplitude of 0V.
+A la sortie du second block, des différences plus larges apparaissent entre la simulation individuelle et totale. (Fig. \ref{fig:sim-compare-block2}).
+La courbe verte a une pente plus longue que la référence.
+Néanmoins, les courbes ont quand même des charactéristiques communes en terme d'amplitude maximale et de durée, ce qui est intéressant en regard de cette méthode de modélisation.
+La courbe de sortie est analysée et son amplitude maximale déterminée à 0V avec une durée de 2 \textmugreek{}s.
+Ces deux valeurs sont appliquées sur l'entrée de la troisième simulation.
 
 \begin{figure}[!h]
   \centering
@@ -106,9 +103,9 @@ It is a simplified waveform derived from the blue and green curves, with a width
 \end{figure}
 
 % Third output
-On the third and final block output (Fig. \ref{fig:sim-compare-block3}), both waveforms are very similar.
-The difference of maximum amplitude can be explained by an offset between both curves at $t=0$.
-The reference curve is delayed in comparison of the individual simulation, but otherwise both curves match.
+A la sortie du dernier bloc, (Fig. \ref{fig:sim-compare-block3}), les deux formes d'onde sont similaires.
+La différence d'amplitude maximale est due à un offset aussi présent en statique, et pouvant donc être aisément corrigé.
+La courbe de référence est retardée par rapport à la courbe individuelle, mais sinon les deux courbes se ressemblent énormément.
 
 \begin{figure}[!h]
   \centering
@@ -118,13 +115,11 @@ The reference curve is delayed in comparison of the individual simulation, but o
 \end{figure}
 
 % Conclusion, it works for this case
-In conclusion, for this specific study-case, the initial hypothesis was correct.
-Simulating the models isolately produced the same results than the reference simulation, for estimating degradation of functionality.
-As a consequence, block models extracted from variable amplitude/width characterization should work properly, since it is mathematically equivalent to the simulations that were performed in this section.
-block models are simply pre-computed simulations with results stored in \gls{lookup-table}s.
+En conclusion, pour ce cas d'étude, la méthode de simulation et modélisation individuelle aurait permit, par chainage des modèles d'estimer correctement la perturbation sur le bloc de sortie.
+Avant de pouvoir généraliser son utilisation, il serait nécessaire de tester cette méthode sur une plus large gamme d'applications.
+Elle montre néanmoins des résultats prometteurs.
 
 \section{Méthode boite noire}
-
 
 % Difference with bottom-up, not the same application, not the same goal
 The black-box modeling method relies on the same core principles than the bottom-up modeling approach.
