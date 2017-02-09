@@ -1,40 +1,40 @@
-\chapter{Etude de cas - défaillance circuit intégré}
+\chapter{Étude de cas - défaillance circuit intégré}
 \label{chap:3}
 \section{Présentation du produit et de la défaillance}
 
 Ce travail de recherche a pour but d'étudier et de prédire les pertes de fonctionnalités causées par des décharges électrostatiques.
 Dans ce chapitre, un cas réel de défaillance fonctionnelle est présenté.
-Il a été identifié sur un circuit intégré automobile spécifique, qui a pour responsabilité des têches critiques et de haut-niveau dans le véhicule.
+Il a été identifié sur un circuit intégré automobile spécifique, qui a pour responsabilité des tâches critiques et de haut-niveau dans le véhicule.
 Cette défaillance a été détectée en réduisant la quantité de composants externes au niveau de la carte, dans le but de diminuer la BOM (Bill Of Materials) et donc le coût de l'application complète.
-Dans la campagne de tests, les décharges sont injectées à travers la connection batterie (Fig. \ref{fig:system_architecture}).
+Dans la campagne de tests, les décharges sont injectées à travers la connexion batterie (Fig. \ref{fig:system_architecture}).
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/architecture_system.pdf}
-  \caption{Overview of the system architecture}
+  \caption{Vue d'ensemble de l'architecture du système}
   \label{fig:system_architecture}
 \end{figure}
 
 % Main task
-La tâche en défaillance est une fonction de régulation, chargée principalement de convertir la tension batterie en une alimentation régulée 2.5V.
-Plusieurs sous-fonctions (aussi appellées blocs) traitent la tension batterie dans ce but.
+La tâche en défaillance est une fonction de régulation, chargée principalement de convertir la tension batterie en une alimentation régulée 2.5 V.
+Plusieurs sous-fonctions (aussi appelées blocs) traitent la tension batterie dans ce but.
 L'architecture de la fonction intégrée est donnée Fig. \ref{fig:monitored_function}).
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/monitored_function.pdf}
-  \caption{Architecture of the primary supply}
+  \caption{Architecture du primaire d'alimentation}
   \label{fig:monitored_function}
 \end{figure}
 
 % First block
-Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40V, et fournit le signal V\textsubscript{clamp9}.
-V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12V.
+Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40 V, et fournit le signal V\textsubscript{clamp9}.
+V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12 V.
 % Second block
-Ensuite, une référence bandgap génère, après un délai de démmarage, notamment une référence à 1.0 V appellée V\textsubscript{ref1p0}.
-Le bandgapt fournit aussi une référence de courant à 10\textMu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non .
+Ensuite, une référence bandgap génère, après un délai de démarrage, notamment une référence à 1.0 V appelée V\textsubscript{ref1p0}.
+Le bandgap fournit aussi une référence de courant à 10\textMu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non .
 % Third major block
-Enfin, le régulateur faible-pertes génère une alimentation stabilisée 2.5V sur V\textsubscript{2p5}, avec une capacité en courant jusqu'à 20mA.
+Enfin, le régulateur faible-pertes génère une alimentation stabilisée 2.5 V sur V\textsubscript{2p5}, avec une capacité en courant jusqu'à 20 mA.
 V\textsubscript{2p5} sert ensuite à alimenter des cellules digitales à l'intérieur du circuit intégré.
 
 % Principe défaillance
@@ -45,13 +45,13 @@ La durée de la défaillance sur V\textsubscript{2p5} (30 \textmu{}s) est bien p
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/v2p5_measure.png}
-  \caption{Measurement of V\textsubscript{2p5} after a -450V 100ns negative stress}
+  \caption{Mesure de V\textsubscript{2p5} après une stress rectangulaire -450 V 100 ns}
   \label{fig:meas-reset-v2p5}
 \end{figure}
 
 % What is the root cause -> reset of regulator, soft-start
-Plus précisement, le stress négatif semble déclencher une séquence de démarrage, alors que le régulateur est normalement déjà démarré.
-Pendant cette séquence, la tension d'alimentation monte doucement depuis 0V jusqu'à 2.5V, afin d'éviter des surtensions.
+Plus précisément, le stress négatif semble déclencher une séquence de démarrage, alors que le régulateur est normalement déjà démarré.
+Pendant cette séquence, la tension d'alimentation monte doucement depuis 0 V jusqu'à 2.5 V, afin d'éviter des surtensions.
 Ces séquences de démarrage sont logiquement longues et demandent un certain temps pour se terminer.
 Si un ESD déclenche une telle séquence, le système se retrouve indisponible pendant un délai important.
 
@@ -71,35 +71,35 @@ La seconde instance alimente justement les systèmes de surveillance qui sont di
 \begin{figure}[h]
   \centering
   \includegraphics{src/1/figures/architecture_testchip.pdf}
-  \caption{Global architecture of the test vehicle}
+  \caption{Architecture du véhicule de test}
   \label{architecture_testchip}
 \end{figure}
 
 Le layout top de la puce est donné Fig. \ref{fig:top-cell-layout}.
 Il est possible d'identifier à droite et à gauche chaque instance de la fonction de régulation.
-Les systèmes de surveillance sont localisés globablement de dessous de ces deux blocs.
+Les systèmes de surveillance sont localisés globalement de dessous de ces deux blocs.
 Des capteurs de courant sur puce sont localisés à plusieurs endroit contre l'anneau de métal gndsub entourant toute la puce.
 Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de fabrication.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.7\textwidth]{src/1/figures/topcell_layout.pdf}
-  \caption{Top-cell layout}
+  \caption{Layout de la top-cell}
   \label{fig:top-cell-layout}
 \end{figure}
 
 % What is in the monitoring system
 Les systèmes de surveillance contiennent notamment des détecteurs de surtension et sous-tension.
 Il y a au total 35 détecteurs de ce type dans la puce.
-Ils sont implémentés avec des comparateurs verouillés.
-Un drapeau est levé si un noeud surveillé dépasse un niveau de référence.
-Une fois le drapeau levé, il est maintenu jusqu'à ce que la cellule puisse être lue et resettée.
+Ils sont implémentés avec des comparateurs verrouillés
+Un drapeau est levé si un nœud surveillé dépasse un niveau de référence.
+Une fois le drapeau levé, il est maintenu jusqu'à ce que la cellule puisse être lue et remise � z�ro.
 L'architecture est donnée Fig. \ref{fig:architecture-ov}.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/architecture_OV.pdf}
-  \caption{Architecture of the overvoltage detector}
+  \caption{Architecture du détecteur de surtension}
   \label{fig:architecture-ov}
 \end{figure}
 
@@ -108,21 +108,21 @@ Dans cette architecture, la comparaison est réalisée par le comparateur, impl�
 Cette topologie convient bien pour des comparateurs à fort gain, travaillant en boucle ouverte avec une très forte impédance d'entrée, afin de ne pas perturber le circuit.
 A la sortie du comparateur, un filtre RC optionnel peut être connecté.
 Il permet d'éliminer les surtensions les plus courtes afin de détecter seulement de larges perturbations.
-Ensuite, un buffer à hystéresis permet de maximiser l'efficacité du filtre et d'obtenir une valeur numérique robuste de la sortie du comparateur.
+Ensuite, un buffer à hystérésis permet de maximiser l'efficacité du filtre et d'obtenir une valeur numérique robuste de la sortie du comparateur.
 Finalement, une bascule D garde le drapeau en mémoire une fois levé.
-Si le buffer à hystéresis devient haut, la bascule recopie un état haut sur sa sortie.
+Si le buffer à hystérésis devient haut, la bascule recopie un état haut sur sa sortie.
 
 % Origin of reference voltages
-Les tensions de références de ces détecteurs sont soit fixes, soit controllables via un bus de communication.
+Les tensions de références de ces détecteurs sont soit fixes, soit contrôlables via un bus de communication.
 Par ailleurs, tout ces détecteurs peuvent être lus par un second bus de communication.
 Ce bus fonctionne sur le principe d'une chaine JTAG.
-Des cellules individuelles peuvent être connectées en chaine afin de former un bus de la longeur désiré.
+Des cellules individuelles peuvent être connectées en chaine afin de former un bus de la longueur désiré.
 Cette approche est très pratique pour monter rapidement un véhicule de test.
 Néanmoins, des problèmes important furent rencontrés avec ces bus de communication.
 Ils sont exposés en détail dans le document complet.
 
 % What is a current sensors
-Dans le testchip, on trouve également des capteurs de courant directement intégrés sur silicium.
+Dans le véhicule de test, on trouve également des capteurs de courant directement intégrés sur silicium.
 Chaque capteur est placé à proximité de la piste de métal à mesurer.
 Par couplage, il génère une tension proportionnelle à la dérivée du courant dans la piste.
 
@@ -132,7 +132,7 @@ Ce type de boucle de courant intégré sur silicium a été originellement dési
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.98\textwidth]{src/1/figures/near-field-current-sensor.pdf}
-  \caption{Near-field current sensor design}
+  \caption{Design du capteur de champ-proche}
   \label{fig:near-field-current-sensor}
 \end{figure}
 
@@ -141,21 +141,21 @@ Sur silicium, trois niveaux de métaux sont requis pour construire ce capteur.
 Le premier niveau en rouge (Fig \ref{fig:near-field-current-sensor}) et le troisième niveau en violet forment une boucle métallique.
 Des vias connectent les différents niveaux ensembles.
 La piste mesurée est elle localisée au deuxième niveau.
-Le courant mesuré circule entre les noeuds \textit{S1} et \textit{S2}.
+Le courant mesuré circule entre les nœuds \textit{S1} et \textit{S2}.
 Un oscilloscope avec une impédance d'entrée \textOmega{} est utilisé pour mesurer en différentiel la tension entre \textit{C1} et \textit{C2}.
-Le traitement de la courbe obtenue a été détaillé précedemment dans le chapitre 2.
+Le traitement de la courbe obtenue a été détaillé précédemment dans le chapitre 2.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.5\textwidth]{src/1/figures/sensor_layout.png}
-  \caption{Near-field current sensor layout}
+  \caption{Layout du capteur de champ proche}
   \label{fig:near-field-current-sensor-layout}
 \end{figure}
 
 % Talk about the near-field current sensors placement
 Au total, il y a 6 capteurs de courant sur la puce.
 Un des capteurs est dédié à la calibration, tandis que les autres mesurent des points d'entrée ou de sortie potentiels pour des ESD.
-Le capteur \textit{1} mesures le courant sur l'entrée batterie.
-Le capteur \textit{2} mesures le courant aborbé par la protection ESD protégeant l'entrée batterie.
-Le capteur \textit{3} mesures le courant à travers la capacité externe de stabilisation du régulateur.
+Le capteur \textit{1} mesure le courant sur l'entrée batterie.
+Le capteur \textit{2} mesure le courant absorbé par la protection ESD protégeant l'entrée batterie.
+Le capteur \textit{3} mesure le courant à travers la capacité externe de stabilisation du régulateur.
 Enfin, les capteurs \textit{4} et \textit{5} mesurent les courants évacués via l'anneau métallique \textit{gndsub}, connecté extérieurement à la masse.
