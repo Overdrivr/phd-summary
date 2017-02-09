@@ -5,21 +5,21 @@
 % Need to simulate from source to input for soft-failure analysis
 Une méthodologie de construction de modèles ESD au niveau système est proposée.
 Elle permet une simulation précise jusqu'à l'entrée d'un circuit intégré en fonctionnement.
-Un environement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes, et des générators stress, interconnectés par des cables et des fils.
+Un environnement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes, et des erateurs stress, interconnectés par des câbles et des fils.
 Les cartes électroniques embarquent différents types de composants, tels que des passifs, des protections ESD, des chokes.
 L'objectif de la méthode proposée est de construire une librairie des éléments les plus courants, puis d'assembler le modèle complet du système avec.
 
 % Cables and delays identified as important for esd sims - because of similar order of magnitude
-Les cables sont des éléments importants mais parfois négligés dans les simulations ESD.
+Les câbles sont des éléments importants mais parfois négligés dans les simulations ESD.
 Ils introduisent des délais de propagation non négligeables par rapport à la durée d'un ESD.
-Pour ordre de grandeur, un cable coaxial 50\textOmega{} possède une constante de propagation d'environ 5 ns/m.
-En comparaison, un ESD dure entre une dizaine et plusieurs centaines de nanosecondes, ce qui est globablement proche du même ordre de grandeur.
-Les câbles sont avant tout des lignes de transmission, dont l'analyse théorique fut faite par J. Maxwell, L. Kelvin et O. Heavyside et énormément étudiées par la suite dans la littérature \cite{branin-tl-ref, hf-coax,lossy-tl,emc-analysis-tl}.
+Pour ordre de grandeur, un câble coaxial 50\textOmega{} possède une constante de propagation d'environ 5 ns/m.
+En comparaison, un ESD dure entre une dizaine et plusieurs centaines de nanosecondes, ce qui est globalement proche du même ordre de grandeur.
+Les câbles sont avant tout des lignes de transmission, dont l'analyse théorique fut faite par J. Maxwell, L. Kelvin et O. Heaviside et énormément étudiées par la suite dans la littérature \cite{branin-tl-ref, hf-coax,lossy-tl,emc-analysis-tl}.
 
 % Distributed model
 Dans le domaine de ESD, le modèle le plus populaire de ligne est basé sur des éléments distribués.
 Concrètement, c'est une suite réseaux L-C tels que la Fig. \ref{fig:dis-line-model}.
-Les valeurs de chaque élément sont calculées à partir des propriétés du cable et de la précision requise pour la simulation.
+Les valeurs de chaque élément sont calculées à partir des propriétés du câble et de la précision requise pour la simulation.
 
 \begin{figure}[!h]
   \centering
@@ -31,7 +31,7 @@ Les valeurs de chaque élément sont calculées à partir des propriétés du ca
 % Perks and disavantages
 Malgré sa très large adoption, ce modèle présente de sérieux inconvénients.
 En particulier, ce modèle nécessite un très grand nombre d'éléments pour avoir une précision décente.
-Pour une même précision, le nombre d'éléments est proportionnel à la longueur du cable, ce qui augmente considérablement les temps de simulation.
+Pour une même précision, le nombre d'éléments est proportionnel à la longueur du câble, ce qui augmente considérablement les temps de simulation.
 Pour augmenter la bande passante du modèle, le nombre d'éléments doit également être augmenté.
 La combinaison des deux résulte en des temps de simulation très longs.
 
@@ -39,7 +39,7 @@ La combinaison des deux résulte en des temps de simulation très longs.
 Le modèle à deux ports décrit par H. Branin \cite{branin-tl-ref} est une alternative bien plus sérieuse au modèle distribué.
 Il décrit très efficacement et avec une très grande précision le comportement d'une ligne de transmission.
 La bande passante n'est pas limité, et le temps de simulation est indépendant de la longueur du câble.
-Le modèle est constitué de deux sources de tension controllées en tension et deux résistances (Fig. \ref{fig:beh-line-model}).
+Le modèle est constitué de deux sources de tension contrôlées en tension et deux résistances (Fig. \ref{fig:beh-line-model}).
 
 \begin{figure}[!h]
   \centering
@@ -61,14 +61,14 @@ V_{C2}(t) = V_{1}(t - \Delta t) + Z_{C}.I_{1}(t - \Delta t)
 \end{equation}
 
 % Explain the equations
-Z\textsubscript{C} est l'impédance charactéristique de la ligne et \textDelta{}t le délai de propagation.
+Z\textsubscript{C} est l'impédance caractéristique de la ligne et \textDelta{}t le délai de propagation.
 Les équations décrivent un système où tension et courant à chaque port sont la superposition d'une onde se propageant dans un sens et d'une seconde dans l'autre sens.
 
 % Compare both models to know which one is preferrable
 Des simulations permettent de comparer les deux modèles.
 Une impulsion rectangulaire est injectée sur chaque modèle avec un temps de montée de 1ps.
 Différentes charges permettent d'évaluer les performances et la précision.
-Les lignes de transmission ont un délai de 100ns et une impédance charactéristique de 50\textOmega{}.
+Les lignes de transmission ont un délai de 100ns et une impédance caractéristique de 50\textOmega{}.
 
 \begin{figure}[!h]
   \centering
@@ -117,12 +117,12 @@ La plupart des simulations ESD restent intéressantes pendant la partie principa
 Les autres validations sont données dans le document complet, et présentent des niveaux de corrélations aussi proches.
 Le modèle fonctionne correctement et reproduit les mesures, prouvant sa validité.
 
-\section{Dévelopement d'un générateur TLP modifié}
+\section{Développement d'un générateur TLP modifié}
 
 %TODO: Simplifier
 % TLP is a great tool for esd analysis
 A travers cette étude et de manière générale, le TLP est utilisé très largement comme outil de characterization et de test.
-Il est capable de générer des impulsions très bien controllées et reproductibles.
+Il est capable de générer des impulsions très bien contrôlées et reproductibles.
 Néanmoins, il ne reproduit pas les formes d'ondes ESD rencontrés dans la réalité.
 C'est pourquoi l'utilisation des pistolets ESD reste obligatoire pour la qualification de produits.
 La forme d'onde la plus répandue est celle définie dans la spécification HMM \cite{hmm} et les standards IEC 61000-4-2 \cite{iec61000-4-2} et ISO 10605 standard \cite{iso10605}.
@@ -134,7 +134,7 @@ Néanmoins, leurs techniques présentent quelques inconvénients tels que une te
 Le générateur proposé ici est dénommé TLP-HMM.
 Le TLP-HMM requiert deux modules additionnels à connecter à chaque extrémité d'un TLP standard 100ns.
 Ils sont nommés \textit{absorber} et \textit{shaping filter} (Fig. \ref{fig:tlp_hmm_architecture}).
-Le principe du TLP-HMM est de rerouter une portion du courant incident dans la masse, de manière à ce que le courant restant prenne la forme de l'onde HMM.
+Le principe du TLP-HMM est de re-router une portion du courant incident dans la masse, de manière à ce que le courant restant prenne la forme de l'onde HMM.
 
 \begin{figure}[!h]
   \centering
@@ -214,7 +214,7 @@ Une nouvelle méthode pour générer des impulsions HMM avec un générateur TLP
 Ce TLP-HMM fonctionne correctement, passe les conditions des standards avec succès et s'avère robuste contre les oscillations et perturbations externes.
 Le prototype permet de valider le concept.
 Le design doit être amélioré pour éliminer des éléments parasites.
-Une tension de charge plus élévée doit aussi être disponible pour augmenter la capacité en courant du générateur actuellement limitée à 4A.
+Une tension de charge plus élevée doit aussi être disponible pour augmenter la capacité en courant du générateur actuellement limitée à 4A.
 
 \section{Méthode de traitement de capteurs de courant on-chip}
 
@@ -225,12 +225,11 @@ Avec cette méthode il est possible de mesurer des cartographies de champ élect
 Cela permet de localiser des sources de bruit haute-fréquence par exemple.
 Il est aussi très intéressant de tenter de traiter les cartes de champs pour retrouver les valeurs de tension et courant à travers les sources d'émission.
 Dans ce chapitre deux méthode de reconstruction sont évaluées, la première est purement temporelle et la seconde fréquentielle.
-Le capteur de champ proche sur silicium présenté dans le chapître 3 est utilisé pour obtenir les mesures.
+Le capteur de champ proche sur silicium présenté dans le chapitre 3 est utilisé pour obtenir les mesures.
 
 % What is the output voltage that is measured
 La méthode temporelle consiste simplement à intégrer le signal mesuré en y appliquant des facteurs correctifs.
 Il est montré dans \cite{near-field-scan} que cette approche est valide.
-it is possible to express I\textsubscript{TLP} as a function of the measured sensor voltage V\textsubscript{sensor}.
 Ici, l'étude se focalise sur le traitement d'une mesure magnétique pour retrouver un courant dans une piste en métal.
 L'équation \ref{eq:nfs-rel2} donne la relation entre le courant dans la piste mesurée I\testsubscript{TLP} et la tension mesurée sur le capteur V\textsubscript{sensor}.
 
