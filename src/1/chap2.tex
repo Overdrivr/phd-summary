@@ -5,7 +5,7 @@
 % Need to simulate from source to input for soft-failure analysis
 Une méthodologie de construction de modèles ESD au niveau système est proposée.
 Elle permet une simulation précise jusqu'à l'entrée d'un circuit intégré en fonctionnement.
-Un environnement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes, et des erateurs stress, interconnectés par des câbles et des fils.
+Un environnement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes et des générateurs de stress, interconnectés par des câbles et des fils.
 Les cartes électroniques embarquent différents types de composants, tels que des passifs, des protections ESD, des chokes.
 L'objectif de la méthode proposée est de construire une librairie des éléments les plus courants, puis d'assembler le modèle complet du système avec.
 
@@ -66,9 +66,9 @@ Les équations décrivent un système où tension et courant à chaque port sont
 
 % Compare both models to know which one is preferrable
 Des simulations permettent de comparer les deux modèles.
-Une impulsion rectangulaire est injectée sur chaque modèle avec un temps de montée de 1ps.
+Une impulsion rectangulaire est injectée sur chaque modèle avec un temps de montée de 1 ps.
 Différentes charges permettent d'évaluer les performances et la précision.
-Les lignes de transmission ont un délai de 100ns et une impédance caractéristique de 50\textOmega{}.
+Les lignes de transmission ont un délai de 100 ns et une impédance caractéristique de 50\textOmega{}.
 
 \begin{figure}[!h]
   \centering
@@ -91,7 +91,7 @@ Pour démontrer sa précision, le modèle est vérifié par comparaison avec de 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/complete_nxp_tlp_model.pdf}
-  \caption{Modèle complete du générateur TLP du laboratoire NXP Toulouse}
+  \caption{Modèle complet du générateur TLP du laboratoire NXP Toulouse}
   \label{fig:complete-tlp-model}
 \end{figure}
 
@@ -100,16 +100,16 @@ Le modèle complet de TLP est donné en Fig. \ref{fig:complete-tlp-model}.
 Il reproduit l'architecture du TLP du laboratoire en utilisant des modèles de la librairie pour chaque élément.
 % Detail a first comparison with 25 ohms
 Une première validation avec une mesure est donnée en Fig. \ref{fig:comparison-tlp-load}.
-Avec une charge de 25\textOmega{} et une tension de charge de 500V, 4.5A et 125mV sont relevés sur le second plateau.
+Avec une charge de 25\textOmega{} et une tension de charge de 500 V, 4.5 A et 125 mV sont relevés sur le second plateau.
 Le rapport de ces deux valeurs corresponds bien à 25\textOmega{} comme attendu.
 Jusqu'à 220 ns, les deux courbes se ressemblent fortement.
 Après, des différences apparaissent à cause des ondes réfléchies, qui entrainent une accumulation d'erreurs.
-La plupart des simulations ESD restent intéressantes pendant la partie principale de la décharge jusqu'à 120ns et ces erreurs sont donc négligeables.
+La plupart des simulations ESD restent intéressantes pendant la partie principale de la décharge jusqu'à 120 ns et ces erreurs sont donc négligeables.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/tlp_comparison_R25_500V.png}
-  \caption{Comparaison des courbes temporelles de tension et courant - tension de charge 500 V sous 25\textOmega{}}
+  \caption{Comparaison des courbes temporelles de tension et courant avec une  tension de charge 500 V sous 25\textOmega{}}
   \label{fig:comparison-tlp-load}
 \end{figure}
 
@@ -132,7 +132,7 @@ Cette approche a été explorée par le passé par E. Grund \cite{iec61000-tlp} 
 Néanmoins, leurs techniques présentent quelques inconvénients tels que une tendance large à créer des oscillations, comme démontré dans le document complet.
 
 Le générateur proposé ici est dénommé TLP-HMM.
-Le TLP-HMM requiert deux modules additionnels à connecter à chaque extrémité d'un TLP standard 100ns.
+Le TLP-HMM requiert deux modules additionnels à connecter à chaque extrémité d'un TLP standard 100 ns.
 Ils sont nommés \textit{absorber} et \textit{shaping filter} (Fig. \ref{fig:tlp_hmm_architecture}).
 Le principe du TLP-HMM est de re-router une portion du courant incident dans la masse, de manière à ce que le courant restant prenne la forme de l'onde HMM.
 
@@ -194,18 +194,18 @@ La schématique de l'absorbeur est donnée Fig. \ref{fig:absorber_schematic}
 \end{figure}
 
 Les courbes simulées et mesurées sur un prototype sont données Fig. \ref{fig:tlp_hmm_waveforms}.
-Les courants mesurés à 30ns et 60ns sont dans la marge de tolérance de 30\% des standards, et elle est donc valide.
+Les courants mesurés à 30 ns et 60 ns sont dans la marge de tolérance de 30\% des standards, et elle est donc valide.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.95\textwidth]{src/1/figures/tlp_hmm_waveforms.png}
-  \caption{Mesure et simulation d'une décharge 250V TLP-HMM (équivalente 1kV HMM) sur 2\textOmega{}}
+  \caption{Mesure et simulation d'une décharge 250 V TLP-HMM (équivalente 1 kV HMM) sur 2\textOmega{}}
   \label{fig:tlp_hmm_waveforms}
 \end{figure}
 
 % Analyse the curve
 Globalement, la simulation et la mesure corrèlent bien.
-Il y a des différences mineures, notamment entre 40ns and 150ns.
+Il y a des différences mineures, notamment entre 40 ns et 150 ns.
 Elles sont dues à des éléments parasites non pris en compte durant les simulations, et des corrections sont à apporter au prototype.
 L'analyse de ces éléments est fournie dans le document complet.
 
@@ -214,7 +214,7 @@ Une nouvelle méthode pour générer des impulsions HMM avec un générateur TLP
 Ce TLP-HMM fonctionne correctement, passe les conditions des standards avec succès et s'avère robuste contre les oscillations et perturbations externes.
 Le prototype permet de valider le concept.
 Le design doit être amélioré pour éliminer des éléments parasites.
-Une tension de charge plus élevée doit aussi être disponible pour augmenter la capacité en courant du générateur actuellement limitée à 4A.
+Une tension de charge plus élevée doit aussi être disponible pour augmenter la capacité en courant du générateur actuellement limitée à 4 A.
 
 \section{Méthode de traitement de capteurs de courant on-chip}
 
@@ -240,8 +240,8 @@ I_{TLP}(t) = \frac{1}{G}\int V_{sensor}(t) \mathrm{d}t + A
 % How to determine 1/G and A
 L'offset $A$ et le gain $1/G$ sont dus à l'intégration, et sont déterminés expérimentalement.
 Le schéma de la méthode de mesure est donnée Fig. \ref{fig:calibration-sensor}.
-Une impulsion rectangulaire de 100ns et 1V est injectée entre S1 et S2.
-La tension V\textsubscript{sensor} est mesurée avec un oscilloscope 2GHz entre C1 et C2.
+Une impulsion rectangulaire de 100 ns et 1 V est injectée entre S1 et S2.
+La tension V\textsubscript{sensor} est mesurée avec un oscilloscope 2 GHz entre C1 et C2.
 
 \begin{figure}[!h]
   \centering
