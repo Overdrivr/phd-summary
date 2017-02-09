@@ -24,7 +24,7 @@ Les valeurs de chaque élément sont calculées à partir des propriétés du c�
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.7\textwidth]{src/1/figures/lc_ladder.pdf}
-  \caption{Electrical distributed LC ladder model of a lossless transmission line}
+  \caption{Modèle de ligne de transmission LC distribué}
   \label{fig:dis-line-model}
 \end{figure}
 
@@ -44,7 +44,7 @@ Le modèle est constitué de deux sources de tension contrôlées en tension et 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/behavioral_line_model.pdf}
-  \caption{Electrical behavioral model of a lossless transmission line}
+  \caption{Modèle comportemental d'une ligne de transmission sans pertes}
   \label{fig:beh-line-model}
 \end{figure}
 
@@ -73,7 +73,7 @@ Les lignes de transmission ont un délai de 100ns et une impédance caractérist
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.3\textwidth]{src/1/figures/tline_comparison.png}
-  \caption{Lumped versus two-port models comparison in simulation}
+  \caption{Comparaison des modèles distribué et comportemental par simulation}
   \label{fig:lines-simulations}
 \end{figure}
 
@@ -91,7 +91,7 @@ Pour démontrer sa précision, le modèle est vérifié par comparaison avec de 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/complete_nxp_tlp_model.pdf}
-  \caption{Complete model of NXP laboratory's TLP generator}
+  \caption{Modèle complete du générateur TLP du laboratoire NXP Toulouse}
   \label{fig:complete-tlp-model}
 \end{figure}
 
@@ -109,7 +109,7 @@ La plupart des simulations ESD restent intéressantes pendant la partie principa
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/tlp_comparison_R25_500V.png}
-  \caption{Voltage and current waveforms comparison - 500 V charging voltage on 25\textOmega{}}
+  \caption{Comparaison des courbes temporelles de tension et courant - tension de charge 500 V sous 25\textOmega{}}
   \label{fig:comparison-tlp-load}
 \end{figure}
 
@@ -139,7 +139,7 @@ Le principe du TLP-HMM est de re-router une portion du courant incident dans la 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/beges_tlp_hmm.pdf}
-  \caption{TLP-HMM architecture}
+  \caption{architecture du TLP-HMM}
   \label{fig:tlp_hmm_architecture}
 \end{figure}
 
@@ -150,7 +150,7 @@ Il est composé de cinq éléments, un réseau RLC, un petit câble coaxial de d
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.98\textwidth]{src/1/figures/example_tlp_hmm.pdf}
-  \caption{Shaping filter architecture and operation}
+  \caption{Architecture du shaping filter et mode de fonctionnement}
   \label{fig:shaping_filter_example}
 \end{figure}
 
@@ -176,7 +176,7 @@ Les inductances sont également distribuées pour augmenter la capacité en cour
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/shaping_filter_schematic.pdf}
-  \caption{shaping-filter schematic}
+  \caption{Schématique du shaping-filter}
   \label{fig:shaping_filter_schematic}
 \end{figure}
 
@@ -189,7 +189,7 @@ La schématique de l'absorbeur est donnée Fig. \ref{fig:absorber_schematic}
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.7\textwidth]{src/1/figures/absorber_schematic.pdf}
-  \caption{absorber schematic}
+  \caption{Schématique de l'absorbeur}
   \label{fig:absorber_schematic}
 \end{figure}
 
@@ -199,7 +199,7 @@ Les courants mesurés à 30ns et 60ns sont dans la marge de tolérance de 30\% d
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.95\textwidth]{src/1/figures/tlp_hmm_waveforms.png}
-  \caption{Measurement versus simulation of a 250V TLP-HMM (equivalent 1kV HMM) on 2\textOmega{}}
+  \caption{Mesure et simulation d'une décharge 250V TLP-HMM (équivalente 1kV HMM) sur 2\textOmega{}}
   \label{fig:tlp_hmm_waveforms}
 \end{figure}
 
@@ -218,7 +218,6 @@ Une tension de charge plus élevée doit aussi être disponible pour augmenter l
 
 \section{Méthode de traitement de capteurs de courant on-chip}
 
-%TODO next
 % Introduction
 La méthode de scan champ-proche a été présentée précédemment dans le chapitre 1.
 Avec cette méthode il est possible de mesurer des cartographies de champ électrique ou magnétique.
@@ -247,7 +246,7 @@ La tension V\textsubscript{sensor} est mesurée avec un oscilloscope 2GHz entre 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/sensor_measurement_setup.pdf}
-  \caption{Calibration sensor setup for time-domain method}
+  \caption{Montage de calibration du capteur de courant sur silicium dans le domaine temporel}
   \label{fig:calibration-sensor}
 \end{figure}
 
@@ -258,7 +257,7 @@ Ces courbes permettent d'estimer $1/G = 8.10^8$ et $A = -V_{TLP}(t = 0)$.
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.95\textwidth]{src/1/figures/measured_waveform.png}
-  \caption{Measured voltage waveform}
+  \caption{Forme d'onde mesurée}
   \label{fig:measurement-nfs}
 \end{figure}
 
@@ -269,7 +268,7 @@ Le montage de calibration est donné Fig. \ref{fig:calibration-sensor-rf}.
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/sensor_measurement_setup_rf.pdf}
-  \caption{Calibration sensor setup for time-domain method}
+  \caption{Montage de calibration du capteur de courant sur silicium dans le domaine fréquentiel}
   \label{fig:calibration-sensor-rf}
 \end{figure}
 
@@ -280,7 +279,7 @@ Elle comprend une mesure du gain et du décalage de phase induits par le capteur
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/s21_freq_response.png}
-  \caption{Sensor frequency response - complex S21 (magnitude and phase)}
+  \caption{Réponse fréquentielle complexe du capteur - S21 (gain et phase)}
   \label{fig:s21-response-complex}
 \end{figure}
 
@@ -296,7 +295,7 @@ Finalement, une FFT inverse permet de ramener la mesure compensée dans le domai
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/frequency_post_process_flow.pdf}
-  \caption{Post-processing pipeline}
+  \caption{Flot de traitement des données}
   \label{fig:postprocess-nfs-pipeline}
 \end{figure}
 
@@ -309,6 +308,6 @@ De multiples améliorations sont possibles, telles que augmenter le nombre de po
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.9\textwidth]{src/1/figures/final_comparison_reconstructions.png}
-  \caption{Reference current waveform versus frequency-domain and time-domain reconstructions}
+  \caption{Courant de référence, reconstruction par méthode temporelle et fréquentielle}
   \label{fig:freq-domain-reconstructed}
 \end{figure}
