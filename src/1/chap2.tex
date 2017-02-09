@@ -72,7 +72,7 @@ Les lignes de transmission ont un délai de 100 ns et une impédance caractéris
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.3\textwidth]{src/1/figures/tline_comparison.png}
+  \includegraphics[width=0.9\textwidth]{src/1/figures/tline_comparison.png}
   \caption{Comparaison des modèles distribué et comportemental par simulation}
   \label{fig:lines-simulations}
 \end{figure}
@@ -98,6 +98,7 @@ Pour démontrer sa précision, le modèle est vérifié par comparaison avec de 
 % Explain how the model, how it was constructed
 Le modèle complet de TLP est donné en Fig. \ref{fig:complete-tlp-model}.
 Il reproduit l'architecture du TLP du laboratoire en utilisant des modèles de la librairie pour chaque élément.
+
 % Detail a first comparison with 25 ohms
 Une première validation avec une mesure est donnée en Fig. \ref{fig:comparison-tlp-load}.
 Avec une charge de 25\textOmega{} et une tension de charge de 500 V, 4.5 A et 125 mV sont relevés sur le second plateau.
@@ -119,7 +120,6 @@ Le modèle fonctionne correctement et reproduit les mesures, prouvant sa validit
 
 \section{Développement d'un générateur TLP modifié}
 
-%TODO: Simplifier
 % TLP is a great tool for esd analysis
 A travers cette étude et de manière générale, le TLP est utilisé très largement comme outil de characterization et de test.
 Il est capable de générer des impulsions très bien contrôlées et reproductibles.
@@ -273,7 +273,7 @@ Le montage de calibration est donné Fig. \ref{fig:calibration-sensor-rf}.
 \end{figure}
 
 % Detail characterization
-La réponse du capteur en puissance transmise S21 est donné Fig. \ref{fig:sensor-response}.
+La réponse du capteur en puissance transmise S21 est donné Fig. \ref{fig:sensor-response-complex}.
 Elle comprend une mesure du gain et du décalage de phase induits par le capteur.
 
 \begin{figure}[!h]
