@@ -1,4 +1,8 @@
-# Autocorrect with hunspell
+# Phd Summary in french
+
+Original document is [here](https://github.com/Overdrivr/PhD)
+
+## Autocorrect with hunspell
 
 * Install from [here](https://sourceforge.net/projects/ezwinports/files/)
 * Download french dictionnary [here](http://www.dicollecte.org/home.php?prj=fr)
