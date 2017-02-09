@@ -1,7 +1,7 @@
 \chapter{Introduction}
 
 % Trends of the electronic field is size reduction
-La miniaturization des circuits électroniques se poursuit malgré des barrières technologiques de plus en plus élevées.
+La miniaturisation des circuits électroniques se poursuit malgré des barrières technologiques de plus en plus élevées.
 La diminution de taille des circuits intégrés permet une réduction des coûts grâce à l'augmentation des volumes de production.
 La réduction de poids des modules électroniques pour l'automobile ou l'aéronautique permet des réductions de carburant, de coût, et moins d'impact sur l'environnement.
 A taille constante, des circuit intégrés plus denses peuvent embarquer plus de fonctionnalités et ont des performances plus élevées.
@@ -10,25 +10,25 @@ A taille constante, des circuit intégrés plus denses peuvent embarquer plus de
 La réduction de taille des circuits intégrés est possible en utilisant des technologies silicium plus fines.
 Une technologie silicium définie les dimensions et les formes d'un ensemble de briques de conception électronique, formant une librairie de composants, ainsi que tous les procédés nécessaires à la fabrication du circuit intégré.
 La plupart du temps, ces librairies de composant sont constituées de différents types de transistors, diode, résistances et capacitances.
-La taille d'une technologie est définie par la plus petite dimension possible pour une grille de transistor, aussi appellée \textlambda.
+La taille d'une technologie est définie par la plus petite dimension possible pour une grille de transistor, aussi appelée \textlambda.
 La valeur de \textlambda est essentielle et conditionne fortement la taille du circuit final, sa consommation et ses performances.
 Jusqu'à présent, la loi de Moore a prédit avec succès que \textlambda serait réduit d'un facteur deux tous les dix-huit mois.
-Le domaine automobile se conforme à cette tendance, en utilisant récemment des noeuds technologiques à 16nm (Fig. \ref{fig:nxp-techno-increase}) \cite{evolution_technologies} normalement utilisés dans des applications moins sévères.
+Le domaine automobile se conforme à cette tendance, en utilisant récemment des nœuds technologiques à 16 nm (Fig. \ref{fig:nxp-techno-increase}) \cite{evolution_technologies} normalement utilisés dans des applications moins sévères.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/technology_evolution.pdf}
-  \caption{Recent evolution of NXP's automotive technology nodes \cite{evolution_technologies}}
+  \caption{Évolution actuelle des nœuds technologiques de NXP \cite{evolution_technologies}}
   \label{fig:nxp-techno-increase}
 \end{figure}
 
 % Side effects of size reduction
 Cette réduction de taille s'accompagne d'une augmentation de la fragilité et de la sensibilité des circuits intégrés.
 Les seuils de tolérances en tension et courant deviennent plus petits, au delà desquels les circuits sont détruits.
-La surface de silicium nécessaire à la protection des coeurs de circuits occupe une plus large part de l'aire totale d'un produit  \cite{evolution_technologies}, et donc du coût.
+La surface de silicium nécessaire à la protection des cœurs de circuits occupe une plus large part de l'aire totale d'un produit  \cite{evolution_technologies}, et donc du coût.
 
 % Another trend in automotive - more electronic functions
-De nos jours, de nouvelles fonctionnalités majeures sont aussi en dévelopement dans le domaine automobile.
+De nos jours, de nouvelles fonctionnalités majeures sont aussi en développement dans le domaine automobile.
 En particulier, les véhicules autonomes ou l'aide à la conduite font leur apparition sur les routes.
 Ces fonctionnalités font en permanence des décisions et prennent des actions critiques sur le véhicule, comme tourner le volant ou enclencher le freinage.
 Elles sont implémentées afin d'augmenter la sécurité des usagers d'un véhicule, ce qui résulte en des responsabilités et des contraintes accrues sur les modules électroniques.
@@ -36,7 +36,7 @@ La sûreté de fonctionnement des ces modules est donc vitale pour ce type d'app
 
 % Another trend is reduced power consumptions
 L'augmentation de la quantité d'électronique dans un véhicule s'accompagne aussi d'une forte hausse de la consommation électrique.
-Au niveau circuit-intégré, les tensions d'alimentations sont réduites très bas, avec communément des seuils d'alimentions de 1V.
+Au niveau circuit-intégré, les tensions d'alimentations sont réduites très bas, avec communément des seuils d'alimentations de 1 V.
 Les marges de bruit des cellules digitales sont réduites d'autant, rendant les circuits bien plus sensibles aux perturbations électriques.
 
 % Harsh environment in the automotive field
@@ -47,7 +47,7 @@ Les contacts électriques, les soudures et les connections vieillissent plus rap
 De plus, les systèmes électroniques sont exposés à une large plage de stress électriques.
 Quand le moteur est allumé, la tension de batterie chute fortement à cause de l'appel de courant créé par le démarreur.
 Cette variation très brutale peut affecter ou endommager les modules.
-Il existe également une autre famille de perturbations électriques appellée décharges électrostatiques (ESD - ElectroStatic Discharge), auxquelles sont exposés tous les systèmes électroniques en général.
+Il existe également une autre famille de perturbations électriques appelée décharges électrostatiques (ESD - ElectroStatic Discharge), auxquelles sont exposés tous les systèmes électroniques en général.
 Dans l'automobile, ces phénomènes sont particulièrement violents.
 % What is an ESD
 Une décharge électrostatique est un transfert de charge soudain entre deux objets de différente charge.
@@ -58,27 +58,27 @@ Le fabricant de véhicules Renault estimes que les composants électroniques aut
 
 % Architecture systemes automobiles
 L'architecture des systèmes électriques dans un véhicule est également très complexe et rude pour les modules électroniques.
-Une voiture est consistutées d'une multitude de modules électroniques interconnectés par des câbles.
+Une voiture est constituée d'une multitude de modules électroniques interconnectés par des câbles.
 C'est un vrai challenge pour garantir la robustesse de cet ensemble contre des perturbations électriques.
-La seule connection d'une voiture à une vrai référence électrique se fait par les pneus, ce qui équivaut globalement à une très mauvaise connection à la terre.
+La seule connexion d'une voiture à une vrai référence électrique se fait par les pneus, ce qui équivaut globalement à une très mauvaise connexion à la terre.
 Néanmoins, les modules électroniques ont besoin d'une bonne référence pour communiquer entre eux et fonctionner correctement.
 Ceci est assuré par la carcasse métallique du véhicule.
 En statique et à basse fréquence, cette référence est très bonne car très peu résistive.
 Les décharges électrostatiques sont au contraire des évènements avec la majorité du spectre à très haute fréquence, jusqu'à 1 GHz environ.
-Dans cette gamme de fréquence, la carcasse métallique ne se comporte plus comme une bonne référence et les cables deviennent largement inductifs.
+Dans cette gamme de fréquence, la carcasse métallique ne se comporte plus comme une bonne référence et les câbles deviennent largement inductifs.
 Ces phénomènes peuvent donc fortement perturber les systèmes électroniques.
-De plus, les cables peuvent rayonner et les propagations peuvent se propager par couplage.
-Globalement, l'architecture d'un véhicule est complex et sensible par nature aux perturbations.
+De plus, les câbles peuvent rayonner et les propagations peuvent se propager par couplage.
+Globalement, l'architecture d'un véhicule est complexe et sensible par nature aux perturbations.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.6\textwidth]{src/1/figures/systemintegration_01_uv-data.jpg}
-  \caption{Architecture of electronic systems in a vehicle \cite{car-architecture}}
+  \caption{Architecture des systèmes électroniques dans un véhicule \cite{car-architecture}}
   \label{fig:car-architecture}
 \end{figure}
 
 % Fiabilite vis a vis des ESD
-En résumé, la quantité de composants électroniques est en augmentation et en parallele ils deviennent de plus en plus sensibles.
+En résumé, la quantité de composants électroniques est en augmentation et en parallèle ils deviennent de plus en plus sensibles.
 De plus, ils doivent opérer dans une environnement électrique sévère, avec de multiples sources de perturbation.
 Ces perturbations peuvent créer des défaillances.
 Dans le domaine des décharges électrostatiques, il y a deux types de défaillances à considérer.
@@ -92,13 +92,13 @@ La perturbation du système d'airbag est par exemple bien plus critique celle du
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.4\textwidth]{src/1/figures/esd_failures.jpg}
-  \caption{Different kinds of ESD-induced failures}
+  \caption{Types de défaillances matérielles causées par des ESD}
   \label{fig:esd-failures}
 \end{figure}
 
 % Comment predire ces defaillances fonctionnelles
 Des travaux sur ce sujet ont été publiés par F. Caignet et N. Lacrampe en 2007 \cite{}.
-Egalement, de nombreuses recherches sur les défaillances au niveau système ont été publiées pendant les symposia EOS/ESD 2012 \cite{} et 2013 \cite{}.
+Également, de nombreuses recherches sur les défaillances au niveau système ont été publiées pendant les symposia EOS/ESD 2012 \cite{} et 2013 \cite{}.
 De plus, le standard IEC 62433-6 encore en phase d'élaboration cherche à formaliser des méthodes de base pour l'analyse et la prédiction de faiblesses fonctionnelles.
 Globalement, les recherches dans ce domaine restent focalisées au niveau système.
 Dans ce document, la recherche et l'analyse de faiblesses fonctionnelles a lieu plus bas dans la hiérarchie, au niveau circuit-intégré.
@@ -114,7 +114,7 @@ La chapitre \ref{chap:2} présente un méthode de modélisation pour simuler la 
 C'est une part important du problème que d'identifier quelle fraction d'une décharge atteint réellement un circuit intégré.
 Une librairie de modèles est construite, ensuite assemblés ensemble pour reproduire le système à simuler.
 Un générateur de stress utilisé dans le laboratoire de test à NXP est modélisé pour illustrer la méthode.
-Un nouveau générateur de stress, appellé TLP-HMM est ensuite proposé, reproduisant une forme d'onde standardizée mais avec des avantages importants sur les générateurs actuels.
+Un nouveau générateur de stress, appelé TLP-HMM est ensuite proposé, reproduisant une forme d'onde standardisée mais avec des avantages importants sur les générateurs actuels.
 Ce générateur est particulièrement intéressant pour effectuer des tests de décharge sur circuits intégrés.
 
 %
@@ -122,7 +122,7 @@ Un cas de défaillance fonctionnelle est ensuite présenté dans le chapitre \re
 Tout d'abord, des mesures sont effectuées de manière externe sur le circuit intégré sous test.
 La signature de la défaillance est expliquée.
 Ensuite, un circuit intégré de test est développé et fabriqué sur silicium.
-Il contient des structures spéciales pour mesurer les pertubations directement depuis le silicium.
+Il contient des structures spéciales pour mesurer les perturbations directement depuis le silicium.
 
 %
 Ces travaux ont aussi été orientés vers la recherche de nouvelles méthodes de simulation.
