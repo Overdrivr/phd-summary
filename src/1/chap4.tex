@@ -12,33 +12,33 @@ La première est destinée aux concepteurs de circuits intégrés, tandis que la
 \section{Méthode bottom-up}
 
 % What is bottom up
-L'approche présentée ici est apellée bottom-up, c'est à dire du bas vers le haut.
+L'approche présentée ici est appelée bottom-up, c'est à dire du bas vers le haut.
 Elle consiste à caractériser de petites fonctions assez bas dans la hiérarchie du circuit intégré, de manière individuelle, puis d'assembler ensemble leurs modèles afin de déduire le comportement global.
-Cett approche présente l'intérêt que des fonctions individuelles sont susceptibles d'être réutilisées, et donc que l'effort de charactérisation et de modélisation n'a besoin d'être fourni qu'une seule fois.
-Un schéma de charactérisation assez simple est utilisé en simulation pour charactériser chaque bloc (Fig. \ref{block_function_cz}).
+Cette approche présente l'intérêt que des fonctions individuelles sont susceptibles d'être réutilisées, et donc que l'effort de caractérisation et de modélisation n'a besoin d'être fourni qu'une seule fois.
+Un schéma de caractérisation assez simple est utilisé en simulation pour caractériser chaque bloc (Fig. \ref{block_function_cz}).
 Il fournit l'alimentation nécessaire à la fonction qui doit être en fonctionnement.
 Il permet également d'injecter sur une entrée un stress électrique et d'observer la réponse sur une sortie.
 
 \begin{figure}[!h]
   \centering
   \includegraphics{src/1/figures/characterization_setup.pdf}
-  \caption{Block characterization setup (supply input)}
+  \caption{Circuit de caractérisation de bloc}
   \label{block_function_cz}
 \end{figure}
 
 % What are the characterization signal
 %TODO ref
-Le signal de charactérisation est une impulsion rectangulaire, appliquée sur l'entrée sous test.
+Le signal de caractérisation est une impulsion rectangulaire, appliquée sur l'entrée sous test.
 Un ensemble de simulations est effectué en faisant varier les paramètres de cette forme d'onde, injectée sur l'entrée.
 Plus précisément, une analyse paramétrique est réalisée sur l'amplitude et la durée de l'impulsion.
 Cet ensemble de simulations est résumé dans la Fig. \ref{set_input_signals}.
-Cette méthode de charactérisation est fortement inspirée de la méthode Wunsch & Bell \cite{}.
+Cette méthode de caractérisation est fortement inspirée de la méthode Wunsch & Bell \cite{}.
 
 %TODO: Fix sim 12 sim12
 \begin{figure}[!h]
   \centering
   \includegraphics{src/1/figures/time_domain_cz_curves.pdf}
-  \caption{Variations on (amplitude, duration) of the input characterization signal}
+  \caption{Jeu de variations sur l'amplitude et la durée du signal de caractérisation}
   \label{set_input_signals}
 \end{figure}
 
@@ -60,7 +60,7 @@ Sachant que ce modèle accepte les mêmes types de paramètres en entrée et en 
 \begin{figure}[!h]
   \centering
   \includegraphics{src/1/figures/principle_transfert_function_v2.pdf}
-  \caption{Improved modelling method}
+  \caption{Méthode de modélisation améliorée}
   \label{fig:principle-transfert-func-v2}
 \end{figure}
 
@@ -71,7 +71,7 @@ L'objectif est de comparer une simulation transistor de la fonction globale, à 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.98\textwidth]{src/1/figures/hypothesis_testing_setup.pdf}
-  \caption{Testbenches used for characterization and hypothesis testing}
+  \caption{Schématique de validation de l'hypothèse}
   \label{fig:hypothesis-setup}
 \end{figure}
 
@@ -84,21 +84,21 @@ Ces deux valeurs sont utilisées comme paramètres d'entrée sur le second modè
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.98\textwidth]{src/1/figures/simulation_comparison_block1.png}
-  \caption{$V_{clamp9}$ waveform}
+  \caption{Allure temporelle $V_{clamp9}$}
   \label{fig:sim-compare-block1}
 \end{figure}
 
 % Second block output
-A la sortie du second block, des différences plus larges apparaissent entre la simulation individuelle et totale. (Fig. \ref{fig:sim-compare-block2}).
+A la sortie du second bloc, des différences plus larges apparaissent entre la simulation individuelle et totale. (Fig. \ref{fig:sim-compare-block2}).
 La courbe verte a une pente plus longue que la référence.
-Néanmoins, les courbes ont quand même des charactéristiques communes en terme d'amplitude maximale et de durée, ce qui est intéressant en regard de cette méthode de modélisation.
-La courbe de sortie est analysée et son amplitude maximale déterminée à 0V avec une durée de 2 \textmugreek{}s.
+Néanmoins, les courbes ont quand même des caractéristiques communes en terme d'amplitude maximale et de durée, ce qui est intéressant en regard de cette méthode de modélisation.
+La courbe de sortie est analysée et son amplitude maximale déterminée à  0 V avec une durée de 2 \textmugreek{}s.
 Ces deux valeurs sont appliquées sur l'entrée de la troisième simulation.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.98\textwidth]{src/1/figures/simulation_comparison_block2.png}
-  \caption{$V_{1p0}$ waveform}
+  \caption{Allure temporelle $V_{1p0}$}
   \label{fig:sim-compare-block2}
 \end{figure}
 
@@ -110,7 +110,7 @@ La courbe de référence est retardée par rapport à la courbe individuelle, ma
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.98\textwidth]{src/1/figures/simulation_comparison_block3.png}
-  \caption{$V_{2p5}$ waveform}
+  \caption{Allure temporelle $V_{2p5}$}
   \label{fig:sim-compare-block3}
 \end{figure}
 
@@ -124,18 +124,18 @@ Elle montre néanmoins des résultats prometteurs.
 % Difference with bottom-up, not the same application, not the same goal
 La méthode boite noire exposée ci-après a pour but de modéliser une fonction d'un circuit intégré, entre une entrée et une sortie.
 L'objectif est d'effectuer une simulation ESD au niveau carte électronique, pendant le fonctionnement normal, en prenant en compte les circuits intégré.
-Cette méthode nécessite de charactériser la fonction de transfert d'une fonction intégrée sur silicium, entre une broche d'entrée et une broche de sortie toutes deux externes.
+Cette méthode nécessite de caractériser la fonction de transfert d'une fonction intégrée sur silicium, entre une broche d'entrée et une broche de sortie toutes deux externes.
 
 % introduction, failure relation between input and output
 Le principal avantage de cette méthode est de s'abstraire au niveau système de la complexité au niveau circuit intégré.
-La charactérisation est effectuée en appliquant une fois de plus une impulsion rectangulaire d'amplitude et de durée variables.
+La caractérisation est effectuée en appliquant une fois de plus une impulsion rectangulaire d'amplitude et de durée variables.
 La broche d'entrée reçoit ce stress, pendant que la broche de sortie est surveillée et mesurée.
 
 % What is characterized
 Pour tester cette méthode, elle est appliquée en simulation sur la schématique du véhicule de test détaillé dans le chapitre 3.
-Les impulsions de charactérisation sont injectées sur l'entrée $V_{batt}$.
-La broche de sortie à surveiller est la pin $V_{2p5}$, correspondant à l'alimentation 2.5V régulée.
-Un seuil à 2.1V est fixé en dessous duquel une défaillance est considérée.
+Les impulsions de caractérisation sont injectées sur l'entrée $V_{batt}$.
+La broche de sortie à surveiller est la pin $V_{2p5}$, correspondant à l'alimentation 2.5 V régulée.
+Un seuil à 2.1 V est fixé en dessous duquel une défaillance est considérée.
 En dessous de ce seuil, les portes logiques ne sont plus garanties de fonctionner correctement.
 La figure \ref{fig:cz-black-box} affiche la présence d'une faute en fonction des paramètres du stress d'entrée.
 L'axe des abscisses correspond à la largeur d'impulsion, et celui des ordonnées à l'amplitude du stress.
@@ -145,51 +145,51 @@ Avec une largeur d'impulsion et une amplitude appliquée sur $V_{batt}$, la cour
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/black_box_regulator.png}
-  \caption{Black-box characterization of the regulation function}
+  \caption{Caractérisation boite-noire de la fonction de régulation}
   \label{fig:cz-black-box}
 \end{figure}
 
 % What to do with that
 Néanmoins, l'objectif final de la méthode boite noire est aussi de fournir un modèle électrique équivalent du circuit intégré.
-Le modèle de faute n'est pas un modèle électrique, et ne permet pas de déterminer par exemple pour une tension donnée quel couran est absorbé par une broche.
+Le modèle de faute n'est pas un modèle électrique, et ne permet pas de déterminer par exemple pour une tension donnée quel courant est absorbé par une broche.
 Par conséquent, il est aussi nécessaire de développer un modèle électrique équivalent de la broche.
-Afin d'extraire un modèle I(V), des charactérisations sont effectuées avec la méthode TLP en simulation.
-La charactérisation est effectuée à la fois sur un circuit alimenté et non alimenté.
+Afin d'extraire un modèle I(V), des caractérisations sont effectuées avec la méthode TLP en simulation.
+La caractérisation est effectuée à la fois sur un circuit alimenté et non alimenté.
 L'objectif est de déterminer l'impact de l'alimentation sur la courbe TLP.
-Les charactérisations de l'entrée et de la sortie dans les deux conditions d'alimentation sont fournies dans les figures \ref{fig:tlp-input-cz} et \ref{fig:tlp-output-cz}.
+Les caractérisations de l'entrée et de la sortie dans les deux conditions d'alimentation sont fournies dans les figures \ref{fig:tlp-input-cz} et \ref{fig:tlp-output-cz}.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/tlp_input_characterization.png}
-  \caption{TLP characterization of function input in powered and unpowered conditions}
+  \caption{caractérisation TLP de la broche d'entrée en alimenté et non-alimenté}
   \label{fig:tlp-input-cz}
 \end{figure}
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/tlp_output_characterization.png}
-  \caption{TLP characterization of function output in powered and unpowered conditions}
+  \caption{caractérisation TLP de la broche de sortie en alimenté et non-alimenté}
   \label{fig:tlp-output-cz}
 \end{figure}
 
 Pour l'entrée et la sortie, de grandes différences sont observées entre un circuit alimenté et non alimenté.
 Des quantités différentes de courant sont absorbées par le circuit dans chaque condition.
-Puisque le modèle est destiné à des simulations du composant en fonctionnement, la charactérisation en alimenté est selectionnée par la suite.
+Puisque le modèle est destiné à des simulations du composant en fonctionnement, la caractérisation en alimenté est sélectionnée par la suite.
 
 % Explain the PWL model
-Maintenant que le circuit est charactérisé, il est possible d'en construire un modèle électrique.
-La stratégie utilisée est de reproduire la courbe I(V) avec une courbe linéaire par morceaux, en utilisant le language de description matérielle Verilog-A.
+Maintenant que le circuit est caractérisé, il est possible d'en construire un modèle électrique.
+La stratégie utilisée est de reproduire la courbe I(V) avec une courbe linéaire par morceaux, en utilisant le langage de description matérielle Verilog-A.
 Le code source du modèle est fourni dans le document complet.
 % Validate the model with TLP
 Le modèle est construit pour la broche d'entrée puis simulé et comparé à la schématique complète.
-Il a été vérifié pour un amplitude de stress de -10V (Fig. \ref{fig:compare-model-simu-m10}, Fig. \ref{fig:compare-model-simu-20}, Fig. \ref{fig:compare-model-simu-40}).
-D'autres validations à 20V et 40V sont fournies dans le document complet.
-Globablement, une bonne corrélation entre le modèle et le circuit complet est observée pour l'entrée.
+Il a été vérifié pour un amplitude de stress de -10 V (Fig. \ref{fig:compare-model-simu-m10}, Fig. \ref{fig:compare-model-simu-20}, Fig. \ref{fig:compare-model-simu-40}).
+D'autres validations à 20 V et 40 V sont fournies dans le document complet.
+Globalement, une bonne corrélation entre le modèle et le circuit complet est observée pour l'entrée.
 
 \begin{figure}[!h]
   \centering
   \includegraphics[width=\textwidth]{src/1/figures/comparison_model_total_m10V.png}
-  \caption{Comparison of complete schematic and model simulations - -10V TLP}
+  \caption{Comparaison entre la schématique complète et le modèle avec une injection TLP -10 V}
   \label{fig:compare-model-simu-m10}
 \end{figure}
 
@@ -201,7 +201,7 @@ Pour reproduire ce comportement, un premier modèle est proposé Fig. \ref{fig:f
 \begin{figure}[!h]
   \centering
   \includegraphics[width=0.3\textwidth]{src/1/figures/first_output_model.png}
-  \caption{First proposal for modeling function output}
+  \caption{Modèle proposé pour la modélisation électrique de la sortie}
   \label{fig:first-output-model}
 \end{figure}
 
@@ -209,7 +209,7 @@ Pour reproduire ce comportement, un premier modèle est proposé Fig. \ref{fig:f
 Les premiers tests montrent que cette approche ne fonctionne pas.
 Le modèle de la sortie échoue à reproduire le courant en statique uniquement avec la courbe I(V) du TLP, et n'est pas suffisamment précise pour reproduire l'amplitude de la perturbation sur la sortie.
 Par ailleurs, ce modèle requiert en plus de prendre en compte le niveau sur l'entrée et de changer de comportement en cas de faute.
-Cela apelle probablement à un modèle de sortie controllé par l'entrée, en plus des contraintes existantes pour le faire fonctionner en nominal.
+Cela appelle probablement à un modèle de sortie contrôlé par l'entrée, en plus des contraintes existantes pour le faire fonctionner en nominal.
 Tous ces problèmes seront étudiés dans des travaux futurs afin d'être capable de proposer un modèle fonctionnel, pouvant servir pendant les phases de conception des cartes électroniques.
 
 % Conclusion
@@ -219,7 +219,7 @@ Concrètement, cela se traduit par protéger le circuit à tous les niveaux, ave
 Dans la première partie de ce chapitre, une méthode d'extraction de modèle de faute a été présentée.
 Elle permet de créer des modèles boite-noire de la faute d'une fonction entre une entrée et une sortie.
 Il y a énormément de possibilités d'expérimentation, et la méthode n'en est qu'à ses balbutiements, mais le concept de base semble efficace.
-La seconde partie de la méthode consiste à modéliser et simplifier les entrées et sortie électriquement par d'une charactérisation TLP.
+La seconde partie de la méthode consiste à modéliser et simplifier les entrées et sortie électriquement par d'une caractérisation TLP.
 L'objectif est de réduire la complexité et les temps de simulation.
 Cette méthode s'est avérée fonctionnelle pour la modélisation d'une entrée, mais ne fonctionne pas pour une sortie qui doit fournir du courant.
 Des travaux et des investigations supplémentaires sont requises pour corriger ces problèmes.
