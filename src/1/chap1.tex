@@ -5,8 +5,7 @@
 % What generates an ESD
 Une décharge électrostatique est le résultat d'une accumulation de potentiel électrostatique, causée par induction électrique ou de la triboélectricité.
 La charge triboélectrique se produit par transfert d'électrons lorsque deux objets sont mis en contact puis séparés.
-Un objet se charge positivement et l'autre négativement.
-Le signe de la charge dépend du matériau de l'objet.
+Un objet se charge positivement et l'autre négativement suivant les matériaux.
 La charge par induction se produit lorsque l'objet baigne dans un champs électrique, puis est soudainement mis à la masse.
 
 % Electronic devices are exposed to ESD, in factories first
@@ -16,20 +15,22 @@ Pendant la fabrication, les circuits sont manipulés par des machines, ce qui ca
 Il existe plusieurs standards de test pour garantir qu'un produit peut survivre aux étapes de fabrication.
 Les testeurs HMM (Human Machine Model) et CDM (Charged Device Model) valident respectivement la robustesse vis-à-vis de la décharge d'un objet dans le produit, et la décharge du produit dans la masse.
 Ces tests sont conçus pour reproduire fidèlement les stress rencontrés dans l'environnement de fabrication.
+Généralement, les environnements de fabrication sont appellés EPA (Electrostatic Protected Area) si ils possèdent des équipements qui évitent l'accumulation de charges électrostatiques et autorisent une manipulation des composants électroniques.
+Les testeurs HMM et CDM garantissent avant tout que les composants sont capables de survivre à la zone EPA.
 
 % Electronic devices are exposed to ESD in the field
-Des défaillances peuvent aussi apparaitre une fois le produit déployé sur le terrain.
-Dans le cas de produits grand-public, elles peuvent être causées par la manipulation des objets par des humains chargés électriquement.
-C'est le cas des téléphones portables et des caméras par exemple.
+Des défaillances peuvent aussi apparaitre une fois le produit dans son environnement final de fonctionnement.
+Dans le cas de produits grand-public et multimédia, elles peuvent être causées par la manipulation des objets par des humains chargés électriquement.
 Dans l'environnement automobile, les contraintes sont encore plus fortes à cause d'autres phénomènes de génération de tribo-électricité.
 
 % Hard-failure is one thing, soft-fail another
 Il y a deux classes de défaillances dues aux ESD.
 La casse matérielle est le premier type de défaillance.
 Le composant est détruit après une décharge et doit être remplacé.
-La perte de fonctionnalité est le second type, et se produit alors que le produit est alimenté et en fonctionnement normal.
+La perte de fonctionnalité est le second type de défaillance, et se produit alors que le produit est alimenté et en fonctionnement.
 La décharge perturbe une ou plusieurs fonctions, qui a besoin d'un délai pour récupérer.
 Parfois, la fonction est bloquée et un redémarrage manuel du produit est requis pour rétablir un fonctionnement normal.
+Ce genre de faute est très problématique pour les systèmes temps-réel, censés réagir immédiatement et sans interruption.
 
 \section{Méthodes de test ESD}
 
@@ -37,14 +38,14 @@ Pour reproduire les décharges électrostatiques dans un laboratoire, de multipl
 Le TLP (Transmission Line Pulser) est un des plus largement utilisés.
 Il est employé dans une variété d'applications, pour la characterization de composants \cite{TLPforESDProtectionCz, TLPthroubleshooting}, l'investigation de défaillances \cite{tlp-application-1, tlp-application-2} et la corrélation avec d'autre générateurs de test \cite{correlation-system-level-esd-tlp}.
 Cette technique a été inventée par T. Maloney et N. Nakamura \cite{TLP}.
-Elle est en cours de standardisation avec ANSI/ESD STM 5.5.1-2016 \cite{tlp-standard}.
-Ce type de générateur a été longuement étudié dans les thèses de N. Monnereau \cite{phd-monnereau} et N. Lacrampe \cite{phd-lacrampe}.
+Elle est standardisée sous la référence ANSI/ESD STM 5.5.1-2016 \cite{tlp-standard}.
+Ce type de générateur est détaillé dans les thèses de N. Monnereau \cite{phd-monnereau} et N. Lacrampe \cite{phd-lacrampe}.
 
 % Concept
 Un TLP génère une impulsion rectangulaire très courte, en utilisant la décharge d'un câble coaxial (Fig. \ref{tlp_concept}).
 Le câble est initialement chargé par une source haute-tension à travers une résistance de forte valeur.
 Une fois la tension du câble suffisamment élevée, un relai est commuté pour déclencher la décharge.
-Le coaxial utilisé a généralement une impédance caractéristique de 50\textOmega{} et une longueur de 5 mètres, correspondant à un délai de 50 ns de propagation.
+Le câble utilisé a généralement une impédance caractéristique de 50\textOmega{} et une longueur de 10 mètres, correspondant à un délai de 50 ns de propagation.
 La décharge produite par un tel câble est deux fois plus longue (à cause des effets de propagation) et dure 100 ns.
 
 \begin{figure}[!h]
@@ -57,19 +58,12 @@ La décharge produite par un tel câble est deux fois plus longue (à cause des 
 % Characteristics of tlp systems
 Un système TLP produit des impulsions très reproductibles, car l'environnement est très bien maitrisé et la décharge a lieu dans un chemin de propagation blindé et isolé des perturbations extérieures.
 L'impédance caractéristique de 50\textOmega{} peut être maintenue jusqu'à la charge.
-Les propriétés clés d'une impulsion TLP sont données dans la figure \ref{tlp_pulse}.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=\textwidth]{src/1/figures/tlp_pulse.pdf}
-  \caption{Caractéristiques principales d'une décharge TLP sur une charge résistive}
-  \label{tlp_pulse}
-\end{figure}
 
 % ESD guns
 Le TLP est un excellent outil de test et d'investigation, mais la forme d'onde est très différente d'une vraie décharge électrostatique.
-Pour garantir la robustesse d'un produit, les pistolets de décharge ESD sont préférables.
-Les standards IEC 61000-4-2 \cite{iec61000-4-2} et ISO 10605 \cite{iso10605} définissent une forme d'onde de test pour les systèmes électroniques.
+Par ailleurs, pour mettre un produit sur le marché il est nécessaire de la qualifier à l'aide des testeurs type "pistolets de décharge ESD".
+Ces testeurs ne permettent pas par contre une investigation aussi aisée et poussée que le TLP.
+Les standards IEC 61000-4-2 \cite{iec61000-4-2} et ISO 10605 \cite{iso10605} définissent une forme d'onde de qualification pour les systèmes électroniques.
 Elle reproduit la décharge d'un corps humain à travers un circuit électronique.
 Ces tests sont utilisés très largement pour la qualification des produits.
 Un pistolet ESD est constitué d'une pointe métallique qui sert à injecter la décharge.
@@ -77,7 +71,7 @@ Le retour de masse est assuré par un câble métallique long de quelques mètre
 
 % How is the pulse generated
 La génération de la décharge est assurée en théorie par une résistance de 330\textOmega{} et une capacité de 150.
-En pratique, ce réseau RC n'est pas suffisant et les éléments parasites jouent un rôle important.
+En pratique, ce réseau RC n'est pas suffisant pour modéliser la forme d'onde et les éléments parasites jouent un rôle important.
 Le modèle de Chiu \cite{phd-chiu} définit un circuit équivalent de pistolet ESD.
 Il est fournit dans la figure \ref{fig:esd-gun-model}.
 Un réseau R\textsubscript{g}L\textsubscript{g}C\textsubscript{g} modélise le retour de masse.
@@ -85,7 +79,7 @@ Une capacité parasite C\textsubscript{i} ainsi qu'une inductance en série L\te
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.3\textwidth]{src/1/figures/gun_model.pdf}
+  \includegraphics[width=0.7\textwidth]{src/1/figures/gun_model.pdf}
   \caption{modèle de pistolet ESD}
   \label{fig:esd-gun-model}
 \end{figure}
@@ -105,137 +99,50 @@ Les niveaux de tensions peuvent atteindre 15 kV et de courant 30 A.
 \end{figure}
 
 % autres méthodes
-Il existe un grand nombre d'autres méthodes de test.
+Il existe un grand nombre d'autres méthodes de test, non spécifiques aux tests ESD mais qui peuvent permettre d'évaluer la robustesse des fonctions électroniques.
 Dans l'automobile, le standard ISO 7637-2 est très largement employée pour qualifier les modules électroniques.
-La méthode DPI (Direct Power Injection) est aussi très intéressante de par son circuit de couplage d'un stress sur une tension d'alimentation, ce qui est souvent nécessaire pour faire des tests ESD sur des produits en fonctionnement.
+La méthode DPI (Direct Power Injection) est une méthode d'injection CEM très intéressante de par son circuit de couplage d'un stress sur une tension d'alimentation, qui est souvent nécessaire pour faire des tests ESD sur des produits en fonctionnement.
 
 Une fois les produits testés, des cas de défaillances peuvent-être identifiés.
 La partie suivante présente des cas de défaillances fonctionnelles trouvés dans la littérature.
 
 \section{Méthodes d'analyse de faiblesses fonctionnelles}
 
-% Case 1 - NXP bandgap + substrate coupling
-Une sac d'étude typique de défaillance fonctionnelle est présenté par K. Abouda dans \cite{softfailEMCIC}.
-L'étude concerne la perte de la régulation de tension assurée normalement dans un circuit intégré pour l'automobile.
-La perte de régulation se produit lors d'une exposition du circuit à une décharge BCI (Bulk Current Injection) ISO11452-4 \cite{iso11452}.
-Les chemins de propagation et de couplages à l'intérieur du circuit sont recherchés manuellement dans le design du produit, à l'aide de multiples simulations.
-Il est démontré qu'un résidu de la décharge modifiait la tension de commande d'un miroir de courant dans une référence bandgap.
-Ce résidu atteignait le point perturbé du miroir via un couplage parasite.
-A cause de cette perturbation, la tension bandgap chutait de sa tension nominale, au point d'atteindre un seuil bas détecté comme une faute par le système.
-En conséquence, le système effectuait un redémarrage complet.
-Pour éviter cela, le design a été corrigé afin d'appliquer un filtrage dans le miroir de courant pour éliminer ce résidu.
-
-% Case 2 - CESAME IC - paper Vrignon + Ben dhia
-N. Lacrampe présente un autre cas de défaillance dans \cite{LacrampeTransientImmunity}.
-Des impulsions Very-fast TLP sont injectées sur un circuit intégré de test en technologie CMOS 0.18 \textmu{}m (1.8 V alimentation).
-La puce contient 6 instances du même cœur logique, qui diffèrent par l'architecture de leurs rails d'alimentation.
-L'injection sur les rails d'alimentation est effectuée à travers une capacité de 1 nF permet d'isoler le générateur de test de l'alimentation DC.
-Cette approche avec une capacité d'injection est similaire au standard DPI \cite{iec62132-4}.
-% What is the failure signature
-Pour détecter des défaillances, un signal de sortie de la logique est surveillé.
-Le critère de susceptibilité est une variation d'amplitude en dessous d'un seuil situé à 80\% du niveau logique haut.
-En dessous de ce seuil, les marges de bruit ne permettent plus de garantir un fonctionnement correct du cœur de circuit.
-Il est démontré dans ce papier que modéliser le buffer de sortie de la logique est suffisant pour reproduire les formes d'ondes, avec une erreur inférieure à 20\%.
-Par conséquent, cette méthode est moins précise qu'une simulation de la schématique entière, mais présente l'avantage d'être plus rapide à simuler.
-Les outils de simulation employés dans cette étude sont principalement du VHDL-AMS et des simulations SPICE.
-
-% Case 3 - failures on an SDRAM
+Une revue de la littérature a permis d'identifier les études clés dans l'étude des circuits électroniques pertubés pendant leur fonctionnement par des ESD.
+Certaines études concernent des cas de défaillance sur des circuits intégrés.
+C'est le cas de l'étude de N. Lacrampe \cite{LacrampeTransientImmunity} sur des coeurs logiques en technologie CMOS 0.18 \textmu{}m exposés à des impulsions "very-fast" TLP.
 Dans \cite{SDRAMCase}, des fautes fonctionnelles sont étudiées sur une mémoire de type SDRAM pendant son fonctionnement normal.
-Le système d'injection utilise une cellule TEM (Transverse Electro Magnetic) modifiée de dimensions réduites \ref{fig:modified-tem-cell}, afin d'obtenir des champs électromagnétiques plus forts correspondants à une décharge de pistolet ESD.
-La décharge injectée dans la cellule TEM est générée par une impulsion TLP filtrée afin de ressembler à une décharge IEC 61000-4-2 \cite{iec61000-4-2}.
-La puce contenant la SDRAM est assemblée sur une carte électronique.
-Afin de détecter des fautes, des données sont écrites puis lues en permanence par un FPGA (Field Programmable Gate Array).
-Une différence de lecture est alors interprétée comme une défaillance.
-Seulement la mémoire est exposée à la perturbation en étant placées à l'intérieur de la cellule TEM.
-Le reste des composants de la carte sont localisés de l'autre côté de la carte, à l'extérieur de la cellule.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.6\textwidth]{src/1/figures/modified_tem_cell.png}
-  \caption{Cellule TEM modifiée \cite{SDRAMCase}}
-  \label{fig:modified-tem-cell}
-\end{figure}
-
 Deux types de défaillances de bus de communication vidéo sont présentés dans \cite{softFailSubsystem}.
-En fonction des paramètres de décharge, différents évènements sont observés.
-L'objectif de cette étude est de déterminer qui du capteur ou du processeur d'application est responsable de la défaillance.
-Une carte d'émission magnétique est enregistrée avec un scanner de champ proche afin d'essayer de détecter des variations locales.
-L'hypothèse était qu'une perte de fonctionnalité peut induire des variations importantes sur la carte d'émission, ce qui permettrait de les détecter.
-Néanmoins, l'origine des défaillances n'a pas pu être localisé avec cette méthode dans cette étude.
-
-Un affichage LCD (Liquid Crystal Display) est étudié dans \cite{softFailLCD}.
-Il est testé à l'aide d'une décharge IEC 61000-4-2 \cite{iec61000-4-2} et des fautes fonctionnelles sont observées.
-Des bandes noires apparaissent à la suite de la décharge, ainsi que des variations de paramètres optiques et de rétro-éclairage.
-La forme d'onde trop complexe empêchait d'identifier la cause de défaillance, et une solution alternative a du être utilisée.
-Une injection par champ proche fut employée afin d'identifier quelle piste du connecteur LCD flex présentait la plus forte susceptibilité.
-Néanmoins, les dimensions trop petites du connecteur et des pistes rendaient impossible d'agresser individuellement chaque piste.
-Comme alternative, l'utilisation d'un TLP couplé capacitivement sur chaque piste permit une agression individuelle.
-Néanmoins, les résultats furent infructueux et aucune piste ne put être identifiée comme point d'entrée de la décharge.
-
-Une méthode d'investigation basée sur des simulations électromagnétiques est présentée dans \cite{softFailMobile} afin de déterminer les chemins de propagation de décharges, causant des fautes sur un appareil mobile.
-La décharge de test est celle définie dans IEC 61000-4-2.
-Des simulations électromagnétiques temporelles en 3D du téléphone complet furent effectuées (Fig. \ref{fig:mobile-phone-3d-em})
+Un scanner champ-proche a été utilisé sans succés pour tenter de localiser l'origine des défaillances.
+Un affichage LCD (Liquid Crystal Display) est étudié dans \cite{softFailLCD}, présentant des problèmes d'affichages à la suite de décharges IEC 61000-4-2 \cite{iec61000-4-2}.
+Malgré plusieurs tentatives à l'aide d'une injection champ proche et d'un TLP, les résultats furent infructueux et aucune piste ne put être identifiée comme point d'entrée de la décharge.
+Une méthode d'investigation basée sur des simulations électromagnétiques est présentée dans \cite{softFailMobile} afin de déterminer les chemins de propagation de décharges causant des fautes sur un appareil mobile.
 Une fois la cause défaillance déterminée, des réseaux de filtrage RC furent utilisés pour protéger les entrées et sorties physiques telles que les boutons et connecteurs.
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.8\textwidth]{src/1/figures/current_distribution_mobile.png}
-  \caption{Distribution du courant ESD sur la structure d'un téléphone portable et sa batterie \cite{softFailMobile} a (a) 1.0 ns et (b) 1.8 ns}
-  \label{fig:mobile-phone-3d-em}
-\end{figure}
+% Case 1 - NXP bandgap + substrate coupling
+Une cas d'étude typique de défaillance fonctionnelle est présenté par K. Abouda dans \cite{softfailEMCIC}.
+L'étude concerne la perte de la régulation de tension assurée normalement dans un circuit intégré pour l'automobile, à la suite d'une décharge BCI (Bulk Current Injection) ISO11452-4 \cite{iso11452}.
+Les chemins de propagation et de couplages à l'intérieur du circuit sont recherchés manuellement dans le design du produit, à l'aide de multiples simulations.
+La cause de la défaillance a pû être identifiée avec succés et le design a été corrigé afin d'appliquer un filtrage adéquat directement sur le silicium pour éliminer le problème.
 
-% Introduce near-field scanner
-Les scanners de champ de proches sont capables de mesurer des cartes de champs électrique et magnétique.
-Une sonde est balayée au dessus du composant ou carte à mesurer, et en chaque point une mesure est faite, dans le domaine temporel ou fréquentiel.
-Cet outil est initialement prédisposé pour de l'analyse architecturale et de distribution de puissance, mais s'est montré très pratique dans le domaine ESD.
-Il permet notamment de localiser des fautes.
-Une étude complète des antennes champ-proche a été réalisée par A.D. Yaghjian dans \cite{nfsFirstStudy}.
-Des études plus récentes expliquent le principe de fonctionnement, l'architecture et les traitements de données nécessaires dans \cite{near-field-scan, planarNFSAntenna, NFSMeasurements, NFScanner}.
-Cette technique est standardisée dans IEC TS 61967-3 \cite{iec61967}.
-L'architecture d'un scanner champ-proche est donnée dans la Fig. \ref{fig:near-field-scanner}.
+% Méthode injection
+Plusieurs méthodes d'injection ont été utilisées au travers de toutes ces études.
+La méthode DPI \cite{iec62132-4} a été utilisée plusieurs fois pour coupler un ESD sur une alimentation.
+Une cellule TEM (Transverse Electro Magnetic) modifiée de dimensions réduites a également été proposée dans \cite{SDRAMCase}.
+Une injection par champ proche fut employée dans \cite{softFailLCD} afin de tenter d'identifier le point d'entrée le plus susceptible des perturbations.
+Un TLP couplé capacitivement fut également utilisé comme alternative à l'injection champ proche.
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.4\textwidth]{src/1/figures/architecture_near_field_scanner.pdf}
-  \caption{Architecture d'un scanneur champ-proche}
-  \label{fig:near-field-scanner}
-\end{figure}
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.4\textwidth]{src/1/figures/near_field_scanner_susceptibility_map.pdf}
-  \caption{Carte de susceptibilité d'une carte électronique mesurée avec une injection champ proche \cite{}}
-  \label{fig:near-field-scan-map}
-\end{figure}
-
-Sur le sujet de la modélisation, plusieurs méthodes ont été publiées par le passé.
-Elle contiennent une large gamme de techniques allant de simulation 3D basés sur la physique des semi-conducteurs, jusqu'à des modèles boite-noire et comportementaux.
-Les méthodes décrites ci-après peuvent être utilisées pour l'analyse de faute fonctionnelle.
-
-M. Scholz a publié une méthode de simulation ESD mixte dans \cite{mixedModeESDSims}.
-C'est la combinaison de modèles SPICE et TCAD, simulés ensembles.
-Il est indiqué que cette combinaison permet une précision plus importante que des modèles comportementaux.
-
+% Méthodes d'observation
+Plusieurs approches de modélisation ont été proposées.
+Elle se basent sur une large gamme de techniques allant de simulation 3D basées sur la physique des semi-conducteurs, jusqu'à des modèles boite-noire et comportementaux.
+M. Scholz a publié une méthode de simulation ESD mixte dans \cite{mixedModeESDSims} qui combine des modèles SPICE et TCAD.
 Dans \cite{usb2ESDProtection}, des caractérisations TLP sont utilisées comme modèles I(V) pour des protections ESD internes et externes.
-Les paramètres S du la carte électroniques sont extraits avec Momentum (Agilent Technology).
-Le modèle extrait est composé d'éléments R,L,C,G.
+Les paramètres S du la carte électroniques sont extraits avec un logiciel de simulation electromagnétique 3D.
 Cette approche de modélisation s'est avérée fructueuse pour simuler les interactions entre des composants discrets et des composants intégrés sur silicium.
-
-% IBIS is not enough for modelling an IC pin for ESD simulations
-Le modèle IBIS (Input Output Buffer Information Specification) \cite{ibis-spec} est un modèle comportemental boite-noire pour des simulations d'intégrité du signal sur des circuits intégrés digitaux.
-Il est très largement répandu dans le monde des circuits intégrés digitaux car il permet des simulations précises avec de multiples puces sans divulguer d'informations propriétaires.
-Il fut imaginé que le modèle IBIS puisse être modifié ou étendu pour le domaine ESD, néanmoins il est démontré dans  \cite{ibisImprovementFabrice} que certains paramètres sont manquants pour les simulations ESD.
-En particulier, le modèle contient une caractéristique I(V) des entrées sorties, similaire à une caractérisation TLP.
-Néanmoins, le modèle n'est pas défini pour des impulsions rapides et des forts niveaux d'injection.
-
-Une méthode de simulation 3D électromagnétique au niveau circuit intégré est proposée par N. Lacrampe dans \cite{LacrampeTransientImmunity}.
-Elle utilise le layout du circuit intégré, afin d'estimer les couplages capacitifs entre les rails d'alimentation et de masse.
-L'extraction est réalisée à l'aide du logiciel HFSS (Ansoft).
-Le but de cette analyse est de prédire la susceptibilité des circuits intégrés face à des décharges électrostatiques.
+Une méthode de simulation 3D électromagnétique au niveau circuit intégré est également proposée par N. Lacrampe dans \cite{LacrampeTransientImmunity}.
 Au niveau carte, les pistes métalliques sont modélisées avec un réseau RLC.
 Le package est modélisé avec les informations contenues dans le modèle IBIS \cite{ibis-spec}.
 Le générateur de stress, un TLP, est modélisé avec une table I(V), en série avec une résistance de 50\textOmega{}.
-
 Dans \cite{softFailMobile}, des simulations électromagnétiques fullwave sont réalisées pour une analyse ESD en alimenté.
 Des composants au niveau système sont simulés, tels que des coques en métal et des batteries.
 La simulation 3D EM a permis d'identifier le chemin principal de propagation et de localiser le point de défaillance.
