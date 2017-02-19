@@ -10,11 +10,6 @@
 \usepackage[french]{babel}
 \usepackage[T1]{fontenc}
 
-% Meta-data
-\title{}
-\author{ \\ }
-\date{Résumé en français}
-
 % Main modules
 \usepackage{url}      % URL
 \usepackage{graphicx} % Pictures
@@ -34,14 +29,16 @@
 \usepackage{caption}     % float env with page breaks
 \usepackage{hyperref}    % Links
 
+\pagestyle{myheadings}
 
+% Meta-data
+\title{}
+\author{ \\ }
+\date{Résumé en français}
 % Glossary
-\usepackage[nomain,acronym,xindy,toc]{glossaries}
 \loadglsentries[main]{../src/glos}
 \makeglossaries
-\usepackage{makeidx}
 \makeindex
-
 
 % Document
 \begin{document}
@@ -56,7 +53,7 @@
   \vspace{1cm}
 	{\scshape\Large Thèse CIFRE - Résumé en Français\par}
 	\vspace{1.5cm}
-	{\huge\bfseries Développement de méthodes d'analyse et de prédiction de défauts fonctionnels liés aux décharges électrostatiques\par}
+	{\huge\bfseries Développement de méthodes d'analyse hiérarchique des défauts fonctionnels liés aux décharges électrostatiques pour les circuits intégrés analogiques\par}
 	\vspace{2cm}
 	{\Large\itshape Rémi Bèges\par}
 	\vfill
