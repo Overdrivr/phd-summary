@@ -3,13 +3,11 @@
 \section{Méthode de modélisation au niveau système}
 
 % Need to simulate from source to input for soft-failure analysis
-Systèmes électroniques souvent constitués d'éléments récurrents
-Alim DC, générateurs ESD, câbles, cartes électroniques, pistes PCB, composants discrets, IC.
-Un environnement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes et des générateurs de stress, interconnectés par des câbles et des fils.
-Les cartes électroniques embarquent différents types de composants, tels que des passifs, des protections ESD, des chokes.
-Une méthodologie de construction de modèles ESD au niveau système est proposée.
+Un environnement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes, des générateurs de stress et des cartes électroniques interconnectés par des câbles et des fils.
+Les cartes électroniques embarquent différents types de composants, tels que des composants passifs, des protections ESD et des circuits intégrés.
+Afin de simuler le comportement de tous ces éléments pendant une décharge ESD, une méthodologie de modélisation au niveau système est proposée.
 Elle permet une simulation précise jusqu'à l'entrée d'un circuit intégré en fonctionnement.
-L'objectif de la méthode proposée est de construire une librairie des éléments les plus courants, puis d'assembler le modèle complet du système avec.
+L'objectif de la méthode proposée est tout d'abord de construire une librairie des éléments les plus courants, puis d'assembler ces éléments ensembles pour former le modèle complet du système à étudier.
 
 % Cables and delays identified as important for esd sims - because of similar order of magnitude
 Les câbles sont des éléments importants mais parfois négligés dans les simulations ESD.
