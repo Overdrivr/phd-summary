@@ -2,23 +2,26 @@
 \label{chap:3}
 \section{Présentation du produit et de la défaillance}
 
-Ce travail de recherche a pour but d'étudier et de prédire les pertes de fonctionnalités causées par des décharges électrostatiques.
-Dans ce chapitre, un cas réel de défaillance fonctionnelle est présenté.
-Il a été identifié sur un circuit intégré automobile spécifique, qui a pour responsabilité des tâches critiques et de haut-niveau dans le véhicule.
-Cette défaillance a été détectée en réduisant la quantité de composants externes au niveau de la carte, dans le but de diminuer la BOM (Bill Of Materials) et donc le coût de l'application complète.
-Dans la campagne de tests, les décharges sont injectées à travers la connexion batterie (Fig. \ref{fig:system_architecture}).
+Dans ce chapitre, une étude de cas de défaillance fonctionnelle d'une fonction de régulation est présentée.
+Cette fonction intégrée fait partie d'un produit automobile commercialisé, néanmoins la défaillance est identifiée seulement en réduisant la quantité de composants externes au niveau de la carte.
+L'objectif initial était d'étudier l'impact d'une réduction des composants externes sur les performances ESD dans le but de diminuer le coût total du système électronique.
+L'architecture de la fonction intégrée est présentée dans un premier temps.
+l'environemment et les tests ESD effectués seront ensuite détaillés.
+Enfin, la faute sera analysée au regard des résultats obtenus avec les tests.
 
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{src/1/figures/architecture_system.pdf}
-  \caption{Vue d'ensemble de l'architecture du système}
-  \label{fig:system_architecture}
-\end{figure}
-
-% Main task
-La tâche en défaillance est une fonction de régulation, chargée principalement de convertir la tension batterie en une alimentation régulée 2.5 V.
-Plusieurs sous-fonctions (aussi appelées blocs) traitent la tension batterie dans ce but.
-L'architecture de la fonction intégrée est donnée Fig. \ref{fig:monitored_function}).
+% Principe de la fonction
+La fonction de régulation est chargée principalement de convertir la tension batterie en une alimentation régulée 2.5 V.
+Cette alimentation 2.5V est utilisée par d'autres parties du circuit, notamment afin d'alimenter le coeur logique et des fonctions analogiques basse-tension.
+La fonction de régulation est découpée en plusieurs sous-fonctions, ou blocs, et son architecture est donnée Fig. \ref{fig:monitored_function}).
+Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40 V, et fournit le signal V\textsubscript{clamp9}.
+V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12 V.
+Ensuite, une référence bandgap génère, après un délai de démarrage, une référence à 1.0 V appelée V\textsubscript{ref1p0}.
+Ce bandgap fournit aussi une référence de courant à 10\textMu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non.
+Le régulateur 2.5V génère l'alimentation stabilisée 2.5 V sur V\textsubscript{2p5} à partir de l'entrée non-régulée de puissance V\textsubscript{pwr}, la référence du bandgap ainsi que divers autres signaux auxiliaires.
+Il fournit un courant maximal de 20 mA.
+L'entrée V\textsubscript{batt} ainsi que la sortie V\textsubscript{2p5} sont toutes deux des broches externes.
+La première est connectée à la batterie, et protégée par du filtrage externe dont le but est justement d'être réduit pour diminuer le cout.
+La seconde broche a besoin d'une capacité de stabilisation d'au moins 100 nF, qui est trop important pour être intégrée sur silicium et doit donc être connectée en externe.
 
 \begin{figure}[!h]
   \centering
@@ -27,20 +30,27 @@ L'architecture de la fonction intégrée est donnée Fig. \ref{fig:monitored_fun
   \label{fig:monitored_function}
 \end{figure}
 
-% First block
-Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40 V, et fournit le signal V\textsubscript{clamp9}.
-V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12 V.
-% Second block
-Ensuite, une référence bandgap génère, après un délai de démarrage, notamment une référence à 1.0 V appelée V\textsubscript{ref1p0}.
-Le bandgap fournit aussi une référence de courant à 10\textMu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non .
-% Third major block
-Enfin, le régulateur faible-pertes génère une alimentation stabilisée 2.5 V sur V\textsubscript{2p5}, avec une capacité en courant jusqu'à 20 mA.
-V\textsubscript{2p5} sert ensuite à alimenter des cellules digitales à l'intérieur du circuit intégré.
+Cette fonction de régulation fait partie d'un circuit intégré, lui-même faisant partie d'une carte électronique fournissant les divers composants externes requis pour le fonctionnement normal.
+L'architecture du système complet est donné Fig. \ref{fig:system_architecture}.
+Une campagne de test ESD est effectuée sur cette carte, dans le but d'étudier et de prédire les pertes de fonctionnalités causées par des décharges électrostatiques.
+Durant les test, l'ESD est injectée sur la tension batterie en utilisant un motif d'injection DPI \cite{iec62132-4} présenté dans la bibliographie.
+Le réseau de filtrage complet comprend une CMC (Common-Mode Choke), un réseau de filtrage LC en Pi ainsi que des capacités des découplages.
+La CMC et le filtre en Pi sont enlevés avant les tests afin de tester la configuration réduite.
+
+\begin{figure}[!h]
+  \centering
+  \includegraphics[width=0.9\textwidth]{src/1/figures/architecture_system.pdf}
+  \caption{Vue d'ensemble de l'architecture du système}
+  \label{fig:system_architecture}
+\end{figure}
+
 
 % Principe défaillance
-La défaillance de ce système est observée sur V\textsubscript{2p5} (Fig. \ref{fig:meas-reset-v2p5}).
+La défaillance de ce système est observée sur V\textsubscript{2p5}.
 Elle est induite en injectant une forte impulsion transitoire d'amplitude négative sur V\textsubscript{batt}, lorsque le produit est alimenté et en fonctionnement normal.
-La durée de la défaillance sur V\textsubscript{2p5} (30 \textmu{}s) est bien plus longue que la perturbation d'entrée sur V\textsubscript{batt} (100 ns), ce qui semble indiquer une large faute fonctionnelle dans le circuit.
+Sur la sortie V\textsubscript{2p5}, la défaillance prends la forme d'une très courte perturbation, suivie d'un arrêt long de la régulation puis de son redémarrage (Fig. \ref{fig:meas-reset-v2p5}).
+La durée de la défaillance est d'approximativement 40 \textmu{}s, depuis la perturbation initiale jusqu'au redémarrage.
+Elle est bien plus longue que la perturbation d'entrée sur V\textsubscript{batt} (100 ns), ce qui semble indiquer une large faute fonctionnelle dans le circuit.
 
 \begin{figure}[!h]
   \centering
@@ -50,15 +60,19 @@ La durée de la défaillance sur V\textsubscript{2p5} (30 \textmu{}s) est bien p
 \end{figure}
 
 % What is the root cause -> reset of regulator, soft-start
-Plus précisément, le stress négatif semble déclencher une séquence de démarrage, alors que le régulateur est normalement déjà démarré.
-Pendant cette séquence, la tension d'alimentation monte doucement depuis 0 V jusqu'à 2.5 V, afin d'éviter des surtensions.
-Ces séquences de démarrage sont logiquement longues et demandent un certain temps pour se terminer.
+Il semble donc que le stress négatif injecté sur V\textsubscript{batt} déclenche une séquence de redémarrage, alors que le régulateur est déjà démarré.
+Ces séquences de démarrage sont longues car les tensions d'alimentations sont montées doucement afin de protéger l'électronique sensible connectée en aval.
 Si un ESD déclenche une telle séquence, le système se retrouve indisponible pendant un délai important.
+L'architecture de la fonction intégrée a été présentée précédemment, et est composée de plusieurs blocs.
+La question qui se pose à ce stade est de déterminer lequel ou lesquels de ces blocs est responsable de la défaillance.
+Deux approches sont possibles, soit par des mesures, soit avec les outils de simulation.
+Les simulations sont un outil très intéressant et pratique, mais elles n'ont à ce jour pas été utilisées dans la litterature pour étudier des défaillances fonctionnelles au niveau circuit-intégré.
+Il est donc nécessaire d'obtenir des mesures pour évaluer leur fiabilité dans un contexte ESD.
 
-La prochaine partie du travail de recherche est focalisé sur le développement de méthodes de mesures directement sur silicium.
-L'objectif est d'acquérir des données fiables directement au niveau circuit, ce qui est difficile à faire de manière externe, et afin de valider les simulations pour l'investigation.
-Notamment, un véhicule de test a été développé.
-Il contient différentes méthodes de mesure et d'observation.
+La première partie du travail est focalisée sur le développement de méthodes de mesures directement sur silicium, de façon à comprendre les mécanismes mis en jeu dans l'apparition de la faute.
+L'objectif est d'acquérir des données fiables directement au niveau circuit, ce qui est difficile à faire de manière externe.
+Ces mesures ont aussi pour objectif de valider les simulations pour l'investigation.
+Un véhicule de test a été développé, contenant différentes méthodes de mesure et d'observation.
 
 \section{Présentation du véhicule de test}
 
@@ -66,7 +80,14 @@ Il contient différentes méthodes de mesure et d'observation.
 L'architecture du véhicule de test est donnée Fig. \ref{architecture_testchip}.
 Il contient deux instances de la même fonction de régulation.
 La première instance est la fonction sous-test, exposée à des décharges électrostatiques pendant la campagne de tests et dont le comportement est surveillé afin de détecter les fautes.
-La seconde instance alimente justement les systèmes de surveillance qui sont directement intégrés sur puce.
+Cette première instance est placée en configuration réduite sans la plupart des éléments de filtrage externes.
+La seconde instance alimente les systèmes de surveillance qui sont intégrés sur puce.
+Elle est placée en configuration blindée, avec le réseau de filtrage complet ainsi que des capacités de découplage supplémentaires.
+Ces mesures la protègent normalement face à tout résidu ESD pouvant l'atteindre pendant les tests.
+Les systèmes de surveillance contiennent notamment des détecteurs de surtension et sous-tension.
+Il y a au total 35 détecteurs de ce type dans la puce.
+Leurs rôles individuels sont donnés dans le document final.
+Le bus de communication permet de lire les données provenant des capteurs et de les configurer ou les remettre à zéro.
 
 \begin{figure}[h]
   \centering
@@ -75,10 +96,11 @@ La seconde instance alimente justement les systèmes de surveillance qui sont di
   \label{architecture_testchip}
 \end{figure}
 
-Le layout top de la puce est donné Fig. \ref{fig:top-cell-layout}.
+Le layout de la puce complète est donné Fig. \ref{fig:top-cell-layout}.
 Il est possible d'identifier à droite et à gauche chaque instance de la fonction de régulation.
-Les systèmes de surveillance sont localisés globalement de dessous de ces deux blocs.
-Des capteurs de courant sur puce sont localisés à plusieurs endroit contre l'anneau de métal gndsub entourant toute la puce.
+Les fonctions de régulation ont volontairement été placées de part et d'autre de la puce afin d'éviter des problèmes de couplages d'ESD pendant les tests, qui auraient pû perturber l'alimentation de référence.
+Les systèmes de surveillance sont localisés en dessous de ces deux blocs.
+Des capteurs de courant sur puce sont localisés à plusieurs endroit contre l'anneau de métal \textit{gndsub} entourant toute la puce.
 Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de fabrication.
 
 \begin{figure}[!h]
@@ -88,46 +110,11 @@ Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de f
   \label{fig:top-cell-layout}
 \end{figure}
 
-% What is in the monitoring system
-Les systèmes de surveillance contiennent notamment des détecteurs de surtension et sous-tension.
-Il y a au total 35 détecteurs de ce type dans la puce.
-Ils sont implémentés avec des comparateurs verrouillés
-Un drapeau est levé si un nœud surveillé dépasse un niveau de référence.
-Une fois le drapeau levé, il est maintenu jusqu'à ce que la cellule puisse être lue et remise � z�ro.
-L'architecture est donnée Fig. \ref{fig:architecture-ov}.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.9\textwidth]{src/1/figures/architecture_OV.pdf}
-  \caption{Architecture du détecteur de surtension}
-  \label{fig:architecture-ov}
-\end{figure}
-
-% Detail architecture
-Dans cette architecture, la comparaison est réalisée par le comparateur, implémenté avec un amplificateur opérationnel à deux étages avec un buffer de sortie.
-Cette topologie convient bien pour des comparateurs à fort gain, travaillant en boucle ouverte avec une très forte impédance d'entrée, afin de ne pas perturber le circuit.
-A la sortie du comparateur, un filtre RC optionnel peut être connecté.
-Il permet d'éliminer les surtensions les plus courtes afin de détecter seulement de larges perturbations.
-Ensuite, un buffer à hystérésis permet de maximiser l'efficacité du filtre et d'obtenir une valeur numérique robuste de la sortie du comparateur.
-Finalement, une bascule D garde le drapeau en mémoire une fois levé.
-Si le buffer à hystérésis devient haut, la bascule recopie un état haut sur sa sortie.
-
-% Origin of reference voltages
-Les tensions de références de ces détecteurs sont soit fixes, soit contrôlables via un bus de communication.
-Par ailleurs, tout ces détecteurs peuvent être lus par un second bus de communication.
-Ce bus fonctionne sur le principe d'une chaine JTAG.
-Des cellules individuelles peuvent être connectées en chaine afin de former un bus de la longueur désiré.
-Cette approche est très pratique pour monter rapidement un véhicule de test.
-Néanmoins, des problèmes important furent rencontrés avec ces bus de communication.
-Ils sont exposés en détail dans le document complet.
-
 % What is a current sensors
-Dans le véhicule de test, on trouve également des capteurs de courant directement intégrés sur silicium.
-Chaque capteur est placé à proximité de la piste de métal à mesurer.
-Par couplage, il génère une tension proportionnelle à la dérivée du courant dans la piste.
-
+Dans le véhicule de test, on trouve également des capteurs de courant directement intégrés sur silicium, qui permettent de mesurer un courant circulant dans une piste placée à proximité.
+Par couplage, le capteur génère une tension proportionnelle à la dérivée du courant dans la piste.
 La figure \ref{fig:near-field-current-sensor} donne une représentation 3D du capteur.
-Ce type de boucle de courant intégré sur silicium a été originellement désigné et étudié par A. Salles dans \cite{AlainSallesInductors}.
+Ce type de boucle de courant intégré sur silicium a été originellement désigné et étudié par A. Salles dans \cite{OtherInductors, InductorsLAAS1, InductorsLAAS2, AlainSallesInductors}.
 
 \begin{figure}[!h]
   \centering
@@ -142,13 +129,32 @@ Le premier niveau en rouge (Fig \ref{fig:near-field-current-sensor}) et le trois
 Des vias connectent les différents niveaux ensembles.
 La piste mesurée est elle localisée au deuxième niveau.
 Le courant mesuré circule entre les nœuds \textit{S1} et \textit{S2}.
-Un oscilloscope avec une impédance d'entrée \textOmega{} est utilisé pour mesurer en différentiel la tension entre \textit{C1} et \textit{C2}.
-Le traitement de la courbe obtenue a été détaillé précédemment dans le chapitre 2.
+Un oscilloscope avec une impédance d'entrée 50 \textOmega{} est utilisé pour mesurer la tension différentielle entre \textit{C1} et \textit{C2}.
 
 % Talk about the near-field current sensors placement
-Au total, il y a 6 capteurs de courant sur la puce.
-Un des capteurs est dédié à la calibration, tandis que les autres mesurent des points d'entrée ou de sortie potentiels pour des ESD.
+Au total, 6 capteurs de courant sont implémentés sur la puce.
+Un des capteurs est dédié à la calibration.
+Les autres capteurs mesurent des courant sur des points importants du circuits, là où des résidus de décharges ESD sont susceptibles de se propager.
 Le capteur \textit{1} mesure le courant sur l'entrée batterie.
 Le capteur \textit{2} mesure le courant absorbé par la protection ESD protégeant l'entrée batterie.
 Le capteur \textit{3} mesure le courant à travers la capacité externe de stabilisation du régulateur.
-Enfin, les capteurs \textit{4} et \textit{5} mesurent les courants évacués via l'anneau métallique \textit{gndsub}, connecté extérieurement à la masse.
+Enfin, les capteurs \textit{4} et \textit{5} mesurent les courants évacués les deux connexions externes à la masse via l'anneau métallique \textit{gndsub}.
+
+\subsection{Résultats}
+
+Une fois la puce de test fabriquée et assemblée dans un package, des tests préliminaires ont été conduits afin de la valider.
+Les alimentations intégrées sur silicium sont toutes deux pleinement fonctionnelles et fournissent des alimentations à 2.5V valides.
+Dans le cas de l'alimentation de référence, cela signifie que les blocs de surveillance ont été correctemenent dimensionnés pour le courant maximum que peut délivrer l'alimentation.
+
+Par contre, des problèmes ont été rencontrés avec le bus de communication.
+De multiples essais on étés effectués, mais il est toujours impossible d'obtenir une réponse fiable du bus.
+Il fut suspecté dans un premier temps que l'impact d'éléments parasites au niveau silicium l'empêchait de fonctionner correctement.
+Néanmoins, des simulations \textit{back-annotées} contenant la netlist des blocs ainsi que des éléments parasites extraits du layout n'ont pas permis de reproduire le produire sur l'ensemble des simulations de vérifications.
+Un problème de délai fut aussi suspecté, mais également impossible à reproduire même en plaçant des délais importants à tous les endroits possibles.
+Finalement, des problèmes de couplage susbtrats pourraient expliquer le comportement erratique, mais les fréquences de fonctionnement basses du bus semblent exclurent ce type de perturbation.
+Des investigations futures pourront être conduites afin de déterminer le problème et de le corriger, car le concept de ce bus de communication pouvant être facilement implémenté sur une schématique reste intéressant pour des véhicules de tests.
+
+Le bilan est plus positif pour les capteurs de courants.
+Ils sont opérationnels et permettent de mesurer le courant avec un bonne sensibilité.
+Le capteur connecté en amont de la protection ESD protégeant l'entrée batterie à survécu à des décharges appliquées directement sur cette entrée.
+Les mesures obtenues par ces capteurs sont exploitées afin de valider les simulations de courant entrant et sortant de la puce, ainsi que de la répartition du courant propagé dans la puce.
