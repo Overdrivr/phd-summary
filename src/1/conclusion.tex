@@ -4,34 +4,31 @@ Les décharges électrostatiques sont une source majeure de stress pour les comp
 Ce stress peut se traduire par une casse matérielle, et ce type de problème est le plus largement étudié dans le domaine des ESD.
 Récemment, une nouvelle catégorie de défaillances est apparue appelée défaillance fonctionnelle.
 Elles se traduisent par une perturbation temporaire des systèmes électroniques à la suite d'une décharge.
-C'est d'autant plus problématique que de nos jours les systèmes électroniques ont des responsabilités accrues vis à vis de notre sécurité.
+C'est d'autant plus problématique que de nos jours les systèmes embarqués ont des responsabilités accrues vis à vis de notre sécurité.
 
 % Chap 1
-Dans le chapitre 1, un état de l'art sur les moyen de tests ESD a été présenté.
-Il permet d'identifier les sources classiques de perturbation.
+Une introduction sur le sujet est faite dans le chapitre 1.
+Le chapitre 2 présente un état de l'art sur les moyens de test ESD, pour identifier les sources classiques de perturbation.
 Puis, des outils d'observation et des méthodes de modélisation de fautes ont été détaillés.
 
 % Chap 2
-Le chapitre 2 est focalisé sur une méthode de modélisation des systèmes électroniques pour l'ESD.
-Une approche modulaire a été favorisée, afin d'avoir des composants réutilisables en vues de modéliser des systèmes complexes.
+Le chapitre 3 est focalisé sur une méthode de modélisation des systèmes électroniques pour l'ESD.
 Un générateur TLP a été modélisé en utilisant cette approche.
-% TLP-HMM
-Puis, l'expérience acquise via cette étude a permis de développer un nouveau type de générateur HMM basé sur un TLP.
+L'expérience acquise via cette étude a permis de développer un nouveau type de générateur HMM basé sur un TLP.
 Il offre plusieurs avantages par rapport à un générateur classique, mais requiert encore de multiples améliorations.
-% Near-field current processing
 Enfin, une méthode de traitement des sondes de champ proche sur puce a été présentée.
-Le programme de traitement des données a été libéré \cite{} sous une licence open-source afin de favoriser des améliorations futures.
 Deux méthodes différentes furent proposées pour reconstituer la forme originale du courant.
+Le programme de traitement des données a été mis à disposition de manière libre \cite{nfs-repository} sous une licence open-source afin de favoriser des améliorations futures.
 
 % Chap 3
-Le chapitre 3 présente un cas d'étude de défaillance, où une fonction de régulation redémarre à cause d'un ESD.
+Le chapitre 4 présente un cas d'étude de défaillance, où une fonction de régulation redémarre à cause d'un ESD.
 Le cas de défaillance est étudié, puis un véhicule de test est développé afin d'acquérir plus de données.
 Il contient la fonction analogique en question, ainsi que de multiples structures dédiées à sa surveillance et à des mesures.
-Malheureusement, des problèmes liés au système de communication du véhicule de test ont empêché d'exploité correctement cette puce.
+Malheureusement, des problèmes liés au système de communication du véhicule de test ont empêché d'exploiter correctement cette puce.
 Des corrections futures devraient permettent de résoudre ce problème.
 
 % Chapter 4
-Enfin, le chapitre 4 est focalisé sur le développement d'outils de simulation pour la prédiction de défauts fonctionnels.
+Le chapitre 5 est dédié au développement d'outils de simulation pour la prédiction de défauts fonctionnels.
 Les outils de simulation permettent d'identifier des problèmes très tôt dans le flot de conception, et sont donc extrêmement intéressants.
 La principale difficulté pour les ESD au niveau circuit-intégré est la complexité des circuits.
 Les problèmes de convergence sont très courants et parfois difficiles à éviter.
