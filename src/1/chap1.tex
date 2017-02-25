@@ -15,7 +15,7 @@ Pendant la fabrication, les circuits sont manipulés par des machines, ce qui ca
 Il existe plusieurs standards de test pour garantir qu'un produit peut survivre aux étapes de fabrication.
 Les testeurs HMM (Human Machine Model) et CDM (Charged Device Model) valident respectivement la robustesse vis-à-vis de la décharge d'un objet dans le produit, et la décharge du produit dans la masse.
 Ces tests sont conçus pour reproduire fidèlement les stress rencontrés dans l'environnement de fabrication.
-Généralement, les environnements de fabrication sont appellés EPA (Electrostatic Protected Area) si ils possèdent des équipements qui évitent l'accumulation de charges électrostatiques et autorisent une manipulation des composants électroniques.
+Généralement, les environnements de fabrication sont appelés EPA (Electrostatic Protected Area) si ils possèdent des équipements qui évitent l'accumulation de charges électrostatiques et autorisent une manipulation des composants électroniques.
 Les testeurs HMM et CDM garantissent avant tout que les composants sont capables de survivre à la zone EPA.
 
 % Electronic devices are exposed to ESD in the field
@@ -108,12 +108,12 @@ La partie suivante présente des cas de défaillances fonctionnelles trouvés da
 
 \section{Méthodes d'analyse de faiblesses fonctionnelles}
 
-Une revue de la littérature a permis d'identifier les études clés dans l'étude des circuits électroniques pertubés pendant leur fonctionnement par des ESD.
+Une revue de la littérature a permis d'identifier les études clés dans l'étude des circuits électroniques perturbés pendant leur fonctionnement par des ESD.
 Certaines études concernent des cas de défaillance sur des circuits intégrés.
-C'est le cas de l'étude de N. Lacrampe \cite{LacrampeTransientImmunity} sur des coeurs logiques en technologie CMOS 0.18 \textmu{}m exposés à des impulsions "very-fast" TLP.
+C'est le cas de l'étude de N. Lacrampe \cite{LacrampeTransientImmunity} sur des cœurs logiques en technologie CMOS 0.18 \textmu{}m exposés à des impulsions "very-fast" TLP.
 Dans \cite{SDRAMCase}, des fautes fonctionnelles sont étudiées sur une mémoire de type SDRAM pendant son fonctionnement normal.
 Deux types de défaillances de bus de communication vidéo sont présentés dans \cite{softFailSubsystem}.
-Un scanner champ-proche a été utilisé sans succés pour tenter de localiser l'origine des défaillances.
+Un scanner champ-proche a été utilisé sans succès pour tenter de localiser l'origine des défaillances.
 Un affichage LCD (Liquid Crystal Display) est étudié dans \cite{softFailLCD}, présentant des problèmes d'affichages à la suite de décharges IEC 61000-4-2 \cite{iec61000-4-2}.
 Malgré plusieurs tentatives à l'aide d'une injection champ proche et d'un TLP, les résultats furent infructueux et aucune piste ne put être identifiée comme point d'entrée de la décharge.
 Une méthode d'investigation basée sur des simulations électromagnétiques est présentée dans \cite{softFailMobile} afin de déterminer les chemins de propagation de décharges causant des fautes sur un appareil mobile.
@@ -123,7 +123,7 @@ Une fois la cause défaillance déterminée, des réseaux de filtrage RC furent 
 Une cas d'étude typique de défaillance fonctionnelle est présenté par K. Abouda dans \cite{softfailEMCIC}.
 L'étude concerne la perte de la régulation de tension assurée normalement dans un circuit intégré pour l'automobile, à la suite d'une décharge BCI (Bulk Current Injection) ISO11452-4 \cite{iso11452}.
 Les chemins de propagation et de couplages à l'intérieur du circuit sont recherchés manuellement dans le design du produit, à l'aide de multiples simulations.
-La cause de la défaillance a pû être identifiée avec succés et le design a été corrigé afin d'appliquer un filtrage adéquat directement sur le silicium pour éliminer le problème.
+La cause de la défaillance a pu être identifiée avec succès et le design a été corrigé afin d'appliquer un filtrage adéquat directement sur le silicium pour éliminer le problème.
 
 % Méthode injection
 Plusieurs méthodes d'injection ont été utilisées au travers de toutes ces études.
@@ -137,7 +137,7 @@ Plusieurs approches de modélisation ont été proposées.
 Elle se basent sur une large gamme de techniques allant de simulation 3D basées sur la physique des semi-conducteurs, jusqu'à des modèles boite-noire et comportementaux.
 M. Scholz a publié une méthode de simulation ESD mixte dans \cite{mixedModeESDSims} qui combine des modèles SPICE et TCAD.
 Dans \cite{usb2ESDProtection}, des caractérisations TLP sont utilisées comme modèles I(V) pour des protections ESD internes et externes.
-Les paramètres S du la carte électroniques sont extraits avec un logiciel de simulation electromagnétique 3D.
+Les paramètres S du la carte électroniques sont extraits avec un logiciel de simulation électromagnétique 3D.
 Cette approche de modélisation s'est avérée fructueuse pour simuler les interactions entre des composants discrets et des composants intégrés sur silicium.
 Une méthode de simulation 3D électromagnétique au niveau circuit intégré est également proposée par N. Lacrampe dans \cite{LacrampeTransientImmunity}.
 Au niveau carte, les pistes métalliques sont modélisées avec un réseau RLC.

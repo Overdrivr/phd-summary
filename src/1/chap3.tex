@@ -6,12 +6,12 @@ Dans ce chapitre, une étude de cas de défaillance fonctionnelle d'une fonction
 Cette fonction intégrée fait partie d'un produit automobile commercialisé, néanmoins la défaillance est identifiée seulement en réduisant la quantité de composants externes au niveau de la carte.
 L'objectif initial était d'étudier l'impact d'une réduction des composants externes sur les performances ESD dans le but de diminuer le coût total du système électronique.
 L'architecture de la fonction intégrée est présentée dans un premier temps.
-l'environemment et les tests ESD effectués seront ensuite détaillés.
+L'environnement et les tests ESD effectués seront ensuite détaillés.
 Enfin, la faute sera analysée au regard des résultats obtenus avec les tests.
 
 % Principe de la fonction
 La fonction de régulation est chargée principalement de convertir la tension batterie en une alimentation régulée 2.5 V.
-Cette alimentation 2.5V est utilisée par d'autres parties du circuit, notamment afin d'alimenter le coeur logique et des fonctions analogiques basse-tension.
+Cette alimentation 2.5V est utilisée par d'autres parties du circuit, notamment afin d'alimenter le cœur logique et des fonctions analogiques basse-tension.
 La fonction de régulation est découpée en plusieurs sous-fonctions, ou blocs, et son architecture est donnée Fig. \ref{fig:monitored_function}).
 Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40 V, et fournit le signal V\textsubscript{clamp9}.
 V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12 V.
@@ -66,7 +66,7 @@ Si un ESD déclenche une telle séquence, le système se retrouve indisponible p
 L'architecture de la fonction intégrée a été présentée précédemment, et est composée de plusieurs blocs.
 La question qui se pose à ce stade est de déterminer lequel ou lesquels de ces blocs est responsable de la défaillance.
 Deux approches sont possibles, soit par des mesures, soit avec les outils de simulation.
-Les simulations sont un outil très intéressant et pratique, mais elles n'ont à ce jour pas été utilisées dans la litterature pour étudier des défaillances fonctionnelles au niveau circuit-intégré.
+Les simulations sont un outil très intéressant et pratique, mais elles n'ont à ce jour pas été utilisées dans la littérature pour étudier des défaillances fonctionnelles au niveau circuit-intégré.
 Il est donc nécessaire d'obtenir des mesures pour évaluer leur fiabilité dans un contexte ESD.
 
 La première partie du travail est focalisée sur le développement de méthodes de mesures directement sur silicium, de façon à comprendre les mécanismes mis en jeu dans l'apparition de la faute.
@@ -98,7 +98,7 @@ Le bus de communication permet de lire les données provenant des capteurs et de
 
 Le layout de la puce complète est donné Fig. \ref{fig:top-cell-layout}.
 Il est possible d'identifier à droite et à gauche chaque instance de la fonction de régulation.
-Les fonctions de régulation ont volontairement été placées de part et d'autre de la puce afin d'éviter des problèmes de couplages d'ESD pendant les tests, qui auraient pû perturber l'alimentation de référence.
+Les fonctions de régulation ont volontairement été placées de part et d'autre de la puce afin d'éviter des problèmes de couplages d'ESD pendant les tests, qui auraient pu perturber l'alimentation de référence.
 Les systèmes de surveillance sont localisés en dessous de ces deux blocs.
 Des capteurs de courant sur puce sont localisés à plusieurs endroit contre l'anneau de métal \textit{gndsub} entourant toute la puce.
 Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de fabrication.
@@ -144,14 +144,14 @@ Enfin, les capteurs \textit{4} et \textit{5} mesurent les courants évacués les
 
 Une fois la puce de test fabriquée et assemblée dans un package, des tests préliminaires ont été conduits afin de la valider.
 Les alimentations intégrées sur silicium sont toutes deux pleinement fonctionnelles et fournissent des alimentations à 2.5V valides.
-Dans le cas de l'alimentation de référence, cela signifie que les blocs de surveillance ont été correctemenent dimensionnés pour le courant maximum que peut délivrer l'alimentation.
+Dans le cas de l'alimentation de référence, cela signifie que les blocs de surveillance ont été correctement dimensionnés pour le courant maximum que peut délivrer l'alimentation.
 
 Par contre, des problèmes ont été rencontrés avec le bus de communication.
 De multiples essais on étés effectués, mais il est toujours impossible d'obtenir une réponse fiable du bus.
 Il fut suspecté dans un premier temps que l'impact d'éléments parasites au niveau silicium l'empêchait de fonctionner correctement.
 Néanmoins, des simulations \textit{back-annotées} contenant la netlist des blocs ainsi que des éléments parasites extraits du layout n'ont pas permis de reproduire le produire sur l'ensemble des simulations de vérifications.
 Un problème de délai fut aussi suspecté, mais également impossible à reproduire même en plaçant des délais importants à tous les endroits possibles.
-Finalement, des problèmes de couplage susbtrats pourraient expliquer le comportement erratique, mais les fréquences de fonctionnement basses du bus semblent exclurent ce type de perturbation.
+Finalement, des problèmes de couplage substrats pourraient expliquer le comportement erratique, mais les fréquences de fonctionnement basses du bus semblent exclurent ce type de perturbation.
 Des investigations futures pourront être conduites afin de déterminer le problème et de le corriger, car le concept de ce bus de communication pouvant être facilement implémenté sur une schématique reste intéressant pour des véhicules de tests.
 
 Le bilan est plus positif pour les capteurs de courants.

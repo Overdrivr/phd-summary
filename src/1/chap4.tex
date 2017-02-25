@@ -5,14 +5,14 @@ Jusqu'à présent, l'étude s'est focalisée sur le développement de méthodes 
 Ces mesures nécessitent la réalisation du circuit intégré afin de pouvoir le tester.
 Ce procédé est couteux et intervient tard dans le flot de conception.
 Les outils de simulation en revanche sont utilisables dés le début du flot de conception.
-Dans le contexte de la recherche de défaillance fonctionelle, la simulation peut donc s'avérer très utile.
+Dans le contexte de la recherche de défaillance fonctionnelle, la simulation peut donc s'avérer très utile.
 Néanmoins, les circuits intégrés dans le domaine automobile par exemple sont très complexes, avec de multiples niveaux de hiérarchie et une large quantité de fonctions analogiques.
 Il n'est pas aisé de rechercher les points de défaillance de tels circuits intégrés.
 C'est pourquoi des méthodes permettant de réduire la complexité du problème peuvent être d'une grande utilité dans cette recherche.
 Dans ce chapitre, deux méthodes sont présentées.
 La première méthode s'intéresse à la modélisation de blocs dans la puce exclusivement et à l'analyse de leurs interactions.
 La seconde méthode cherche à développer un modèle boite-noire du circuit intégré en fonctionnement afin qu'il puisse être distribué aux équipementiers.
-Le mod leur permettrait de réaliser des simulations fonctionnelles ESD du circuit intégré sans nécessiter le design de la puce.
+Le modèle leur permettrait de réaliser des simulations fonctionnelles ESD du circuit intégré sans nécessiter le design de la puce.
 
 \section{Méthode hiérarchique intra-puce}
 
@@ -88,7 +88,7 @@ Par exemple, si une perturbation de -10V et 500ns est relevée sur la sortie du 
 La courbe de la sortie du pré-régulateur simulé de manière individuelle (\textit{block 1 output}) est donnée Fig. \ref{fig:sim-compare-block1} et comparée avec la simulation totale (\textit{reference}).
 Ces deux courbes corrèlent bien, malgré le fait qu'elle n'ont pas les mêmes charges en sortie.
 Le stimulus appliqué sur le bandgap porte le label \textit{block 2 input} et représente le modèle simplifié de la courbe de sortie du pré-régulateur.
-Le stiumulus a pour amplitude maximale -1.5 V (les stress sont d'amplitude négative) et une durée de 880 ns.
+Le stimulus a pour amplitude maximale -1.5 V (les stress sont d'amplitude négative) et une durée de 880 ns.
 Ces deux valeurs sont utilisées comme paramètres d'entrée sur le second modèle, celui du bandgap.
 
 \begin{figure}[!h]
@@ -128,7 +128,7 @@ Le principal avantage de cette méthode est de faire abstraction au niveau syst�
 % introduction, failure relation between input and output
 La caractérisation est effectuée à nouveau avec une méthode Wunsch-Bell \cite{wunsch-bell} en appliquant une impulsion rectangulaire d'amplitude et de durée variables.
 La broche d'entrée reçoit ce stress, pendant que la broche de sortie est surveillée et mesurée.
-Contrairement à la méthode précedente, ici un critère de défaillance fixe est définie sur la sortie.
+Contrairement à la méthode précédente, ici un critère de défaillance fixe est définie sur la sortie.
 Dans cette étude, il consiste en un niveau de tension défini par la spécification de la fonction sous test.
 
 % What is characterized
@@ -155,7 +155,7 @@ Le modèle de faute n'est pas un modèle électrique, et ne permet pas de déter
 Sans un modèle électrique, il est impossible pour une personne externe d'effectuer une simulation ESD alimentée car alors il n'y a pas de modèle du circuit.
 Par conséquent, il est aussi nécessaire de développer un modèle électrique équivalent de la broche.
 Un modèle I(V) est proposé, extrait à partir de caractérisations effectuées avec la méthode TLP en simulation.
-Les charactérisations sont très généralement effectuées sur des circuits non-alimentés.
+Les caractérisations sont très généralement effectuées sur des circuits non-alimentés.
 Or ici, l'objectif est de simuler des modèles de circuit intégré en alimenté.
 Pour évaluer l'impact de l'alimentation sur la caractérisation TLP, elle est effectuée à la fois sur un circuit alimenté et non alimenté.
 La caractérisations de l'entrée dans les deux conditions d'alimentation est fournie Fig. \ref{fig:tlp-input-cz}.
@@ -193,8 +193,8 @@ Globalement, une bonne corrélation entre le modèle et le circuit complet est o
 Contrairement à l'entrée, la sortie ne peut pas être modélisée par une simple courbe I(V) car elle est active et doit délivrer une tension à 2.5V.
 Elle ne s'apparente pas à une impédance passive.
 Pour reproduire ce comportement, un premier modèle est proposé Fig. \ref{fig:first-output-model}.
-Il comporte une source de tension statique à 2.5V simulant la function de régulation.
-La source de tension transitoire PWL n'est pas utilisée dans un premier temps, mais permet de simuler une faute et un redemarrage en venant modifier la tension de sortie.
+Il comporte une source de tension statique à 2.5V simulant la fonction de régulation.
+La source de tension transitoire PWL n'est pas utilisée dans un premier temps, mais permet de simuler une faute et un redémarrage en venant modifier la tension de sortie.
 Enfin, le modèle Verilog-A de courbe I(V) est connecté.
 Une capacité de 100nF est connectée en sortie pour correspondre au schéma d'application classique de la fonction.
 
@@ -208,7 +208,7 @@ Une capacité de 100nF est connectée en sortie pour correspondre au schéma d'a
 % Is this first model working
 Les tests montrent que ce modèle de la sortie ne fonctionne pas, car la combinaison de la courbe I(V) et de la source de tension 2.5V forcent un courant même si la tension de sortie est déjà à 2.5V.
 Comme résultat la tension de sortie monte indéfiniment et la simulation n'est pas du tout précise.
-Il est donc nécessaire de corriger la modélisation de la sortie et surtout l'intéraction entre le modèle transitoire et le modèle DC.
+Il est donc nécessaire de corriger la modélisation de la sortie et surtout l’interaction entre le modèle transitoire et le modèle DC.
 Ce problèmes sera étudiés dans des travaux futurs afin d'être capable de proposer un modèle fonctionnel, pouvant servir pendant les phases de conception des cartes électroniques.
 
 % Conclusion
