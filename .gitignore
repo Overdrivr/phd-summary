@@ -41,7 +41,7 @@ jspm_packages
 dist
 
 # build output files
-*.pdf
+#*.pdf
 
 #IPython notebook files
 .ipynb_checkpoints
