@@ -1,10 +1,10 @@
 \chapter{Introduction}
 
 % Trends of the electronic field is size reduction
-La miniaturisation des technologies de circuits intégrés se poursuit de nos jours avec une integration toujours plus massive des fonctions électroniques.
+La miniaturisation des technologies de circuits intégrés se poursuit de nos jours avec une intégration toujours plus massive des fonctions électroniques.
 La réduction de taille est possible en utilisant des technologies intégrées plus fines.
 Une technologie définie les dimensions et les procédés nécessaires à la fabrication du circuit intégré et à la réalisation de ses briques de conception.
-Toute technologie possède une taille characteristique \textlambda{} représentant la plus petite dimension possible pour une grille de transistor.
+Toute technologie possède une taille caractéristique \textlambda{} représentant la plus petite dimension possible pour une grille de transistor.
 La valeur de \textlambda{} est essentielle et conditionne fortement la taille du circuit final, sa consommation et ses performances.
 Jusqu'à présent, la loi de Moore a prédit avec succès que \textlambda{} serait réduit d'un facteur deux tous les dix-huit mois.
 Le domaine automobile se conforme à cette tendance, en utilisant récemment des nœuds technologiques à 16 nm (Fig. \ref{fig:nxp-techno-increase}) \cite{evolution_technologies} normalement utilisés dans des applications moins sévères.
@@ -66,7 +66,7 @@ Ceci est assuré par la carcasse métallique du véhicule, et les modules ainsi 
 En statique et à basse fréquence, cette référence est très bonne car la carcasse et les câbles sont très peu résistifs.
 A haute fréquence, ces câbles ont un caractère inductif.
 Ils s'opposent aux variations de courant et présentent des différences de potentiel importantes.
-Par conséquent, la connection de masse est dégradée et des perturbations locales peuvent affecter un module en décalant sa référence par exemple.
+Par conséquent, la connexion de masse est dégradée et des perturbations locales peuvent affecter un module en décalant sa référence par exemple.
 Par nature, les décharges électrostatiques sont des évènements très courts de forte amplitude, avec donc un contenu spectral important à haute fréquence.
 Elles sont donc susceptibles de perturber localement des systèmes électroniques dans un véhicule.
 Pour contrecarrer ce problème, les modules sont conçus pour être robustes, mais il reste difficile de garantir leur immunité face à des phénomènes aussi violents que des ESDs.
@@ -104,17 +104,17 @@ L'analyse de la littérature montre que les recherches sur les défaillances fon
 Dans ce document, la recherche et l'analyse de faiblesses fonctionnelles a lieu plus bas dans la hiérarchie, au niveau circuit-intégré.
 Il est nécessaire de comprendre comment une fonction intégrée est perturbée par une décharge, afin de pouvoir la protéger correctement dans son environnement de fonctionnement.
 Plusieurs approches sont explorées dans ce document.
-Une méthode de modélisation des éléments au niveau système est ameliorée a partir des travaux précédents sur le sujet \cite{phd-lacrampe, phd-monnereau}.
+Une méthode de modélisation des éléments au niveau système est améliorée a partir des travaux précédents sur le sujet \cite{phd-lacrampe, phd-monnereau}.
 Elle permet de déterminer quelle fraction d'une décharge appliquée sur un système est réellement vue par un circuit intégré.
-Des méthodes de mesure pouvant être intégrées sur silicum sont aussi proposées, afin d'acquérir plus de données sur le problème.
-Un capteur de courant sur puce, des détecteurs de surtension et soustension ainsi qu'une chaine de communication ont été développés et fabriqués sur une puce de test.
+Des méthodes de mesure pouvant être intégrées sur silicium sont aussi proposées, afin d'acquérir plus de données sur le problème.
+Un capteur de courant sur puce, des détecteurs de surtension et sous-tension ainsi qu'une chaine de communication ont été développés et fabriqués sur une puce de test.
 Des méthodes de modélisation de fonctions intégrées, à l'intérieur de la puce, ont été proposées.
 Elles restent au stade de prototype mais offrent un début de réponse pour aborder les problèmes de défaillances fonctionnelles au niveau puce.
 L'objectif est de réduire la complexité du problème afin de pouvoir l'aborder de manière modulaire, en étudiant d'une part les blocs d'un circuit individuellement, puis en considérant leurs interactions.
 
 % Presentation des chapitres
 %
-Cette introduction (chapitre 1) a présenté de manière succinte les points clés et les enjeux du sujet de recherche.
+Cette introduction (chapitre 1) a présenté de manière succincte les points clés et les enjeux du sujet de recherche.
 
 Le chapitre \ref{chap:1} fournit en détail les notions essentielles à la compréhension de la problématique.
 Il explique comment les décharges électrostatiques apparaissent et comment elles sont reproduites en laboratoire.
