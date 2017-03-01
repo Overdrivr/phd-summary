@@ -2,11 +2,10 @@
 \label{chap:4}
 
 Jusqu'à présent, l'étude s'est focalisée sur le développement de méthodes pour l'acquisition de données de mesures.
-Ces mesures nécessitent la réalisation du circuit intégré afin de pouvoir le tester.
 Ce procédé est couteux et intervient tard dans le flot de conception.
 Les outils de simulation en revanche sont utilisables dés le début du flot de conception.
 Dans le contexte de la recherche de défaillance fonctionnelle, la simulation peut donc s'avérer très utile.
-Néanmoins, les circuits intégrés dans le domaine automobile par exemple sont très complexes, avec de multiples niveaux de hiérarchie et une large quantité de fonctions analogiques.
+Néanmoins, les circuits intégrés dans le domaine automobile sont très complexes, avec de multiples niveaux de hiérarchie et une large quantité de fonctions analogiques.
 Il n'est pas aisé de rechercher les points de défaillance de tels circuits intégrés.
 C'est pourquoi des méthodes permettant de réduire la complexité du problème peuvent être d'une grande utilité dans cette recherche.
 Dans ce chapitre, deux méthodes sont présentées.
@@ -22,8 +21,7 @@ Les modèles développés sont de type boite-noire, ils sont une représentation
 Cette approche présente l'intérêt que des fonctions individuelles sont susceptibles d'être réutilisées, et donc que l'effort de caractérisation et de modélisation n'a besoin d'être fourni qu'une seule fois.
 Un schéma de caractérisation assez simple est utilisé en simulation pour caractériser chaque bloc (Fig. \ref{block_function_cz}).
 Pour que des défaillances fonctionnelles puissent être détectées, le bloc doit être en fonctionnement.
-Le setup d'injection prévoit également les connexions nécessaire pour l'alimenter.
-Il permet également d'injecter sur une entrée un stress électrique et d'observer la réponse sur une sortie.
+Le setup d'injection prévoit également les connexions nécessaire pour l'alimenter, pour injecter sur une entrée un stress électrique et observer la réponse sur une sortie.
 La charge de sortie $Z$ permet de tirer du courant sur la sortie si nécessaire.
 La valeur de cette charge peut être définie à partir de la spécification du bloc.
 Par exemple, si la sortie doit être connectée à des grilles de transistor, une très forte impédance est attendue et la charge $Z$ peut prendre une très valeur de l'ordre du G\textOmega{}.
@@ -51,10 +49,9 @@ Cette méthode de caractérisation est fortement inspirée de la méthode Wunsch
 \end{figure}
 
 Deux paramètres sont extraits de la forme d'onde de sortie.
-Premièrement, l'amplitude maximale du signal est enregistrée.
-Ensuite, la durée de la perturbation observée sur la sortie est aussi enregistrée.
-Elle correspond à 90\% de l'amplitude maximale relevée.
-Ces deux paramètres permettent de décrire avec un signal rectangulaire plus simple la forme d'onde de sortie.
+L'amplitude maximale et la durée de la perturbation observée sur la sortie sont enregistrées.
+La durée correspond à 90\% de l'amplitude maximale relevée.
+Ces deux paramètres permettent de décrire avec un signal rectangulaire plus simple que la forme d'onde de sortie.
 Cette analyse est effectuée pour chaque simulation, et les résultats sont stockés dans deux tableaux.
 Le premier tableau associe aux deux paramètres d'entrée (amplitude et durée) l'amplitude maximale de la perturbation sur la sortie.
 Le second tableau associe aux deux paramètres d'entrée la durée de la perturbation sur la sortie.
@@ -112,8 +109,8 @@ Le stimulus appliqué sur le troisième bloc (le régulateur 2.5V) est égalemen
   \label{fig:sim-compare-block2}
 \end{figure}
 
-La courbe de sortie du dernier bloc est donnée dans le document final, mais les résultats sont bons et les deux formes d'onde sont similaires, à un retard près
-Pour ce cas d'étude, il semblerait que la méthode de simulation et modélisation individuelle permettrait par chainage des modèles d'estimer correctement la perturbation sur le bloc de sortie.
+La courbe de sortie du dernier bloc est donnée dans le document final, mais les résultats sont bons et les deux formes d'onde sont similaires, à un retard près.
+Pour ce cas d'étude, il semblerait que la méthode de simulation et de modélisation individuelle permettrait par chainage des modèles d'estimer correctement la perturbation sur le bloc de sortie.
 Avant de pouvoir généraliser son utilisation, il est nécessaire de tester cette méthode sur une plus large gamme d'applications.
 Elle montre néanmoins des résultats prometteurs et pourrait faire l'objet d'études supplémentaires.
 
@@ -226,5 +223,4 @@ Des travaux et des investigations supplémentaires sont requises pour corriger c
 % Opening work
 Il y a énormément de pistes de recherche sur la modélisation boite-noire pour l'ESD.
 Le comportement de ces modèles face à des impulsions plus variables tels que des décharges de pistolet ESD doit être étudié.
-Ensuite, la modélisation par droite linéaire par morceaux a besoin d'être améliorée afin d'être plus précise vis-à-vis de la courbe I(V) originale.
 La méthode présentée doit être testée sur un plus grand nombre de fonctions analogiques, afin de voir si elle peut être appliquée généralement.
