@@ -10,13 +10,13 @@ L'environnement et les tests ESD effectués seront ensuite détaillés.
 Enfin, la faute sera analysée au regard des résultats obtenus avec les tests.
 
 % Principe de la fonction
-La fonction de régulation est chargée principalement de convertir la tension batterie en une alimentation régulée 2.5 V.
+La fonction de régulation est chargée principalement de convertir la tension batterie 14V en une alimentation régulée 2.5 V.
 Cette alimentation 2.5V est utilisée par d'autres parties du circuit, notamment afin d'alimenter le cœur logique et des fonctions analogiques basse-tension.
 La fonction de régulation est découpée en plusieurs sous-fonctions, ou blocs, et son architecture est donnée Fig. \ref{fig:monitored_function}).
 Le pré-régulateur limite la tension d'entrée V\textsubscript{batt} pouvant atteindre jusqu'à 40 V, et fournit le signal V\textsubscript{clamp9}.
 V\textsubscript{clamp9} alimente les blocs internes à faible consommation, tandis que V\textsubscript{pwr} fournit un plus large courant sous 12 V.
-Ensuite, une référence bandgap génère, après un délai de démarrage, une référence à 1.0 V appelée V\textsubscript{ref1p0}.
-Ce bandgap fournit aussi une référence de courant à 10\textMu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non.
+Une référence bandgap génère, après un délai de démarrage, une référence à 1.0 V appelée V\textsubscript{ref1p0}.
+Ce bandgap fournit aussi une référence de courant à 10\textmu{}A sur I\textsubscript{ref10u}, ainsi qu'un drapeau V\textsubscript{bgok} pour signaler si il est en fonctionnement nominal ou non.
 Le régulateur 2.5V génère l'alimentation stabilisée 2.5 V sur V\textsubscript{2p5} à partir de l'entrée non-régulée de puissance V\textsubscript{pwr}, la référence du bandgap ainsi que divers autres signaux auxiliaires.
 Il fournit un courant maximal de 20 mA.
 L'entrée V\textsubscript{batt} ainsi que la sortie V\textsubscript{2p5} sont toutes deux des broches externes.
@@ -46,11 +46,10 @@ La CMC et le filtre en Pi sont enlevés avant les tests afin de tester la config
 
 
 % Principe défaillance
-La défaillance de ce système est observée sur V\textsubscript{2p5}.
+La défaillance de ce système est observée sur V\textsubscript{2p5} sous la forme d'une très courte perturbation, suivie d'un arrêt long de la régulation avant redémarrage (Fig. \ref{fig:meas-reset-v2p5}).
 Elle est induite en injectant une forte impulsion transitoire d'amplitude négative sur V\textsubscript{batt}, lorsque le produit est alimenté et en fonctionnement normal.
-Sur la sortie V\textsubscript{2p5}, la défaillance prends la forme d'une très courte perturbation, suivie d'un arrêt long de la régulation puis de son redémarrage (Fig. \ref{fig:meas-reset-v2p5}).
 La durée de la défaillance est d'approximativement 40 \textmu{}s, depuis la perturbation initiale jusqu'au redémarrage.
-Elle est bien plus longue que la perturbation d'entrée sur V\textsubscript{batt} (100 ns), ce qui semble indiquer une large faute fonctionnelle dans le circuit.
+Elle est bien plus longue que la perturbation d'entrée sur V\textsubscript{batt} (100 ns).
 
 \begin{figure}[!h]
   \centering
@@ -60,17 +59,16 @@ Elle est bien plus longue que la perturbation d'entrée sur V\textsubscript{batt
 \end{figure}
 
 % What is the root cause -> reset of regulator, soft-start
-Il semble donc que le stress négatif injecté sur V\textsubscript{batt} déclenche une séquence de redémarrage, alors que le régulateur est déjà démarré.
-Ces séquences de démarrage sont longues car les tensions d'alimentations sont montées doucement afin de protéger l'électronique sensible connectée en aval.
+Les séquences de démarrage sont longues car les tensions d'alimentations sont montées doucement afin de protéger l'électronique sensible connectée en aval.
 Si un ESD déclenche une telle séquence, le système se retrouve indisponible pendant un délai important.
 L'architecture de la fonction intégrée a été présentée précédemment, et est composée de plusieurs blocs.
 La question qui se pose à ce stade est de déterminer lequel ou lesquels de ces blocs est responsable de la défaillance.
 Deux approches sont possibles, soit par des mesures, soit avec les outils de simulation.
 Les simulations sont un outil très intéressant et pratique, mais elles n'ont à ce jour pas été utilisées dans la littérature pour étudier des défaillances fonctionnelles au niveau circuit-intégré.
-Il est donc nécessaire d'obtenir des mesures pour évaluer leur fiabilité dans un contexte ESD.
+Il est donc nécessaire d'obtenir des mesures pour évaluer leur fiabilité dans un contexte ESD dans un premier temps.
 
 La première partie du travail est focalisée sur le développement de méthodes de mesures directement sur silicium, de façon à comprendre les mécanismes mis en jeu dans l'apparition de la faute.
-L'objectif est d'acquérir des données fiables directement au niveau circuit, ce qui est difficile à faire de manière externe.
+L'objectif est d'acquérir des données fiables directement au niveau des blocs intégrés.
 Ces mesures ont aussi pour objectif de valider les simulations pour l'investigation.
 Un véhicule de test a été développé, contenant différentes méthodes de mesure et d'observation.
 
@@ -83,7 +81,7 @@ La première instance est la fonction sous-test, exposée à des décharges éle
 Cette première instance est placée en configuration réduite sans la plupart des éléments de filtrage externes.
 La seconde instance alimente les systèmes de surveillance qui sont intégrés sur puce.
 Elle est placée en configuration blindée, avec le réseau de filtrage complet ainsi que des capacités de découplage supplémentaires.
-Ces mesures la protègent normalement face à tout résidu ESD pouvant l'atteindre pendant les tests.
+Ces mesures la protègent normalement de tout résidu ESD pouvant l'atteindre pendant les tests.
 Les systèmes de surveillance contiennent notamment des détecteurs de surtension et sous-tension.
 Il y a au total 35 détecteurs de ce type dans la puce.
 Leurs rôles individuels sont donnés dans le document final.
@@ -101,7 +99,6 @@ Il est possible d'identifier à droite et à gauche chaque instance de la foncti
 Les fonctions de régulation ont volontairement été placées de part et d'autre de la puce afin d'éviter des problèmes de couplages d'ESD pendant les tests, qui auraient pu perturber l'alimentation de référence.
 Les systèmes de surveillance sont localisés en dessous de ces deux blocs.
 Des capteurs de courant sur puce sont localisés à plusieurs endroit contre l'anneau de métal \textit{gndsub} entourant toute la puce.
-Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de fabrication.
 
 \begin{figure}[!h]
   \centering
@@ -113,23 +110,6 @@ Beaucoup d'espace a été laissé libre sur le layout, pour des contraintes de f
 % What is a current sensors
 Dans le véhicule de test, on trouve également des capteurs de courant directement intégrés sur silicium, qui permettent de mesurer un courant circulant dans une piste placée à proximité.
 Par couplage, le capteur génère une tension proportionnelle à la dérivée du courant dans la piste.
-La figure \ref{fig:near-field-current-sensor} donne une représentation 3D du capteur.
-Ce type de boucle de courant intégré sur silicium a été originellement désigné et étudié par A. Salles dans \cite{OtherInductors, InductorsLAAS1, InductorsLAAS2, AlainSallesInductors}.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.98\textwidth]{src/1/figures/near-field-current-sensor.pdf}
-  \caption{Design du capteur de champ-proche}
-  \label{fig:near-field-current-sensor}
-\end{figure}
-
-% How is it designed and how is it used
-Sur silicium, trois niveaux de métaux sont requis pour construire ce capteur.
-Le premier niveau en rouge (Fig \ref{fig:near-field-current-sensor}) et le troisième niveau en violet forment une boucle métallique.
-Des vias connectent les différents niveaux ensembles.
-La piste mesurée est elle localisée au deuxième niveau.
-Le courant mesuré circule entre les nœuds \textit{S1} et \textit{S2}.
-Un oscilloscope avec une impédance d'entrée 50 \textOmega{} est utilisé pour mesurer la tension différentielle entre \textit{C1} et \textit{C2}.
 
 % Talk about the near-field current sensors placement
 Au total, 6 capteurs de courant sont implémentés sur la puce.

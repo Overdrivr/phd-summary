@@ -5,30 +5,20 @@
 % Need to simulate from source to input for soft-failure analysis
 Un environnement de test ESD est composé d'éléments récurrents tels que des sources DC, des oscilloscopes, des générateurs de stress et des cartes électroniques interconnectés par des câbles et des fils.
 Les cartes électroniques embarquent différents types de composants, tels que des composants passifs, des protections ESD et des circuits intégrés.
-Afin de simuler le comportement de tous ces éléments pendant une décharge ESD, une méthodologie de modélisation au niveau système est proposée.
+Afin de simuler le comportement de tous ces éléments pendant une décharge ESD, une méthodologie de modélisation au niveau système est nécessaire.
 Elle permet une simulation précise jusqu'à l'entrée d'un circuit intégré en fonctionnement.
 L'objectif de la méthode proposée est tout d'abord de construire une librairie des éléments les plus courants, puis d'assembler ces éléments ensembles pour former le modèle complet du système à étudier.
 
 % Cables and delays identified as important for esd sims - because of similar order of magnitude
 Les câbles sont des éléments importants mais parfois négligés dans les simulations ESD.
-Ils introduisent des délais de propagation non négligeables par rapport à la durée d'un ESD.
+Ils introduisent des délais de propagation importants au regard de la durée d'un ESD.
 Pour ordre de grandeur, un câble coaxial 50\textOmega{} possède une constante de propagation d'environ 5 ns/m.
 En comparaison, un ESD dure entre une dizaine et plusieurs centaines de nanosecondes, ce qui est globalement proche du même ordre de grandeur.
 Les câbles sont avant tout des lignes de transmission, dont l'analyse théorique fut faite par J. Maxwell, L. Kelvin et O. Heaviside et énormément étudiées par la suite dans la littérature \cite{branin-tl-ref, hf-coax,lossy-tl,emc-analysis-tl}.
 
 % Distributed model
-Le modèle le plus populaire de ligne est basé sur des éléments distribués.
-Concrètement, c'est une suite réseaux L-C tels que la Fig. \ref{fig:dis-line-model}.
+Le modèle le plus populaire de ligne est basé sur des éléments distribués de type LC.
 Les valeurs de chaque élément sont calculées à partir des propriétés du câble et de la précision requise pour la simulation.
-
-\begin{figure}[!h]
-  \centering
-  \includegraphics[width=0.7\textwidth]{src/1/figures/lc_ladder.pdf}
-  \caption{Modèle de ligne de transmission LC distribué}
-  \label{fig:dis-line-model}
-\end{figure}
-
-% Perks and disavantages
 Malgré sa très large adoption, ce modèle présente de sérieux inconvénients.
 En particulier, ce modèle nécessite un très grand nombre d'éléments pour avoir une précision correcte de simulation de câbles longs tels que le câble de 10 mètres d'un TLP.
 Pour une même précision, le nombre d'éléments est proportionnel à la longueur du câble, ce qui augmente considérablement les temps de simulation.
@@ -37,9 +27,8 @@ La combinaison des deux résulte en des temps de simulation très longs.
 
 % Behavioral model
 Le modèle à deux ports décrit par H. Branin \cite{branin-tl-ref} est une alternative bien plus performante au modèle distribué.
-Il décrit très efficacement et avec une très grande précision le comportement d'une ligne de transmission.
 La bande passante n'est pas limité, et le temps de simulation est indépendant de la longueur du câble.
-Le modèle est constitué de deux sources de tension contrôlées en tension et deux résistances (Fig. \ref{fig:beh-line-model}).
+Ce modèle comportemental est constitué de deux sources de tension contrôlées en tension et deux résistances (Fig. \ref{fig:beh-line-model}).
 
 \begin{figure}[!h]
   \centering
@@ -69,11 +58,10 @@ Pour démontrer sa précision, le modèle est vérifié par comparaison avec de 
 % Explain how the model, how it was constructed
 Le modèle complet de TLP est donné en Fig. \ref{fig:complete-tlp-model}.
 Il reproduit l'architecture du TLP du laboratoire en utilisant des modèles de la librairie pour chaque élément.
-
 % Detail a first comparison with 25 ohms
-Une première comparaison entre une mesure et simulation est donnée en Fig. \ref{fig:comparison-tlp-load}.
-Avec une charge de 25\textOmega{} et une tension de charge de 500 V, un courant de 4.5 A et une tension de 125 mV sont relevés sur le second plateau de la courbe.
-Le rapport de ces deux valeurs corresponds bien à 25\textOmega{} comme attendu.
+Une comparaison entre mesure et simulation est donnée en Fig. \ref{fig:comparison-tlp-load}.
+Pour une tension de charge de 500 V, le système TLP permet de mesurer un courant de 4.5 A et une tension de 125 mV aux bornes de la charge 25\textOmega{}.
+Ces deux valeurs sont mesurées sur le second plateau de la courbe, et le rapport tension/courant est bien égal à 25\textOmega{} comme attendu.
 Jusqu'à 220 ns, les deux courbes se ressemblent fortement.
 Après 220ns, des différences apparaissent, supposées dues aux erreurs de modélisations.
 La plupart des simulations ESD restent intéressantes pendant la partie principale de la décharge jusqu'à 120 ns et ces erreurs sont donc négligeables.
@@ -124,8 +112,7 @@ Les courants mesurés à 30 ns et 60 ns sont dans la marge de tolérance de 30\%
 \end{figure}
 
 % Analyse the curve
-Globalement, la simulation et la mesure corrèlent bien.
-Il y a des différences mineures, notamment entre 40 ns et 150 ns.
+Globalement, la simulation et la mesure corrèlent bien, à quelques différences mineures près, notamment entre 40 ns et 150 ns.
 Elles sont dues à des éléments parasites non pris en compte durant les simulations, et des corrections sont à apporter au prototype.
 L'analyse de ces éléments est fournie dans le document complet.
 
