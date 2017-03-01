@@ -14,7 +14,7 @@ La diminution du \textlambda{} se traduit par l'intégration d'un plus grand nom
 Le facteur principal du coût dans la réalisation d'un circuit intégré est l'aire occupée sur silicium.
 La diminution de taille permet de réduire la surface nécessaire a la réalisation du circuit et donc son coût unitaire.
 A taille constante, des circuit intégrés plus denses peuvent embarquer plus de fonctionnalités et ont des performances plus élevées.
-La réduction de poids des modules électroniques pour l'automobile ou l'aéronautique permet des réductions de carburant, de coût, et moins d'impact sur l'environnement.
+La réduction de poids des modules électroniques pour l'automobile ou l'aéronautique permet de diminuer la consommation de carburant, de réduire les coûts et l'impact sur l'environnement.
 
 \begin{figure}[!h]
   \centering
@@ -27,7 +27,7 @@ La réduction de poids des modules électroniques pour l'automobile ou l'aérona
 En réduisant la taille des circuits, les épaisseurs des matériaux isolants dans le procédé technologique sont également diminués.
 C'est le cas des oxydes nécessaires à la réalisation des grilles de transistors par exemple.
 Une épaisseur d'isolant plus fine tolère des différences de potentiel moins élevées.
-Au delà, un claquage de l'isolant se produit, qui se met à laisser fuir un courant important et rends généralement le composant inutilisable.
+Au delà, un claquage de l'isolant se produit rendant généralement le composant inutilisable.
 Les seuils de tolérances en tension et courant deviennent donc plus petits, et de manière générale la réduction de taille s'accompagne d'une augmentation de la fragilité et de la sensibilité des circuits intégrés.
 La surface de silicium nécessaire à la protection des cœurs de circuits occupe une plus large part de l'aire totale d'un produit  \cite{evolution_technologies} et donc du coût.
 
@@ -40,10 +40,10 @@ A terme, elles promettent une augmentation de la sécurité des usagers d'un vé
 La contrainte temps-réel sur ce type de système électronique est très importante, car il est nécessaire de garantir leur fonctionnement normal quel que soit les perturbations auxquelles ils vont être exposés.
 
 % Harsh environment in the automotive field
-En effet, l'environnement automobile est très sévère pour les composants électroniques.
+L'environnement automobile est très sévère pour les composants électroniques.
 Un moteur en fonctionnement génère de la chaleur et des vibrations.
 Durant toute sa vie, un véhicule est exposé à de larges cycles thermiques.
-Les contacts électriques, les soudures et les connexions vieillissent plus rapidement à cause de cela.
+Les contacts électriques, les soudures et les connexions vieillissent plus rapidement.
 De plus, les systèmes électroniques sont exposés à une large plage de stress électriques.
 Quand le moteur est allumé, la tension de batterie chute fortement à cause de l'appel de courant créé par le démarreur.
 Cette variation très brutale peut affecter ou endommager les modules.
@@ -56,7 +56,7 @@ C'est le résultat d'une accumulation de potentiel électrostatique.
 La décharge se produit lorsque la différence de potentiel est suffisamment large.
 L'amplitude de tels événements peut atteindre couramment plusieurs milliers de volts et des dizaines d'ampères.
 D'après une étude du fabricant de véhicules Renault \cite{Renault-esd}, il est estimé que les composants électroniques automobiles sont exposés 10000 fois à des décharges pendant leur vie.
-Les circuits intégrés sont particulièrement vulnérables \cite{impactESDsemiconductors} et nécessitent des mesures de protection.
+Les circuits intégrés sont particulièrement vulnérables \cite{impactESDsemiconductors} et nécessitent des mesures de protection particulières.
 
 % Architecture systemes automobiles
 L'architecture des systèmes électriques et électroniques dans un véhicule est assez complexe.
@@ -73,21 +73,18 @@ Pour contrecarrer ce problème, les modules sont conçus pour être robustes, ma
 
 \begin{figure}[!h]
   \centering
-  \includegraphics[width=0.6\textwidth]{src/1/figures/systemintegration_01_uv-data.jpg}
-  \caption{Architecture des systèmes électroniques dans un véhicule \cite{car-architecture}}
+  \includegraphics[width=0.8\textwidth]{src/1/figures/systemintegration_01_uv-data.jpg}
+  \caption{Architecture des systèmes électroniques dans un véhicule (Crédit: Continental \cite{car-architecture})}
   \label{fig:car-architecture}
 \end{figure}
 
 % Fiabilite vis a vis des ESD
-En résumé, les systèmes électroniques doivent opérer dans un environnement sévère qu'est le domaine automobile, et utilisent des composants réalisés avec technologies toujours plus sensibles.
-Malgré la robustesse des modules, les perturbations que sont les décharges électrostatiques peuvent engendrer des défaillances.
 Dans le domaine des décharges électrostatiques, il y a deux types de défaillances à considérer.
-La casse matérielle est le résultat de la destruction permanente d'un composant.
-Il existe plusieurs types de casse.
-La rupture des oxydes a lieu lorsque la tension a dépassé un niveau tolérable.
-La casse par échauffement se produit lorsque à la suite d'un courant menant à une dissipation thermique trop importante.
+La défaillance matérielle ou "hard-failure" est le résultat de la destruction d'un composant.
+Elle peut avoir lieu par rupture des oxydes lorsque la tension a dépassé un niveau maximum ou par échauffement lorsque le courant circulant est trop important.
+Deux exemples de casse sont donnés Fig. \ref{fig:esd-failures}.
 Récemment, un deuxième type de défaillance commence à être étudié.
-Les défaillances fonctionnelles prennent la forme d'une perturbation d'une fonction électrique intégré.
+Les défaillances fonctionnelles ou "soft-failure" prennent la forme d'une perturbation d'une fonction électrique intégré.
 Elles peuvent être causées par toutes sorte de perturbations électriques et en particulier par des décharges électrostatiques.
 Plusieurs niveaux de sévérité existent.
 Par exemple, la perturbation d'un système d'airbag peut l'empêcher de se déclencher en cas de besoin, ce qui est bien plus critique qu'un problème d'affichage sur le tableau de bord.
@@ -105,29 +102,29 @@ Les premiers travaux sur ce sujet ont été publiés par F. Caignet et N. Lacram
 Le standard IEC 62433-6 \cite{iec62433-6} encore en phase d'élaboration cherche à formaliser des méthodes pour l'analyse et la prédiction de fautes fonctionnelles.
 L'analyse de la littérature montre que les recherches sur les défaillances fonctionnelles liées aux décharges électrostatiques restent focalisées au niveau système.
 Dans ce document, la recherche et l'analyse de faiblesses fonctionnelles a lieu plus bas dans la hiérarchie, au niveau circuit-intégré.
-Les circuits intégrés sont essentiels dans les nouvelles applications critiques tels que les véhicules autonomes comme démontré précédemment.
-Il est nécessaire de comprendre comment une fonction intégrée est perturbée par une décharge, afin de pouvoir la protéger correctement dans son fonctionnement normal.
-A ce but, plusieurs approches sont explorées dans ce document.
-Une méthode de modélisation des systèmes soumis à des ESD est améliorée, en reprenant les travaux précédents sur le sujet \cite{phd-lacrampe, phd-monnereau}.
+Il est nécessaire de comprendre comment une fonction intégrée est perturbée par une décharge, afin de pouvoir la protéger correctement dans son environnement de fonctionnement.
+Plusieurs approches sont explorées dans ce document.
+Une méthode de modélisation des éléments au niveau système est ameliorée a partir des travaux précédents sur le sujet \cite{phd-lacrampe, phd-monnereau}.
 Elle permet de déterminer quelle fraction d'une décharge appliquée sur un système est réellement vue par un circuit intégré.
-Ensuite, des méthodes de mesure pouvant être intégrées sur silicum sont proposées, afin d'acquérir plus de données sur le problème.
+Des méthodes de mesure pouvant être intégrées sur silicum sont aussi proposées, afin d'acquérir plus de données sur le problème.
 Un capteur de courant sur puce, des détecteurs de surtension et soustension ainsi qu'une chaine de communication ont été développés et fabriqués sur une puce de test.
-Enfin, des méthodes de modélisation de fonctions intégrées ont été proposées.
-Elles restent largement au stade de prototype mais offrent un début de réponse pour aborder ces problèmes de défaillances fonctionnelles.
-Elles permettent notamment de réduire la complexité du problème et de pouvoir l'étudier de manière modulaire, en étudiant d'une part les blocs d'un circuit individuellement, puis en considérant leurs interactions.
+Des méthodes de modélisation de fonctions intégrées, à l'intérieur de la puce, ont été proposées.
+Elles restent au stade de prototype mais offrent un début de réponse pour aborder les problèmes de défaillances fonctionnelles au niveau puce.
+L'objectif est de réduire la complexité du problème afin de pouvoir l'aborder de manière modulaire, en étudiant d'une part les blocs d'un circuit individuellement, puis en considérant leurs interactions.
 
 % Presentation des chapitres
 %
+Cette introduction (chapitre 1) a présenté de manière succinte les points clés et les enjeux du sujet de recherche.
+
 Le chapitre \ref{chap:1} fournit en détail les notions essentielles à la compréhension de la problématique.
 Il explique comment les décharges électrostatiques apparaissent et comment elles sont reproduites en laboratoire.
-Ensuite, une revue de l'état de l'art est présentée sur l'analyse des pertes de fonctionnalités dues à des décharges.
+Une revue de l'état de l'art est faite sur l'analyse des pertes de fonctionnalités dues à des décharges.
 
 %
 La chapitre \ref{chap:2} présente un méthode de modélisation pour simuler la propagation de décharges électrostatiques jusqu'au composant.
-C'est une part important du problème que d'identifier quelle fraction d'une décharge atteint réellement un circuit intégré.
 Une librairie de modèles est construite, ensuite assemblés ensemble pour reproduire le système à simuler.
 Un générateur de stress utilisé dans le laboratoire de test à NXP est modélisé pour illustrer la méthode.
-Un nouveau générateur de stress, appelé TLP-HMM est ensuite proposé, reproduisant une forme d'onde standardisée.
+Un nouveau générateur de stress 50 \textOmega{} appelé TLP-HMM est ensuite proposé, reproduisant une forme d'onde standardisée.
 Il présente plusieurs avantages sur les générateurs conventionnels, tels que le fait d'être blindé et de ne pas perturber les circuits par émission électromagnétiques, ainsi que d'offrir des niveaux de reproductibilité des tests excellents.
 Ce générateur est particulièrement intéressant pour effectuer des tests de décharge sur des circuits intégrés alimentés.
 
@@ -135,18 +132,16 @@ Ce générateur est particulièrement intéressant pour effectuer des tests de d
 Un cas de défaillance fonctionnelle est ensuite présenté dans le chapitre \ref{chap:3}.
 Tout d'abord, des mesures sont effectuées de manière externe sur le circuit intégré sous test.
 La signature de la défaillance est expliquée.
-Ensuite, un circuit intégré de test est développé et fabriqué sur silicium.
-Il contient des structures spéciales pour mesurer les perturbations directement depuis le silicium.
+Un circuit intégré de test est développé et fabriqué, contenant des structures spéciales pour mesurer les perturbations directement sur le silicium.
 
 %
 Ces travaux ont aussi été orientés vers la recherche de nouvelles méthodes de simulation.
 L'objectif est de détecter plus facilement et rapidement des défaillances fonctionnelles, en utilisant les outils existants de simulation.
-Trois méthodes différentes sont présentées dans le chapitre \ref{chap:4}.
+Différentes méthodes sont présentées dans le chapitre \ref{chap:4}.
 La première méthode permet une caractérisation individuelle de blocs dans une fonction intégrées afin de construire un modèle.
 Ces modèles peuvent ensuite être chaînés pour déduire de manière immédiate la robustesse de la fonction complète sans effectuer de simulation supplémentaire.
 La seconde méthode cherche à créer un modèle boite-noire d'une fonction intégrée, c'est à dire un modèle faisant abstraction de la conception interne.
 L'objectif est de permettre une simulation au niveau système avec le circuit intégré sans connaitre le design interne.
-Enfin, la troisième méthode est au stade de concept mais pourrait permettre aux concepteurs de puce de définir une série d'assertions sur les blocs, afin de vérifier efficacement et de manière sûre si un bloc génère des fautes pendant une simulation ESD.
 Elles ont chacune des applications différentes, mais peuvent s'avérer complémentaires pour concevoir des circuits robustes, que ce soit au niveau système ou circuit intégré.
 
 %
