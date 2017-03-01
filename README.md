@@ -14,3 +14,9 @@ To check chapter 1, run from inside the `src` folder the following command
 ```
 hunspell -t -i UTF-8 -d fr-toutesvariantes chap1.tex
 ```
+
+On Windows, to spell check all relevant files
+
+```
+spellcheck.md
+```
